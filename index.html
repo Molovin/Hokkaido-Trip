@@ -98,6 +98,19 @@
             width: 12px;
             border-radius: 4px;
         }
+        
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #E63946;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -148,9 +161,8 @@
 
                         <div class="relative min-h-[100px]">
                             <div v-if="weatherLoading" class="absolute inset-0 flex items-center justify-center bg-gray-50/50 z-10 rounded-xl">
-                                <div class="loader" style="border: 3px solid #f3f3f3; border-radius: 50%; border-top: 3px solid #E63946; width: 20px; height: 20px; animation: spin 1s linear infinite;"></div>
+                                <div class="loader"></div>
                             </div>
-
                             <div class="flex space-x-3 overflow-x-auto no-scrollbar mb-6 py-2 px-1">
                                 <div v-for="(h, i) in hourlyWeather" :key="i" 
                                      :class="['flex-shrink-0 w-16 h-24 rounded-xl shadow-sm flex flex-col items-center justify-center border transition-all duration-500', 
@@ -174,43 +186,58 @@
                                 
                                 <div class="bg-white rounded-2xl shadow-sm overflow-hidden ml-4 transform transition hover:scale-[1.01] duration-200">
                                     
-                                    <div class="h-44 w-full relative group bg-gray-200">
+                                    <div v-if="item.images && item.images.length > 1" 
+                                         class="h-44 w-full relative group bg-gray-200"
+                                         @touchstart="handleTouchStart"
+                                         @touchend="(e) => handleTouchEnd(e, item)">
                                         
-                                        <div v-if="item.images && item.images.length > 1" class="w-full h-full relative">
-                                            <img :src="item.images[item.currentImageIndex]" 
-                                                 @click="openLightbox(item.images[item.currentImageIndex])"
-                                                 class="w-full h-full object-cover transition-opacity duration-300 cursor-pointer">
-                                            
-                                            <div class="absolute inset-y-0 left-0 w-1/3 z-10" @click.stop="prevSlide(item)"></div>
-                                            <div class="absolute inset-y-0 right-0 w-1/3 z-10" @click.stop="nextSlide(item)"></div>
+                                        <img :src="item.images[item.currentImageIndex]" 
+                                             class="w-full h-full object-cover transition-opacity duration-300"
+                                             style="user-select: none; -webkit-user-drag: none;">
+                                        
+                                        <button @click.stop="prevSlide(item)" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/20 text-white rounded-full flex items-center justify-center z-20 backdrop-blur-sm active:scale-95">
+                                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                                        </button>
+                                        <button @click.stop="nextSlide(item)" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/20 text-white rounded-full flex items-center justify-center z-20 backdrop-blur-sm active:scale-95">
+                                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                                        </button>
 
-                                            <div class="absolute bottom-3 left-0 right-0 flex justify-center space-x-1.5 z-20">
-                                                <div v-for="(img, index) in item.images" :key="index"
-                                                     :class="['slider-dot', index === item.currentImageIndex ? 'active' : '']"></div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div v-else-if="item.image" class="w-full h-full relative">
-                                            <img :src="item.image" 
-                                                 @click="openLightbox(item.image)"
-                                                 class="w-full h-full object-cover cursor-pointer"
-                                                 referrerpolicy="no-referrer" @error="imageError">
+                                        <div class="absolute bottom-3 left-0 right-0 flex justify-center space-x-1.5 z-20">
+                                            <div v-for="(img, index) in item.images" :key="index"
+                                                 :class="['slider-dot', index === item.currentImageIndex ? 'active' : '']"></div>
                                         </div>
 
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none"></div>
-                                        
                                         <div class="absolute top-4 left-4 text-white/90 text-xs font-medium flex items-center shadow-black drop-shadow-sm pointer-events-none">
                                             <i class="fa-solid fa-location-dot mr-1.5"></i> {{ item.location }}
                                         </div>
-
-                                        <a :href="item.mapLink" target="_blank" class="absolute top-4 right-4 w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center backdrop-blur-md border border-white/30 hover:bg-white hover:text-christmas-blue transition-colors z-30">
+                                        <a :href="item.mapLink" target="_blank" class="absolute top-4 right-4 w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center backdrop-blur-md border border-white/30 hover:bg-white hover:text-christmas-blue transition-colors z-30 pointer-events-auto">
                                             <i class="fa-solid fa-location-arrow text-xs"></i>
                                         </a>
-
                                         <div class="absolute bottom-4 left-4 text-white pointer-events-none">
                                             <h3 class="text-xl font-bold tracking-wide shadow-black drop-shadow-md">{{ item.title }}</h3>
                                         </div>
-
+                                        <div class="absolute bottom-4 right-4 bg-black/40 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center border border-white/20 pointer-events-none">
+                                            <i class="fa-regular fa-clock mr-1.5"></i> {{ item.time }}
+                                        </div>
+                                    </div>
+                                    
+                                    <div v-else-if="item.image" class="h-44 w-full relative group bg-gray-200">
+                                        <img :src="item.image" 
+                                             @click="openLightbox(item.image)"
+                                             class="w-full h-full object-cover cursor-pointer"
+                                             referrerpolicy="no-referrer" @error="imageError">
+                                        
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none"></div>
+                                        <div class="absolute top-4 left-4 text-white/90 text-xs font-medium flex items-center shadow-black drop-shadow-sm pointer-events-none">
+                                            <i class="fa-solid fa-location-dot mr-1.5"></i> {{ item.location }}
+                                        </div>
+                                        <a :href="item.mapLink" target="_blank" class="absolute top-4 right-4 w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center backdrop-blur-md border border-white/30 hover:bg-white hover:text-christmas-blue transition-colors z-30 pointer-events-auto">
+                                            <i class="fa-solid fa-location-arrow text-xs"></i>
+                                        </a>
+                                        <div class="absolute bottom-4 left-4 text-white pointer-events-none">
+                                            <h3 class="text-xl font-bold tracking-wide shadow-black drop-shadow-md">{{ item.title }}</h3>
+                                        </div>
                                         <div class="absolute bottom-4 right-4 bg-black/40 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center border border-white/20 pointer-events-none">
                                             <i class="fa-regular fa-clock mr-1.5"></i> {{ item.time }}
                                         </div>
@@ -246,7 +273,7 @@
                     </div>
 
                     <div v-else-if="activeTab === 'map'" key="map" class="h-full flex flex-col">
-                         <div class="bg-white p-2 rounded-xl shadow-sm mb-4">
+                        <div class="bg-white p-2 rounded-xl shadow-sm mb-4">
                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3244.5910729792686!2d139.77764727677846!3d35.58882573503251!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601861033282eb11%3A0xc6c76193796d857d!2z576955Sw5qZf5aC0!5e0!3m2!1szh-TW!2stw!4v1700000000000!5m2!1szh-TW!2stw" width="100%" height="400" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"></iframe>
                         </div>
                         <div class="bg-white p-4 rounded-xl shadow-sm">
@@ -306,7 +333,6 @@
                                     </button>
                                 </div>
                             </div>
-                            <div v-if="expenses.length === 0" class="text-center text-gray-400 text-xs py-4">目前沒有支出紀錄</div>
                         </div>
                     </div>
                     <div v-else-if="activeTab === 'shopping'" key="shopping">
@@ -335,7 +361,6 @@
                                 <p class="text-xs text-gray-400 mt-1">必買清單</p>
                             </div>
                         </div>
-                        <div v-if="shoppingList.length === 0" class="text-center text-gray-400 text-xs py-10">清單是空的，快去加點東西！</div>
                     </div>
                 </transition>
             </div>
@@ -357,10 +382,10 @@
         </nav>
 
         <transition name="fade">
-            <div v-if="lightboxState.show" class="fixed inset-0 z-[10000] bg-black/80 flex items-center justify-center p-4" @click="closeLightbox">
-                <div class="relative max-w-full max-h-full">
-                    <img :src="lightboxState.image" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl">
-                    <button class="absolute top-4 right-4 text-white bg-black/50 rounded-full w-10 h-10 flex items-center justify-center" @click.stop="closeLightbox">
+            <div v-if="lightboxState.show" class="fixed inset-0 z-[10000] bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm" @click="closeLightbox">
+                <div class="relative w-full max-w-lg">
+                    <img :src="lightboxState.image" class="w-full h-auto rounded-lg shadow-2xl">
+                    <button class="absolute -top-12 right-0 text-white bg-white/20 rounded-full w-10 h-10 flex items-center justify-center" @click.stop="closeLightbox">
                         <i class="fa-solid fa-xmark text-xl"></i>
                     </button>
                 </div>
@@ -437,12 +462,11 @@
 
                 watch(selectedDate, () => { fetchWeather(); }, { immediate: true })
 
-                // --- Lightbox Logic ---
+                // --- Lightbox & Slider Logic (Updated) ---
                 const lightboxState = reactive({ show: false, image: '' });
                 const openLightbox = (imgUrl) => { lightboxState.image = imgUrl; lightboxState.show = true; }
                 const closeLightbox = () => { lightboxState.show = false; }
 
-                // --- Slider Logic ---
                 const nextSlide = (item) => {
                     item.currentImageIndex = (item.currentImageIndex + 1) % item.images.length;
                 }
@@ -450,7 +474,26 @@
                     item.currentImageIndex = (item.currentImageIndex - 1 + item.images.length) % item.images.length;
                 }
 
-                // --- Itinerary Data (Updated with new images and hotel slider) ---
+                // Touch/Swipe Logic
+                const touchStartX = ref(0)
+                const handleTouchStart = (e) => {
+                    touchStartX.value = e.changedTouches[0].screenX
+                }
+                const handleTouchEnd = (e, item) => {
+                    const touchEndX = e.changedTouches[0].screenX
+                    const diff = touchStartX.value - touchEndX
+                    
+                    // 如果滑動距離超過 50px，視為切換圖片
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) nextSlide(item) // 向左滑 -> 下一張
+                        else prevSlide(item) // 向右滑 -> 上一張
+                    } else {
+                        // 如果距離很短，視為點擊 -> 打開大圖
+                        openLightbox(item.images[item.currentImageIndex])
+                    }
+                }
+
+                // --- Itinerary Data ---
                 const itineraryData = ref([
                     {
                         date: 20, 
@@ -460,7 +503,6 @@
                         category: 'Flight',
                         desc: '航班 : ANA NH924。預訂參考編號 : XK6OCG。機型舒適，飛行時間 3小時55分。',
                         icon: 'fa-solid fa-plane-departure',
-                        // 更新第一張圖
                         image: 'https://dayooimg.dayoo.com/www/202402/06/54628485_bfb1e75b-3a34-491c-befd-52c4a4a38c11.jpg', 
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Haneda+Airport', 
                         suggestion: '建議到達時間 : 12:35',
@@ -474,7 +516,6 @@
                         category: 'Arrival',
                         desc: '抵達羽田機場第2航廈 (T2)。辦理入境手續，感受日本冬日氣息。',
                         icon: 'fa-solid fa-location-dot',
-                        // 更新第二張圖
                         image: 'https://lh7-us.googleusercontent.com/WjfbIrlhtJ-Z7HwnV6h7fXSfhk0ZOgfZG-fI7yJ4MqxAPtXYUoj6L3RUnAxWS6rqfjNEEgscg0NPRJutSOZS3LW_50-XEycs8gIHwrEafiIMImvLvbYBtTo5HaJtXBii3Nxro_y-sYXR9aGcCkeHdUU',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Haneda+Airport+Terminal+2',
                         details: { distance: '機場內', transport: '步行', stay: '1小時' }
@@ -487,13 +528,12 @@
                         category: 'Hotel',
                         desc: '地址：1-1-4 Haneda Airport。位於天空橋站 HICity 出口步行2分鐘。備有大浴場可放鬆身心。',
                         icon: 'fa-solid fa-bed',
-                        // 更新為多圖輪播結構
                         images: [
                             'https://pix8.agoda.net/hotelImages/16791240/803978242/bc74de46d2361212f60426dc71338600.jpg?ce=0&s=1024x',
                             'https://pix8.agoda.net/hotelImages/16791240/803978242/b69c0182316827d1c477e36427be07c3.jpg?ce=0&s=1024x',
                             'https://pix8.agoda.net/hotelImages/16791240/803978242/1bd9a4da30ccb7860ad744bfa3f47ae3.jpg?ce=0&s=1024x'
                         ],
-                        currentImageIndex: 0, // 追蹤當前顯示的圖片索引
+                        currentImageIndex: 0,
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda', 
                         details: { distance: '一站距離', transport: '電車/接駁', stay: '過夜' }
                     },
@@ -572,7 +612,8 @@
                     budgetAmount, isEditingBudget, editBudget, saveBudget, budgetInputRef, remaining, totalExpenseHkd,
                     shoppingList, newItem, addItem, deleteShoppingItem, tabTitles, imageError,
                     currentLocationName, weatherLoading,
-                    lightboxState, openLightbox, closeLightbox, nextSlide, prevSlide
+                    lightboxState, openLightbox, closeLightbox, nextSlide, prevSlide,
+                    handleTouchStart, handleTouchEnd
                 }
             }
         }).mount('#app')
