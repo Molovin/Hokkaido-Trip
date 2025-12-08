@@ -34,11 +34,10 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* 鎖定 Body 高度，防止橡皮筋效果 */
         body { 
             background-color: #e5e7eb; 
             overflow: hidden; 
-            height: 100vh; /* Fallback */
+            height: 100vh; 
             height: 100dvh; 
         }
 
@@ -52,7 +51,6 @@
             -webkit-backdrop-filter: blur(10px);
         }
 
-        /* 雪花動畫 (保持不變) */
         .snowflake {
             position: absolute;
             top: -20px;
@@ -83,37 +81,37 @@
         
         <div id="app-container" class="w-full max-w-md bg-gray-50 h-[100dvh] sm:h-[90vh] sm:rounded-[2rem] overflow-hidden relative flex flex-col">
             
-            <header class="relative overflow-hidden rounded-b-[2.5rem] shadow-lg shrink-0 z-10 h-[28vh] flex flex-col justify-end pb-6">
+            <header class="relative overflow-hidden rounded-b-[2.5rem] shadow-lg shrink-0 z-10 h-[18vh] flex flex-col justify-end pb-4 transition-all duration-300">
                 <div class="absolute inset-0 header-bg"></div>
                 <div class="absolute inset-0 bg-christmas-dark/80 header-blur"></div>
                 
                 <div class="relative z-10 px-6">
-                    <div class="flex justify-between items-start mb-4">
+                    <div class="flex justify-between items-end mb-3">
                         <div>
-                            <p class="text-christmas-snow text-xs font-bold tracking-wider mb-1">HOKKAIDO 2025</p>
-                            <h1 class="text-3xl font-bold font-serif text-white">Christmas Trip <i class="fa-solid fa-snowflake text-christmas-snow animate-pulse"></i></h1>
+                            <p class="text-christmas-snow text-[10px] font-bold tracking-wider mb-0.5 opacity-90">HOKKAIDO 2025</p>
+                            <h1 class="text-2xl font-bold font-serif text-white">Christmas Trip <i class="fa-solid fa-snowflake text-christmas-snow animate-pulse text-sm"></i></h1>
                         </div>
-                        <div class="w-10 h-10 rounded-full bg-yellow-400 overflow-hidden border-2 border-white shadow-sm">
+                        <div class="w-8 h-8 rounded-full bg-yellow-400 overflow-hidden border-2 border-white shadow-sm mb-1">
                             <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="w-full h-full object-cover">
                         </div>
                     </div>
 
-                    <div v-if="activeTab === 'itinerary'" class="flex space-x-3 overflow-x-auto no-scrollbar pb-1">
+                    <div v-if="activeTab === 'itinerary'" class="flex space-x-2 overflow-x-auto no-scrollbar pb-1">
                         <div v-for="(date, index) in dates" :key="index" 
                              @click="selectedDate = date.day"
-                             :class="['flex-shrink-0 w-14 h-18 rounded-xl flex flex-col items-center justify-center transition-all cursor-pointer border', 
+                             :class="['flex-shrink-0 w-12 h-16 rounded-xl flex flex-col items-center justify-center transition-all cursor-pointer border', 
                              selectedDate === date.day ? 'bg-christmas-red text-white border-christmas-red transform scale-105 shadow-md' : 'bg-white/10 text-white border-white/20 backdrop-blur-sm']">
-                            <span class="text-[10px] opacity-80">{{ date.weekday }}</span>
-                            <span class="text-xl font-bold">{{ date.day }}</span>
+                            <span class="text-[9px] opacity-80">{{ date.weekday }}</span>
+                            <span class="text-lg font-bold">{{ date.day }}</span>
                         </div>
                     </div>
                     <div v-else class="mt-1">
-                        <h2 class="text-xl font-medium text-white opacity-90">{{ tabTitles[activeTab] }}</h2>
+                        <h2 class="text-lg font-medium text-white opacity-90">{{ tabTitles[activeTab] }}</h2>
                     </div>
                 </div>
             </header>
 
-            <main class="flex-1 overflow-y-auto no-scrollbar -mt-6 pt-8 px-4 pb-[120px] z-0 relative">
+            <main class="flex-1 overflow-y-auto no-scrollbar -mt-4 pt-6 px-4 pb-[120px] z-0 relative">
                 
                 <div v-if="activeTab === 'itinerary'">
                     <div class="flex justify-between items-end mb-4 px-2">
@@ -138,7 +136,7 @@
                                     <div class="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded-full backdrop-blur-md z-10">
                                         <i class="fa-regular fa-clock mr-1"></i> {{ item.time }}
                                     </div>
-                                    <a :href="item.mapLink" target="_blank" class="absolute top-2 right-2 w-8 h-8 bg-white/80 text-christmas-blue rounded-full flex items-center justify-center backdrop-blur-md shadow-sm z-20 hover:bg-christmas-blue hover:text-white transition-colors">
+                                    <a :href="item.mapLink" target="_blank" class="absolute top-2 right-2 w-8 h-8 bg-white/90 text-christmas-blue rounded-full flex items-center justify-center backdrop-blur-md shadow-md z-30 hover:bg-christmas-blue hover:text-white transition-colors active:scale-90">
                                         <i class="fa-solid fa-location-arrow text-sm"></i>
                                     </a>
                                 </div>
@@ -164,7 +162,7 @@
 
                 <div v-if="activeTab === 'map'" class="h-full flex flex-col">
                     <div class="bg-white p-2 rounded-xl shadow-sm mb-4">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3246.315486157374!2d139.7779723767565!3d35.54939367262966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018640ba43192e3%3A0xd33c1b2020176034!2z576955Sw5aSp56m65qmL6LuK56uZ!5e0!3m2!1szh-TW!2stw!4v1708360000000!5m2!1szh-TW!2stw" width="100%" height="400" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3244.6640364966775!2d139.7798389762675!3d35.54939317262963!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018640ba43192e3%3A0xd32c3a9d0462414!2sHaneda%20Airport!5e0!3m2!1sen!2sjp!4v1701768853760!5m2!1sen!2sjp" width="100%" height="400" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"></iframe>
                     </div>
                     <div class="bg-white p-4 rounded-xl shadow-sm">
                         <h3 class="font-bold text-gray-800 mb-2">Saved Locations</h3>
@@ -260,13 +258,14 @@
                     { time: '22:00', temp: 7, icon: 'fa-solid fa-cloud-moon' }
                 ]
 
+                // 修改點：更新 mapLink 為有效的 Google Maps 搜尋連結
                 const itineraryData = ref([
                     {
                         date: 20, time: '15:05', category: 'Flight', title: '廣州往東京 (NH924)',
                         desc: 'ANA NH924。預訂參考編號：XK6OCG。',
                         icon: 'fa-solid fa-plane-departure',
                         image: 'https://images.unsplash.com/photo-1542296332-2e44a996aa0d?q=80&w=600&auto=format&fit=crop',
-                        mapLink: 'https://goo.gl/maps/8J5Q4Z2Y1X32', 
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Guangzhou+Baiyun+International+Airport', 
                         details: { distance: '2,900km', transport: '3h 55m', stay: '航程' }
                     },
                     {
@@ -274,7 +273,7 @@
                         desc: '抵達羽田機場第2航廈 (T2)。',
                         icon: 'fa-solid fa-location-dot',
                         image: 'https://images.unsplash.com/photo-1578271391583-d5d88661726a?q=80&w=600&auto=format&fit=crop',
-                        mapLink: 'https://goo.gl/maps/Q4Z2Y1X328J5', 
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Haneda+Airport+Terminal+2', 
                         details: { distance: '機場內', transport: '步行', stay: '1h' }
                     },
                     {
@@ -282,7 +281,7 @@
                         desc: '位於天空橋站 HICity 出口步行2分鐘。',
                         icon: 'fa-solid fa-bed',
                         image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=600&auto=format&fit=crop',
-                        mapLink: 'https://goo.gl/maps/2Y1X328J5Q4Z', 
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda', 
                         details: { distance: '一站', transport: '電車', stay: '過夜' }
                     }
                 ])
@@ -326,16 +325,22 @@
                         snowflake.classList.add('snowflake');
                         snowflake.innerHTML = Math.random() > 0.5 ? '❄' : '•';
                         snowflake.style.left = Math.random() * 100 + 'vw';
-                        const size = Math.random() * 10 + 8;
+                        
+                        // 修改點：雪花速度減慢
+                        // 大小稍微調小一點點讓畫面更精緻
+                        const size = Math.random() * 8 + 6; 
                         snowflake.style.fontSize = size + 'px';
                         snowflake.style.opacity = Math.random() * 0.5 + 0.3;
-                        snowflake.style.animationDuration = (Math.random() * 7 + 5) + 's';
+                        
+                        // 時間延長到 15s - 25s (非常慢)
+                        snowflake.style.animationDuration = (Math.random() * 10 + 15) + 's';
                         snowflake.style.animationDelay = Math.random() * 5 + 's';
+                        
                         snowContainer.appendChild(snowflake);
-                        setTimeout(() => snowflake.remove(), 12000); 
+                        setTimeout(() => snowflake.remove(), 25000); 
                     };
-                    for(let i=0; i<10; i++) setTimeout(createSnowflake, i * 200);
-                    setInterval(createSnowflake, 400); 
+                    for(let i=0; i<8; i++) setTimeout(createSnowflake, i * 500);
+                    setInterval(createSnowflake, 800); // 生成頻率降低
                 })
 
                 return {
