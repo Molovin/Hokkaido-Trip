@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hokkaido Christmas Trip 2025</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        christmas: {
+                            red: '#E63946',
+                            dark: '#1D3557',
+                            light: '#F1FAEE',
+                            blue: '#457B9D',
+                            snow: '#A8DADC'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans TC', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 隱藏滾動條但保持滾動功能 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+            background-color: #e5e7eb; /* 桌面背景灰 */
+        }
+        #app-container {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app" class="min-h-screen flex justify-center items-start pt-0 sm:pt-4 pb-0 sm:pb-4">
+        <div id="app-container" class="w-full max-w-md bg-gray-50 h-[100vh] sm:h-[90vh] sm:rounded-[2rem] overflow-hidden relative flex flex-col">
+            
+            <header class="bg-christmas-dark text-white p-6 pb-12 rounded-b-[2.5rem] shadow-lg shrink-0 relative z-10">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-christmas-snow text-xs font-bold tracking-wider mb-1">HOKKAIDO 2025</p>
+                        <h1 class="text-3xl font-bold font-serif">Christmas Trip <i class="fa-solid fa-snowflake text-christmas-snow animate-pulse"></i></h1>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-yellow-400 overflow-hidden border-2 border-white">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                </div>
+
+                <div v-if="activeTab === 'itinerary'" class="flex space-x-3 overflow-x-auto no-scrollbar pb-2">
+                    <div v-for="(date, index) in dates" :key="index" 
+                         @click="selectedDate = date.day"
+                         :class="['flex-shrink-0 w-16 h-20 rounded-xl flex flex-col items-center justify-center transition-all cursor-pointer border', 
+                         selectedDate === date.day ? 'bg-christmas-red text-white border-christmas-red transform scale-105 shadow-md' : 'bg-white/10 text-white border-white/20 backdrop-blur-sm']">
+                        <span class="text-xs opacity-80">{{ date.weekday }}</span>
+                        <span class="text-2xl font-bold">{{ date.day }}</span>
+                    </div>
+                </div>
+
+                <div v-else class="mt-2">
+                    <h2 class="text-xl font-medium opacity-90">{{ tabTitles[activeTab] }}</h2>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto no-scrollbar -mt-6 pt-8 px-4 pb-24 z-0">
+                
+                <div v-if="activeTab === 'itinerary'">
+                    <div class="flex justify-between items-end mb-4 px-2">
+                        <h3 class="text-xl font-bold text-gray-800">東京轉機 <span class="text-sm font-normal text-gray-500 ml-2">Dec {{ selectedDate }}</span></h3>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm mb-6 flex justify-between items-center overflow-x-auto">
+                        <div v-for="h in weather" :key="h.time" class="flex flex-col items-center min-w-[3.5rem]">
+                            <span class="text-xs text-gray-400">{{ h.time }}</span>
+                            <i :class="[h.icon, 'text-yellow-400 my-2 text-lg']"></i>
+                            <span class="text-sm font-bold text-gray-700">{{ h.temp }}°</span>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-4 border-l-2 border-christmas-red/30 space-y-8 ml-2">
+                        
+                        <div v-for="(item, idx) in filteredItinerary" :key="idx" class="relative">
+                            <div class="absolute -left-[21px] top-0 w-4 h-4 rounded-full bg-white border-4 border-christmas-red"></div>
+                            
+                            <div class="bg-white rounded-2xl shadow-sm overflow-hidden ml-4 transform transition hover:scale-[1.01] duration-200">
+                                <div v-if="item.image" class="h-32 w-full overflow-hidden relative">
+                                    <img :src="item.image" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded-full backdrop-blur-md">
+                                        <i class="fa-regular fa-clock mr-1"></i> {{ item.time }}
+                                    </div>
+                                </div>
+                                
+                                <div class="p-4">
+                                    <div class="flex items-center text-christmas-blue text-xs font-bold mb-1 uppercase tracking-wide">
+                                        <i :class="[item.icon, 'mr-2']"></i> {{ item.category }}
+                                    </div>
+                                    <h4 class="text-lg font-bold text-gray-800 mb-1">{{ item.title }}</h4>
+                                    <p class="text-sm text-gray-500 leading-relaxed">{{ item.desc }}</p>
+                                    
+                                    <div v-if="item.details" class="mt-3 bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+                                        <div class="text-center">
+                                            <div class="text-xs text-gray-400">距離</div>
+                                            <div class="font-bold text-gray-700">{{ item.details.distance }}</div>
+                                        </div>
+                                        <div class="text-center border-l border-r border-gray-200 px-4 w-full">
+                                            <div class="text-xs text-gray-400">交通</div>
+                                            <div class="font-bold text-gray-700">{{ item.details.transport }}</div>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="text-xs text-gray-400">停留</div>
+                                            <div class="font-bold text-gray-700">{{ item.details.stay }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="h-10 text-center text-gray-300 text-xs mt-8">
+                        - End of Day -
+                    </div>
+                </div>
+
+                <div v-if="activeTab === 'map'" class="h-full flex flex-col">
+                    <div class="bg-white p-2 rounded-xl shadow-sm mb-4">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3244.398918224908!2d139.7798387762886!3d35.5929226347915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018616110f01a05%3A0x6335a09b5528211!2z576955Sw5p6v5aC0!5e0!3m2!1szh-TW!2stw!4v1701588000000!5m2!1szh-TW!2stw" 
+                            width="100%" height="400" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-gray-800 mb-2">Saved Locations</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-center text-gray-600 border-b pb-2">
+                                <i class="fa-solid fa-hotel text-christmas-red mr-3 w-6 text-center"></i> KEIKYU EX INN
+                            </li>
+                            <li class="flex items-center text-gray-600 border-b pb-2">
+                                <i class="fa-solid fa-plane text-christmas-blue mr-3 w-6 text-center"></i> 羽田機場 T2
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <i class="fa-solid fa-utensils text-yellow-500 mr-3 w-6 text-center"></i> 札幌拉麵共和國
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div v-if="activeTab === 'budget'">
+                    <div class="bg-gradient-to-r from-christmas-blue to-christmas-dark text-white p-5 rounded-2xl shadow-lg mb-6">
+                        <p class="text-sm opacity-80 mb-1">Total Expenses</p>
+                        <h2 class="text-3xl font-bold">¥ {{ totalExpense.toLocaleString() }}</h2>
+                        <div class="mt-4 flex gap-2">
+                            <span class="bg-white/20 px-2 py-1 rounded text-xs">預算: ¥200,000</span>
+                            <span class="bg-white/20 px-2 py-1 rounded text-xs">剩餘: ¥{{ (200000 - totalExpense).toLocaleString() }}</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm mb-6">
+                        <h3 class="font-bold text-gray-700 mb-3">快速記帳</h3>
+                        <div class="flex gap-2 mb-2">
+                            <input v-model="newExpense.title" type="text" placeholder="項目 (e.g. 拉麵)" class="flex-1 bg-gray-100 p-2 rounded-lg text-sm outline-none focus:ring-2 focus:ring-christmas-blue">
+                            <input v-model.number="newExpense.amount" type="number" placeholder="¥" class="w-24 bg-gray-100 p-2 rounded-lg text-sm outline-none focus:ring-2 focus:ring-christmas-blue">
+                        </div>
+                        <button @click="addExpense" class="w-full bg-christmas-red text-white py-2 rounded-lg font-bold text-sm shadow-md active:scale-95 transition">新增支出</button>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div v-for="(exp, idx) in expenses" :key="idx" class="bg-white p-3 rounded-xl shadow-sm flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mr-3 text-lg">
+                                    {{ getIcon(exp.title) }}
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-800">{{ exp.title }}</div>
+                                    <div class="text-xs text-gray-400">{{ exp.date }}</div>
+                                </div>
+                            </div>
+                            <div class="font-bold text-christmas-red">-¥{{ exp.amount.toLocaleString() }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="activeTab === 'shopping'">
+                    <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
+                        <div class="flex gap-2">
+                            <input v-model="newItem" @keyup.enter="addItem" type="text" placeholder="想買什麼？ (e.g. 白色戀人)" class="flex-1 bg-gray-100 p-3 rounded-lg outline-none focus:ring-2 focus:ring-christmas-blue">
+                            <button @click="addItem" class="bg-christmas-dark text-white w-12 rounded-lg"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div v-for="(item, idx) in shoppingList" :key="idx" 
+                             @click="item.checked = !item.checked"
+                             :class="['p-4 rounded-xl shadow-sm transition-all cursor-pointer relative overflow-hidden', item.checked ? 'bg-gray-200' : 'bg-white']">
+                             
+                            <div v-if="item.checked" class="absolute inset-0 flex items-center justify-center bg-black/10 z-10">
+                                <i class="fa-solid fa-check text-4xl text-green-500 opacity-50"></i>
+                            </div>
+
+                            <div class="flex justify-between items-start mb-2">
+                                <i class="fa-solid fa-gift text-christmas-red"></i>
+                                <div :class="['w-5 h-5 rounded-full border-2 flex items-center justify-center', item.checked ? 'border-green-500 bg-green-500' : 'border-gray-300']">
+                                    <i v-if="item.checked" class="fa-solid fa-check text-white text-xs"></i>
+                                </div>
+                            </div>
+                            <h4 :class="['font-bold', item.checked ? 'text-gray-500 line-through' : 'text-gray-800']">{{ item.name }}</h4>
+                            <p class="text-xs text-gray-400 mt-1">必買清單</p>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+
+            <nav class="bg-white absolute bottom-0 w-full px-6 py-4 rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.05)] flex justify-between items-center z-20">
+                <button @click="activeTab = 'itinerary'" :class="['flex flex-col items-center space-y-1 transition', activeTab === 'itinerary' ? 'text-christmas-red' : 'text-gray-400']">
+                    <i class="fa-solid fa-calendar-days text-xl"></i>
+                    <span class="text-[10px] font-bold">行程</span>
+                </button>
+                <button @click="activeTab = 'map'" :class="['flex flex-col items-center space-y-1 transition', activeTab === 'map' ? 'text-christmas-red' : 'text-gray-400']">
+                    <i class="fa-solid fa-map-location-dot text-xl"></i>
+                    <span class="text-[10px] font-bold">地圖</span>
+                </button>
+                
+                <div class="-mt-8">
+                    <button class="bg-christmas-dark text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center border-4 border-gray-50 transform active:scale-95 transition">
+                        <i class="fa-solid fa-camera text-xl"></i>
+                    </button>
+                </div>
+
+                <button @click="activeTab = 'budget'" :class="['flex flex-col items-center space-y-1 transition', activeTab === 'budget' ? 'text-christmas-red' : 'text-gray-400']">
+                    <i class="fa-solid fa-wallet text-xl"></i>
+                    <span class="text-[10px] font-bold">記帳</span>
+                </button>
+                <button @click="activeTab = 'shopping'" :class="['flex flex-col items-center space-y-1 transition', activeTab === 'shopping' ? 'text-christmas-red' : 'text-gray-400']">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span class="text-[10px] font-bold">購物</span>
+                </button>
+            </nav>
+
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue
+
+        createApp({
+            setup() {
+                const activeTab = ref('itinerary')
+                const selectedDate = ref(20)
+                
+                // 標題映射
+                const tabTitles = {
+                    'itinerary': '行程表',
+                    'map': '探索地圖',
+                    'budget': '旅行記帳',
+                    'shopping': '購物清單'
+                }
+
+                // 日期數據
+                const dates = [
+                    { day: 20, weekday: '週六' },
+                    { day: 21, weekday: '週日' },
+                    { day: 22, weekday: '週一' },
+                    { day: 23, weekday: '週二' },
+                    { day: 24, weekday: '週三' },
+                ]
+
+                // 天氣數據
+                const weather = [
+                    { time: '18:00', temp: 10, icon: 'fa-solid fa-moon' },
+                    { time: '19:00', temp: 9, icon: 'fa-solid fa-moon' },
+                    { time: '20:00', temp: 8, icon: 'fa-solid fa-moon' },
+                    { time: '21:00', temp: 8, icon: 'fa-solid fa-moon' },
+                    { time: '22:00', temp: 7, icon: 'fa-solid fa-cloud-moon' },
+                ]
+
+                // 行程數據
+                const itineraryData = ref([
+                    {
+                        date: 20,
+                        time: '15:05',
+                        category: 'Flight',
+                        title: '廣州往東京 (NH924)',
+                        desc: 'ANA NH924。預訂參考編號：XK6OCG。機型舒適，飛行時間 3小時55分。',
+                        icon: 'fa-solid fa-plane-departure',
+                        image: 'https://images.unsplash.com/photo-1542296332-2e44a996aa0d?q=80&w=600&auto=format&fit=crop', // 機場圖
+                        details: {
+                            distance: '2,900km',
+                            transport: '3小時55分',
+                            stay: '航程'
+                        }
+                    },
+                    {
+                        date: 20,
+                        time: '20:00',
+                        category: 'Arrival',
+                        title: '抵達東京 (羽田機場)',
+                        desc: '抵達羽田機場第2航廈 (T2)。辦理入境手續，感受日本冬日氣息。',
+                        icon: 'fa-solid fa-location-dot',
+                        image: 'https://images.unsplash.com/photo-1578271391583-d5d88661726a?q=80&w=600&auto=format&fit=crop', // 羽田圖
+                        details: {
+                            distance: '機場內',
+                            transport: '步行',
+                            stay: '1小時'
+                        }
+                    },
+                    {
+                        date: 20,
+                        time: '21:30',
+                        category: 'Hotel',
+                        title: '入住 KEIKYU EX INN',
+                        desc: '地址：1-1-4 Haneda Airport。位於天空橋站 HICity 出口步行2分鐘。備有大浴場可放鬆身心。',
+                        icon: 'fa-solid fa-bed',
+                        image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=600&auto=format&fit=crop', // 飯店圖
+                        details: {
+                            distance: '一站距離',
+                            transport: '電車/接駁',
+                            stay: '過夜'
+                        }
+                    },
+                    {
+                        date: 21,
+                        time: '09:00',
+                        category: 'Flight',
+                        title: '飛往札幌',
+                        desc: '準備前往北海道！記得穿暖和一點。',
+                        icon: 'fa-solid fa-plane',
+                        image: 'https://images.unsplash.com/photo-1548181655-46e326292b0c?q=80&w=600&auto=format&fit=crop', // 雪景
+                        details: null
+                    }
+                ])
+
+                const filteredItinerary = computed(() => {
+                    return itineraryData.value.filter(item => item.date === selectedDate.value)
+                })
+
+                // 記帳數據
+                const expenses = ref([
+                    { title: '機場星巴克', amount: 800, date: '12/20' },
+                    { title: 'Lawson 宵夜', amount: 1200, date: '12/20' },
+                ])
+                const newExpense = ref({ title: '', amount: '' })
+
+                const addExpense = () => {
+                    if(newExpense.value.title && newExpense.value.amount) {
+                        expenses.value.unshift({
+                            title: newExpense.value.title,
+                            amount: newExpense.value.amount,
+                            date: '12/' + selectedDate.value
+                        })
+                        newExpense.value = { title: '', amount: '' }
+                    }
+                }
+
+                const totalExpense = computed(() => {
+                    return expenses.value.reduce((sum, item) => sum + item.amount, 0)
+                })
+
+                const getIcon = (title) => {
+                    if(title.includes('食') || title.includes('拉麵') || title.includes('宵夜')) return '🍜';
+                    if(title.includes('車') || title.includes('票')) return '🎫';
+                    return '💸';
+                }
+
+                // 購物數據
+                const shoppingList = ref([
+                    { name: '白色戀人', checked: false },
+                    { name: '六花亭 奶油夾心', checked: false },
+                    { name: 'LeTAO 起司蛋糕', checked: false },
+                    { name: '藥妝 (EVE止痛藥)', checked: true },
+                ])
+                const newItem = ref('')
+                const addItem = () => {
+                    if(newItem.value) {
+                        shoppingList.value.push({ name: newItem.value, checked: false })
+                        newItem.value = ''
+                    }
+                }
+
+                return {
+                    activeTab,
+                    dates,
+                    selectedDate,
+                    weather,
+                    filteredItinerary,
+                    expenses,
+                    newExpense,
+                    addExpense,
+                    totalExpense,
+                    shoppingList,
+                    newItem,
+                    addItem,
+                    getIcon,
+                    tabTitles
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
