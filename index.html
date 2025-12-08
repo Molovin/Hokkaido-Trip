@@ -80,21 +80,12 @@
             100% { opacity: 0.2; transform: translate(0, 110vh) rotate(180deg); }
         }
 
-        /* --- 新增：Vue 轉場動畫 (Fade Effect) --- */
         .fade-enter-active,
         .fade-leave-active {
             transition: opacity 0.2s ease, transform 0.2s ease;
         }
-
-        .fade-enter-from {
-            opacity: 0;
-            transform: translateY(10px); /* 輕微上浮效果 */
-        }
-
-        .fade-leave-to {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
+        .fade-enter-from { opacity: 0; transform: translateY(10px); }
+        .fade-leave-to { opacity: 0; transform: translateY(-10px); }
     </style>
 </head>
 <body>
@@ -196,29 +187,44 @@
                     </div>
 
                     <div v-else-if="activeTab === 'budget'" key="budget">
-                        <div class="bg-gradient-to-r from-christmas-blue to-christmas-dark text-white p-5 rounded-2xl shadow-lg mb-4">
-                            <p class="text-sm opacity-80 mb-1">Total Expenses</p>
-                            <h2 class="text-3xl font-bold">¥ {{ totalExpense.toLocaleString() }}</h2>
-                            <div class="mt-4 flex gap-2">
-                                <span class="bg-white/20 px-2 py-1 rounded text-xs">預算: ¥200,000</span>
-                                <span class="bg-white/20 px-2 py-1 rounded text-xs">剩餘: ¥{{ (200000 - totalExpense).toLocaleString() }}</span>
+                        
+                        <div class="bg-gradient-to-r from-christmas-blue to-christmas-dark text-white p-5 rounded-2xl shadow-lg mb-6 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 rounded-full bg-white/10 blur-xl"></div>
+                            
+                            <div class="flex justify-between items-start mb-1 relative z-10">
+                                <p class="text-sm opacity-80">Total Expenses</p>
+                                <span class="bg-white/20 px-2 py-0.5 rounded text-[10px] backdrop-blur-sm">
+                                    ≈ HKD ${{ totalExpenseHkd.toLocaleString() }}
+                                </span>
                             </div>
-                        </div>
 
-                        <div class="bg-white p-4 rounded-xl shadow-sm mb-4 border border-christmas-blue/20">
-                            <div class="flex justify-between items-center mb-2">
-                                <h3 class="font-bold text-gray-700 text-sm"><i class="fa-solid fa-calculator text-christmas-blue mr-1"></i> 匯率試算 (HKD)</h3>
-                                <span class="text-[10px] text-gray-400">匯率 ~0.052</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="flex-1 relative">
-                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">¥</span>
-                                    <input v-model.number="calcJpy" type="number" class="w-full bg-gray-50 pl-6 pr-2 py-2 rounded-lg text-sm border focus:ring-2 focus:ring-christmas-blue outline-none" placeholder="日幣">
+                            <h2 class="text-4xl font-bold relative z-10 mb-4 tracking-tight">¥ {{ totalExpense.toLocaleString() }}</h2>
+                            
+                            <div class="flex gap-2 relative z-10">
+                                <div class="bg-white/20 rounded-lg text-xs backdrop-blur-md flex items-center transition-all duration-200 border border-white/10 hover:bg-white/30 h-8">
+                                    <div v-if="!isEditingBudget" @click="editBudget" class="px-3 h-full flex items-center cursor-pointer select-none">
+                                        <span class="opacity-70 mr-1">預算:</span> 
+                                        <span class="font-bold">¥{{ budgetAmount.toLocaleString() }}</span>
+                                        <i class="fa-solid fa-pen ml-2 text-[10px] opacity-60"></i>
+                                    </div>
+                                    <div v-else class="px-1 h-full flex items-center">
+                                        <span class="pl-2 opacity-70 mr-1">¥</span>
+                                        <input 
+                                            ref="budgetInputRef"
+                                            v-model.number="budgetAmount" 
+                                            @blur="saveBudget" 
+                                            @keyup.enter="saveBudget"
+                                            type="number" 
+                                            class="w-20 bg-transparent text-white font-bold outline-none placeholder-white/50"
+                                        >
+                                    </div>
                                 </div>
-                                <i class="fa-solid fa-arrow-right text-gray-400 text-xs"></i>
-                                <div class="flex-1 relative">
-                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">$</span>
-                                    <input :value="calcHkd" readonly type="text" class="w-full bg-gray-100 pl-6 pr-2 py-2 rounded-lg text-sm font-bold text-gray-700" placeholder="港幣">
+
+                                <div class="bg-white/20 px-3 h-8 flex items-center rounded-lg text-xs backdrop-blur-md border border-white/10">
+                                    <span class="opacity-70 mr-1">剩餘:</span> 
+                                    <span :class="['font-bold', remaining < 0 ? 'text-red-300' : 'text-white']">
+                                        ¥{{ remaining.toLocaleString() }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -262,18 +268,15 @@
                                 <div v-if="item.checked" class="absolute inset-0 flex items-center justify-center bg-black/10 z-10"><i class="fa-solid fa-check text-4xl text-green-500 opacity-50"></i></div>
                                 <div class="flex justify-between items-start mb-2">
                                     <i class="fa-solid fa-gift text-christmas-red"></i>
-                                    
                                     <div class="flex gap-2">
                                         <div :class="['w-5 h-5 rounded-full border-2 flex items-center justify-center', item.checked ? 'border-green-500 bg-green-500' : 'border-gray-300']">
                                             <i v-if="item.checked" class="fa-solid fa-check text-white text-xs"></i>
                                         </div>
                                     </div>
                                 </div>
-                                
                                 <button @click.stop="deleteShoppingItem(idx)" class="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/50 text-gray-400 hover:bg-red-500 hover:text-white flex items-center justify-center z-20 transition shadow-sm">
                                     <i class="fa-solid fa-trash-can text-[10px]"></i>
                                 </button>
-
                                 <h4 :class="['font-bold', item.checked ? 'text-gray-500 line-through' : 'text-gray-800']">{{ item.name }}</h4>
                                 <p class="text-xs text-gray-400 mt-1">必買清單</p>
                             </div>
@@ -301,7 +304,7 @@
     </div>
 
     <script>
-        const { createApp, ref, computed, watch, onMounted } = Vue
+        const { createApp, ref, computed, watch, onMounted, nextTick } = Vue
 
         createApp({
             setup() {
@@ -345,18 +348,27 @@
 
                 const filteredItinerary = computed(() => itineraryData.value.filter(item => item.date === selectedDate.value))
 
-                // --- 記帳與購物邏輯 (含持久化與刪除) ---
+                // --- 記帳邏輯 (含持久化、刪除、預算編輯) ---
                 const savedExpenses = localStorage.getItem('trip_expenses')
                 const expenses = ref(savedExpenses ? JSON.parse(savedExpenses) : [
                     { title: '機場星巴克', amount: 800, date: '12/20' }
                 ])
                 
+                // 預算設定
+                const savedBudget = localStorage.getItem('trip_budget')
+                const budgetAmount = ref(savedBudget ? JSON.parse(savedBudget) : 200000)
+                const isEditingBudget = ref(false)
+                const budgetInputRef = ref(null)
+
+                // 購物清單
                 const savedShopping = localStorage.getItem('trip_shopping')
                 const shoppingList = ref(savedShopping ? JSON.parse(savedShopping) : [
                     { name: '白色戀人', checked: false }
                 ])
 
+                // 監聽變更並儲存
                 watch(expenses, (newVal) => localStorage.setItem('trip_expenses', JSON.stringify(newVal)), { deep: true })
+                watch(budgetAmount, (newVal) => localStorage.setItem('trip_budget', JSON.stringify(newVal)))
                 watch(shoppingList, (newVal) => localStorage.setItem('trip_shopping', JSON.stringify(newVal)), { deep: true })
 
                 const newExpense = ref({ title: '', amount: '' })
@@ -367,37 +379,41 @@
                     }
                 }
                 
-                // 新增：刪除支出
                 const deleteExpense = (index) => {
-                    if(confirm('確定要刪除這筆支出嗎？')) {
-                        expenses.value.splice(index, 1);
-                    }
+                    if(confirm('確定要刪除這筆支出嗎？')) expenses.value.splice(index, 1);
                 }
 
                 const totalExpense = computed(() => expenses.value.reduce((sum, item) => sum + item.amount, 0))
+                
+                // 計算剩餘
+                const remaining = computed(() => budgetAmount.value - totalExpense.value)
+                
+                // 計算港幣 (匯率 0.052)
+                const totalExpenseHkd = computed(() => (totalExpense.value * 0.052).toFixed(0))
+
+                // 預算編輯功能
+                const editBudget = () => {
+                    isEditingBudget.value = true
+                    nextTick(() => {
+                        if(budgetInputRef.value) budgetInputRef.value.focus()
+                    })
+                }
+                const saveBudget = () => {
+                    isEditingBudget.value = false
+                    if(budgetAmount.value < 0) budgetAmount.value = 0
+                }
+
                 const getIcon = (title) => {
                     if(title.includes('食') || title.includes('拉麵')) return '🍜'; return '💸';
                 }
-
-                // --- 匯率換算邏輯 ---
-                const calcJpy = ref('')
-                const calcHkd = computed(() => {
-                    if (!calcJpy.value) return ''
-                    // 匯率 0.052
-                    return (calcJpy.value * 0.052).toFixed(1)
-                })
 
                 // --- 購物清單邏輯 ---
                 const newItem = ref('')
                 const addItem = () => {
                     if(newItem.value) { shoppingList.value.push({ name: newItem.value, checked: false }); newItem.value = '' }
                 }
-                
-                // 新增：刪除購物項目
                 const deleteShoppingItem = (index) => {
-                    if(confirm('確定要刪除這個項目嗎？')) {
-                        shoppingList.value.splice(index, 1);
-                    }
+                    if(confirm('確定要刪除這個項目嗎？')) shoppingList.value.splice(index, 1);
                 }
 
                 const imageError = (e) => {
@@ -411,14 +427,11 @@
                         snowflake.classList.add('snowflake');
                         snowflake.innerHTML = Math.random() > 0.5 ? '❄' : '•';
                         snowflake.style.left = Math.random() * 100 + 'vw';
-                        
                         const size = Math.random() * 8 + 6; 
                         snowflake.style.fontSize = size + 'px';
                         snowflake.style.opacity = Math.random() * 0.5 + 0.3;
-                        
                         snowflake.style.animationDuration = (Math.random() * 10 + 15) + 's';
                         snowflake.style.animationDelay = Math.random() * 5 + 's';
-                        
                         snowContainer.appendChild(snowflake);
                         setTimeout(() => snowflake.remove(), 25000); 
                     };
@@ -429,7 +442,7 @@
                 return {
                     activeTab, dates, selectedDate, weather, filteredItinerary,
                     expenses, newExpense, addExpense, deleteExpense, totalExpense, getIcon,
-                    calcJpy, calcHkd,
+                    budgetAmount, isEditingBudget, editBudget, saveBudget, budgetInputRef, remaining, totalExpenseHkd,
                     shoppingList, newItem, addItem, deleteShoppingItem, tabTitles, imageError
                 }
             }
