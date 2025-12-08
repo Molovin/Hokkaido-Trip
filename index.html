@@ -54,9 +54,8 @@
             background-position: center;
         }
         
-        /* 修改點：減輕模糊程度 */
         .header-blur {
-            backdrop-filter: blur(4px); /* 從 10px 改為 4px */
+            backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
         }
 
@@ -88,6 +87,21 @@
         }
         .fade-enter-from { opacity: 0; transform: translateY(10px); }
         .fade-leave-to { opacity: 0; transform: translateY(-10px); }
+        
+        /* Loading Spinner */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #E63946;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -104,18 +118,18 @@
                         <p class="text-christmas-snow text-[10px] font-bold tracking-wider mb-0.5 opacity-90">HOKKAIDO 2025</p>
                         <h1 class="text-2xl font-bold font-serif text-white shadow-black drop-shadow-md">Christmas Trip <i class="fa-solid fa-snowflake text-christmas-snow animate-pulse text-sm"></i></h1>
                     </div>
-                    <div class="w-11 h-11 rounded-full bg-yellow-400 overflow-hidden border-2 border-white shadow-sm mb-1">
+                    <div class="w-14 h-14 rounded-full bg-yellow-400 overflow-hidden border-2 border-white shadow-sm mb-1">
                         <img src="https://i.meee.com.tw/kYUJZ1x.png" alt="Profile" class="w-full h-full object-cover">
                     </div>
                 </div>
 
-                <div v-if="activeTab === 'itinerary'" class="flex space-x-2 overflow-x-auto no-scrollbar pb-1">
+                <div v-if="activeTab === 'itinerary'" class="flex space-x-3 overflow-x-auto no-scrollbar pb-1 px-1">
                     <div v-for="(date, index) in dates" :key="index" 
                          @click="selectedDate = date.day"
-                         :class="['flex-shrink-0 w-12 h-16 rounded-xl flex flex-col items-center justify-center transition-all cursor-pointer border', 
+                         :class="['flex-shrink-0 w-16 h-20 rounded-xl flex flex-col items-center justify-center transition-all cursor-pointer border', 
                          selectedDate === date.day ? 'bg-christmas-red text-white border-christmas-red transform scale-105 shadow-md' : 'bg-white/10 text-white border-white/20 backdrop-blur-sm']">
-                        <span class="text-[9px] opacity-80">{{ date.weekday }}</span>
-                        <span class="text-lg font-bold">{{ date.day }}</span>
+                        <span class="text-[10px] opacity-80">{{ date.weekday }}</span>
+                        <span class="text-xl font-bold">{{ date.day }}</span>
                     </div>
                 </div>
                 <div v-else class="mt-1 pb-2">
@@ -130,18 +144,35 @@
                     
                     <div v-if="activeTab === 'itinerary'" key="itinerary">
                         <div class="flex justify-between items-end mb-4 px-2">
-                            <h3 class="text-xl font-bold text-gray-800">東京轉機 <span class="text-sm font-normal text-gray-500 font-serif ml-2">Dec {{ selectedDate }}</span></h3>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800">{{ currentLocationName }} <span class="text-sm font-normal text-gray-500 font-serif ml-2">Dec {{ selectedDate }}</span></h3>
+                                <p class="text-[10px] text-christmas-blue/70 mt-1"><i class="fa-solid fa-satellite-dish mr-1"></i>Open-Meteo 當地實時天氣</p>
+                            </div>
                         </div>
 
-                        <div class="flex space-x-3 overflow-x-auto no-scrollbar mb-6 py-1 px-1">
-                            <div v-for="h in weather" :key="h.time" class="flex-shrink-0 w-16 h-20 bg-white rounded-xl shadow-sm flex flex-col items-center justify-center">
-                                <span class="text-xs text-gray-400">{{ h.time }}</span>
-                                <i :class="[h.icon, 'text-yellow-400 my-1 text-xl']"></i>
-                                <span class="text-sm font-bold text-gray-700">{{ h.temp }}°</span>
+                        <div class="relative min-h-[100px]">
+                            <div v-if="weatherLoading" class="absolute inset-0 flex items-center justify-center bg-gray-50/50 z-10 rounded-xl">
+                                <div class="loader"></div>
+                            </div>
+
+                            <div class="flex space-x-3 overflow-x-auto no-scrollbar mb-6 py-2 px-1">
+                                <div v-for="(h, i) in hourlyWeather" :key="i" 
+                                     :class="['flex-shrink-0 w-16 h-24 rounded-xl shadow-sm flex flex-col items-center justify-center border transition-all duration-500', 
+                                     i === 0 ? 'bg-blue-50 border-christmas-blue/30 scale-105' : 'bg-white border-transparent']">
+                                    <span class="text-[10px] text-gray-400 mb-1">{{ h.time }}</span>
+                                    <i :class="[h.icon, i === 0 ? 'text-christmas-blue' : 'text-yellow-500', 'my-2 text-xl']"></i>
+                                    <span class="text-sm font-bold text-gray-700">{{ h.temp }}°</span>
+                                    <span v-if="i === 0" class="text-[9px] text-christmas-blue font-bold mt-1 bg-blue-100 px-1.5 rounded-full">NOW</span>
+                                </div>
                             </div>
                         </div>
 
                         <div class="relative pl-4 border-l-2 border-christmas-red/30 space-y-8 ml-2">
+                            <div v-if="filteredItinerary.length === 0" class="py-10 text-center text-gray-400">
+                                <i class="fa-regular fa-calendar-xmark text-3xl mb-2 opacity-50"></i>
+                                <p class="text-xs">這一天目前沒有安排行程</p>
+                            </div>
+
                             <div v-for="(item, idx) in filteredItinerary" :key="idx" class="relative">
                                 <div class="absolute -left-[21px] top-0 w-4 h-4 rounded-full bg-white border-4 border-christmas-red"></div>
                                 
@@ -189,19 +220,13 @@
                     </div>
 
                     <div v-else-if="activeTab === 'budget'" key="budget">
-                        
                         <div class="bg-gradient-to-r from-christmas-blue to-christmas-dark text-white p-5 rounded-2xl shadow-lg mb-6 relative overflow-hidden">
                             <div class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 rounded-full bg-white/10 blur-xl"></div>
-                            
                             <div class="flex justify-between items-start mb-1 relative z-10">
                                 <p class="text-sm opacity-80">Total Expenses</p>
-                                <span class="bg-white/20 px-2 py-0.5 rounded text-[10px] backdrop-blur-sm">
-                                    ≈ HKD ${{ totalExpenseHkd.toLocaleString() }}
-                                </span>
+                                <span class="bg-white/20 px-2 py-0.5 rounded text-[10px] backdrop-blur-sm">≈ HKD ${{ totalExpenseHkd.toLocaleString() }}</span>
                             </div>
-
                             <h2 class="text-4xl font-bold relative z-10 mb-4 tracking-tight">¥ {{ totalExpense.toLocaleString() }}</h2>
-                            
                             <div class="flex gap-2 relative z-10">
                                 <div class="bg-white/20 rounded-lg text-xs backdrop-blur-md flex items-center transition-all duration-200 border border-white/10 hover:bg-white/30 h-8">
                                     <div v-if="!isEditingBudget" @click="editBudget" class="px-3 h-full flex items-center cursor-pointer select-none">
@@ -211,22 +236,12 @@
                                     </div>
                                     <div v-else class="px-1 h-full flex items-center">
                                         <span class="pl-2 opacity-70 mr-1">¥</span>
-                                        <input 
-                                            ref="budgetInputRef"
-                                            v-model.number="budgetAmount" 
-                                            @blur="saveBudget" 
-                                            @keyup.enter="saveBudget"
-                                            type="number" 
-                                            class="w-20 bg-transparent text-white font-bold outline-none placeholder-white/50"
-                                        >
+                                        <input ref="budgetInputRef" v-model.number="budgetAmount" @blur="saveBudget" @keyup.enter="saveBudget" type="number" class="w-20 bg-transparent text-white font-bold outline-none placeholder-white/50">
                                     </div>
                                 </div>
-
                                 <div class="bg-white/20 px-3 h-8 flex items-center rounded-lg text-xs backdrop-blur-md border border-white/10">
                                     <span class="opacity-70 mr-1">剩餘:</span> 
-                                    <span :class="['font-bold', remaining < 0 ? 'text-red-300' : 'text-white']">
-                                        ¥{{ remaining.toLocaleString() }}
-                                    </span>
+                                    <span :class="['font-bold', remaining < 0 ? 'text-red-300' : 'text-white']">¥{{ remaining.toLocaleString() }}</span>
                                 </div>
                             </div>
                         </div>
@@ -312,15 +327,93 @@
             setup() {
                 const activeTab = ref('itinerary')
                 const selectedDate = ref(20)
+                const weatherLoading = ref(false)
                 
                 const tabTitles = { 'itinerary': '行程表', 'map': '探索地圖', 'budget': '旅行記帳', 'shopping': '購物清單' }
-                const dates = [{ day: 20, weekday: '週六' }, { day: 21, weekday: '週日' }, { day: 22, weekday: '週一' }, { day: 23, weekday: '週二' }, { day: 24, weekday: '週三' }]
-                const weather = [
-                    { time: '18:00', temp: 10, icon: 'fa-solid fa-moon' }, { time: '19:00', temp: 9, icon: 'fa-solid fa-moon' },
-                    { time: '20:00', temp: 8, icon: 'fa-solid fa-moon' }, { time: '21:00', temp: 8, icon: 'fa-solid fa-moon' },
-                    { time: '22:00', temp: 7, icon: 'fa-solid fa-cloud-moon' }
+                
+                const dates = [
+                    { day: 20, weekday: '週六' }, { day: 21, weekday: '週日' }, { day: 22, weekday: '週一' }, 
+                    { day: 23, weekday: '週二' }, { day: 24, weekday: '週三' }, { day: 25, weekday: '週四' }, 
+                    { day: 26, weekday: '週五' }, { day: 27, weekday: '週六' }, { day: 28, weekday: '週日' },
+                    { day: 29, weekday: '週一' }, { day: 30, weekday: '週二' }
                 ]
 
+                // --- Open-Meteo Weather API Integration ---
+                const hourlyWeather = ref([])
+                
+                // 地點座標映射表 (根據日期)
+                const getLocationByDate = (date) => {
+                    // 12/20: 東京 (羽田)
+                    if (date === 20) return { lat: 35.5494, lon: 139.7798, name: '東京轉機 (Tokyo)' };
+                    // 12/21: 札幌
+                    if (date === 21) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
+                    // 12/22-23: Tomamu (星野)
+                    if (date >= 22 && date <= 23) return { lat: 43.0626, lon: 142.6113, name: 'Tomamu' };
+                    // 12/24: 小樽
+                    if (date === 24) return { lat: 43.1907, lon: 140.9947, name: '小樽 (Otaru)' };
+                    // 12/25-29: 札幌周邊/其他
+                    return { lat: 43.0618, lon: 141.3545, name: '北海道 (Hokkaido)' };
+                }
+
+                const currentLocationName = computed(() => getLocationByDate(selectedDate.value).name)
+
+                // WMO 天氣代碼轉 Icon
+                const getWeatherIcon = (code) => {
+                    if (code <= 1) return 'fa-solid fa-sun'; // 晴
+                    if (code <= 3) return 'fa-solid fa-cloud-sun'; // 多雲
+                    if (code <= 48) return 'fa-solid fa-smog'; // 霧
+                    if (code <= 67) return 'fa-solid fa-cloud-rain'; // 雨
+                    if (code <= 77) return 'fa-regular fa-snowflake'; // 雪
+                    if (code <= 82) return 'fa-solid fa-cloud-showers-heavy'; // 大雨
+                    if (code <= 86) return 'fa-solid fa-snowflake'; // 大雪
+                    if (code <= 99) return 'fa-solid fa-bolt'; // 雷雨
+                    return 'fa-solid fa-cloud';
+                }
+
+                const fetchWeather = async () => {
+                    weatherLoading.value = true;
+                    try {
+                        const loc = getLocationByDate(selectedDate.value);
+                        // 抓取未來 24 小時預報
+                        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&hourly=temperature_2m,weathercode&timezone=Asia%2FTokyo&forecast_days=1`);
+                        const data = await response.json();
+                        
+                        // 處理數據：取出現在時刻之後的 12-24 小時
+                        const currentHour = new Date().getHours();
+                        const mappedData = [];
+                        
+                        // 簡單對應 API 回傳的 hourly 陣列 (0-23)
+                        for(let i = currentHour; i < 24; i++) {
+                            mappedData.push({
+                                time: `${i}:00`,
+                                temp: Math.round(data.hourly.temperature_2m[i]),
+                                icon: getWeatherIcon(data.hourly.weathercode[i])
+                            });
+                        }
+                        // 如果剩下的時間太少，補明天的 (為了 demo 簡單，這裡如果超過 24 點就循環數據或顯示 --)
+                        if(mappedData.length < 5) {
+                            for(let i=0; i<5; i++) {
+                                mappedData.push({ time: `0${i}:00`, temp: '--', icon: 'fa-solid fa-moon' }); 
+                            }
+                        }
+                        
+                        hourlyWeather.value = mappedData;
+                    } catch (e) {
+                        console.error("Weather fetch failed", e);
+                        // Fallback data
+                        hourlyWeather.value = [{ time: 'Error', temp: '--', icon: 'fa-solid fa-triangle-exclamation' }];
+                    } finally {
+                        weatherLoading.value = false;
+                    }
+                }
+
+                // 監聽日期變化，重新抓取該地天氣
+                watch(selectedDate, () => {
+                    fetchWeather();
+                }, { immediate: true })
+
+
+                // --- Itinerary Data ---
                 const itineraryData = ref([
                     {
                         date: 20, time: '15:05', category: 'Flight', title: '廣州往東京 (NH924)',
@@ -345,24 +438,29 @@
                         image: 'https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda', 
                         details: { distance: '一站', transport: '電車', stay: '過夜' }
+                    },
+                    {
+                        date: 21, time: '09:00', category: 'Flight', title: '飛往札幌',
+                        desc: '準備前往北海道！記得穿暖和一點。',
+                        icon: 'fa-solid fa-plane',
+                        image: 'https://images.unsplash.com/photo-1548181655-46e326292b0c?q=80&w=600&auto=format&fit=crop',
+                        mapLink: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3244.5910729792686!2d139.77764727677846!3d35.58882573503251!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601861033282eb11%3A0xc6c76193796d857d!2z576955Sw5qZf5aC0!5e0!3m2!1szh-TW!2stw!4v1700000000000!5m2!1szh-TW!2stw',
+                        details: { distance: '820km', transport: '1h 30m', stay: '航程' }
                     }
                 ])
 
                 const filteredItinerary = computed(() => itineraryData.value.filter(item => item.date === selectedDate.value))
 
-                // --- 記帳邏輯 ---
                 const savedExpenses = localStorage.getItem('trip_expenses')
                 const expenses = ref(savedExpenses ? JSON.parse(savedExpenses) : [
                     { title: '機場星巴克', amount: 800, date: '12/20' }
                 ])
                 
-                // 預算設定
                 const savedBudget = localStorage.getItem('trip_budget')
                 const budgetAmount = ref(savedBudget ? JSON.parse(savedBudget) : 200000)
                 const isEditingBudget = ref(false)
                 const budgetInputRef = ref(null)
 
-                // 購物清單
                 const savedShopping = localStorage.getItem('trip_shopping')
                 const shoppingList = ref(savedShopping ? JSON.parse(savedShopping) : [
                     { name: '白色戀人', checked: false }
@@ -379,7 +477,6 @@
                         newExpense.value = { title: '', amount: '' }
                     }
                 }
-                
                 const deleteExpense = (index) => {
                     if(confirm('確定要刪除這筆支出嗎？')) expenses.value.splice(index, 1);
                 }
@@ -388,12 +485,9 @@
                 const remaining = computed(() => budgetAmount.value - totalExpense.value)
                 const totalExpenseHkd = computed(() => (totalExpense.value * 0.052).toFixed(0))
 
-                // 預算編輯功能
                 const editBudget = () => {
                     isEditingBudget.value = true
-                    nextTick(() => {
-                        if(budgetInputRef.value) budgetInputRef.value.focus()
-                    })
+                    nextTick(() => { if(budgetInputRef.value) budgetInputRef.value.focus() })
                 }
                 const saveBudget = () => {
                     isEditingBudget.value = false
@@ -404,7 +498,6 @@
                     if(title.includes('食') || title.includes('拉麵')) return '🍜'; return '💸';
                 }
 
-                // --- 購物清單邏輯 ---
                 const newItem = ref('')
                 const addItem = () => {
                     if(newItem.value) { shoppingList.value.push({ name: newItem.value, checked: false }); newItem.value = '' }
@@ -437,10 +530,11 @@
                 })
 
                 return {
-                    activeTab, dates, selectedDate, weather, filteredItinerary,
+                    activeTab, dates, selectedDate, hourlyWeather, filteredItinerary,
                     expenses, newExpense, addExpense, deleteExpense, totalExpense, getIcon,
                     budgetAmount, isEditingBudget, editBudget, saveBudget, budgetInputRef, remaining, totalExpenseHkd,
-                    shoppingList, newItem, addItem, deleteShoppingItem, tabTitles, imageError
+                    shoppingList, newItem, addItem, deleteShoppingItem, tabTitles, imageError,
+                    currentLocationName, weatherLoading
                 }
             }
         }).mount('#app')
