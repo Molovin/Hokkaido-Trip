@@ -186,55 +186,40 @@
                                 
                                 <div class="bg-white rounded-2xl shadow-sm overflow-hidden ml-4 transform transition hover:scale-[1.01] duration-200">
                                     
-                                    <div v-if="item.images && item.images.length > 1" 
-                                         class="h-44 w-full relative group bg-gray-200"
-                                         @touchstart="handleTouchStart"
-                                         @touchend="(e) => handleTouchEnd(e, item)">
+                                    <div class="h-44 w-full relative group bg-gray-200">
                                         
-                                        <img :src="item.images[item.currentImageIndex]" 
-                                             class="w-full h-full object-cover transition-opacity duration-300"
-                                             style="user-select: none; -webkit-user-drag: none;">
-                                        
-                                        <button @click.stop="prevSlide(item)" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/20 text-white rounded-full flex items-center justify-center z-20 backdrop-blur-sm active:scale-95">
-                                            <i class="fa-solid fa-chevron-left text-xs"></i>
-                                        </button>
-                                        <button @click.stop="nextSlide(item)" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/20 text-white rounded-full flex items-center justify-center z-20 backdrop-blur-sm active:scale-95">
-                                            <i class="fa-solid fa-chevron-right text-xs"></i>
-                                        </button>
+                                        <div v-if="item.images && item.images.length > 1" class="w-full h-full relative">
+                                            <div class="flex overflow-x-auto snap-x snap-mandatory w-full h-full no-scrollbar"
+                                                 @scroll="(e) => handleScroll(e, item)">
+                                                <img v-for="(img, imgIdx) in item.images" :key="imgIdx"
+                                                     :src="img"
+                                                     @click="openLightbox(img)"
+                                                     class="w-full h-full object-cover flex-shrink-0 snap-center cursor-pointer">
+                                            </div>
 
-                                        <div class="absolute bottom-3 left-0 right-0 flex justify-center space-x-1.5 z-20">
-                                            <div v-for="(img, index) in item.images" :key="index"
-                                                 :class="['slider-dot', index === item.currentImageIndex ? 'active' : '']"></div>
+                                            <div class="absolute bottom-3 left-0 right-0 flex justify-center space-x-1.5 z-20 pointer-events-none">
+                                                <div v-for="(img, index) in item.images" :key="index"
+                                                     :class="['slider-dot', index === item.currentImageIndex ? 'active' : '']"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div v-else-if="item.image" class="w-full h-full relative">
+                                            <img :src="item.image" 
+                                                 @click="openLightbox(item.image)"
+                                                 class="w-full h-full object-cover cursor-pointer"
+                                                 referrerpolicy="no-referrer" @error="imageError">
                                         </div>
 
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none"></div>
-                                        <div class="absolute top-4 left-4 text-white/90 text-xs font-medium flex items-center shadow-black drop-shadow-sm pointer-events-none">
-                                            <i class="fa-solid fa-location-dot mr-1.5"></i> {{ item.location }}
-                                        </div>
-                                        <a :href="item.mapLink" target="_blank" class="absolute top-4 right-4 w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center backdrop-blur-md border border-white/30 hover:bg-white hover:text-christmas-blue transition-colors z-30 pointer-events-auto">
-                                            <i class="fa-solid fa-location-arrow text-xs"></i>
-                                        </a>
-                                        <div class="absolute bottom-4 left-4 text-white pointer-events-none">
-                                            <h3 class="text-xl font-bold tracking-wide shadow-black drop-shadow-md">{{ item.title }}</h3>
-                                        </div>
-                                        <div class="absolute bottom-4 right-4 bg-black/40 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center border border-white/20 pointer-events-none">
-                                            <i class="fa-regular fa-clock mr-1.5"></i> {{ item.time }}
-                                        </div>
-                                    </div>
-                                    
-                                    <div v-else-if="item.image" class="h-44 w-full relative group bg-gray-200">
-                                        <img :src="item.image" 
-                                             @click="openLightbox(item.image)"
-                                             class="w-full h-full object-cover cursor-pointer"
-                                             referrerpolicy="no-referrer" @error="imageError">
                                         
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none"></div>
                                         <div class="absolute top-4 left-4 text-white/90 text-xs font-medium flex items-center shadow-black drop-shadow-sm pointer-events-none">
                                             <i class="fa-solid fa-location-dot mr-1.5"></i> {{ item.location }}
                                         </div>
+
                                         <a :href="item.mapLink" target="_blank" class="absolute top-4 right-4 w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center backdrop-blur-md border border-white/30 hover:bg-white hover:text-christmas-blue transition-colors z-30 pointer-events-auto">
                                             <i class="fa-solid fa-location-arrow text-xs"></i>
                                         </a>
+
                                         <div class="absolute bottom-4 left-4 text-white pointer-events-none">
                                             <h3 class="text-xl font-bold tracking-wide shadow-black drop-shadow-md">{{ item.title }}</h3>
                                         </div>
@@ -333,6 +318,7 @@
                                     </button>
                                 </div>
                             </div>
+                            <div v-if="expenses.length === 0" class="text-center text-gray-400 text-xs py-4">目前沒有支出紀錄</div>
                         </div>
                     </div>
                     <div v-else-if="activeTab === 'shopping'" key="shopping">
@@ -361,6 +347,7 @@
                                 <p class="text-xs text-gray-400 mt-1">必買清單</p>
                             </div>
                         </div>
+                        <div v-if="shoppingList.length === 0" class="text-center text-gray-400 text-xs py-10">清單是空的，快去加點東西！</div>
                     </div>
                 </transition>
             </div>
@@ -462,34 +449,19 @@
 
                 watch(selectedDate, () => { fetchWeather(); }, { immediate: true })
 
-                // --- Lightbox & Slider Logic (Updated) ---
+                // --- Lightbox Logic ---
                 const lightboxState = reactive({ show: false, image: '' });
                 const openLightbox = (imgUrl) => { lightboxState.image = imgUrl; lightboxState.show = true; }
                 const closeLightbox = () => { lightboxState.show = false; }
 
-                const nextSlide = (item) => {
-                    item.currentImageIndex = (item.currentImageIndex + 1) % item.images.length;
-                }
-                const prevSlide = (item) => {
-                    item.currentImageIndex = (item.currentImageIndex - 1 + item.images.length) % item.images.length;
-                }
-
-                // Touch/Swipe Logic
-                const touchStartX = ref(0)
-                const handleTouchStart = (e) => {
-                    touchStartX.value = e.changedTouches[0].screenX
-                }
-                const handleTouchEnd = (e, item) => {
-                    const touchEndX = e.changedTouches[0].screenX
-                    const diff = touchStartX.value - touchEndX
-                    
-                    // 如果滑動距離超過 50px，視為切換圖片
-                    if (Math.abs(diff) > 50) {
-                        if (diff > 0) nextSlide(item) // 向左滑 -> 下一張
-                        else prevSlide(item) // 向右滑 -> 上一張
-                    } else {
-                        // 如果距離很短，視為點擊 -> 打開大圖
-                        openLightbox(item.images[item.currentImageIndex])
+                // --- Scroll Sync Logic (New) ---
+                const handleScroll = (e, item) => {
+                    const scrollLeft = e.target.scrollLeft;
+                    const width = e.target.clientWidth;
+                    // 計算目前顯示的是第幾張圖
+                    const newIndex = Math.round(scrollLeft / width);
+                    if (item.currentImageIndex !== newIndex) {
+                        item.currentImageIndex = newIndex;
                     }
                 }
 
@@ -553,7 +525,7 @@
 
                 const filteredItinerary = computed(() => itineraryData.value.filter(item => item.date === selectedDate.value))
 
-                // --- Other Features (Expenses, Shopping) ---
+                // --- Other Features ---
                 const savedExpenses = localStorage.getItem('trip_expenses')
                 const expenses = ref(savedExpenses ? JSON.parse(savedExpenses) : [{ title: '機場星巴克', amount: 800, date: '12/20' }])
                 const savedBudget = localStorage.getItem('trip_budget')
@@ -612,8 +584,7 @@
                     budgetAmount, isEditingBudget, editBudget, saveBudget, budgetInputRef, remaining, totalExpenseHkd,
                     shoppingList, newItem, addItem, deleteShoppingItem, tabTitles, imageError,
                     currentLocationName, weatherLoading,
-                    lightboxState, openLightbox, closeLightbox, nextSlide, prevSlide,
-                    handleTouchStart, handleTouchEnd
+                    lightboxState, openLightbox, closeLightbox, handleScroll
                 }
             }
         }).mount('#app')
