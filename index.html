@@ -211,15 +211,12 @@
                                         </div>
 
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none"></div>
-                                        
                                         <div class="absolute top-4 left-4 text-white/90 text-xs font-medium flex items-center shadow-black drop-shadow-sm pointer-events-none">
                                             <i class="fa-solid fa-location-dot mr-1.5"></i> {{ item.location }}
                                         </div>
-
                                         <a :href="item.mapLink" target="_blank" class="absolute top-4 right-4 w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center backdrop-blur-md border border-white/30 hover:bg-white hover:text-christmas-blue transition-colors z-30 pointer-events-auto">
                                             <i class="fa-solid fa-location-arrow text-xs"></i>
                                         </a>
-
                                         <div class="absolute bottom-4 left-4 text-white pointer-events-none">
                                             <h3 class="text-xl font-bold tracking-wide shadow-black drop-shadow-md">{{ item.title }}</h3>
                                         </div>
@@ -259,30 +256,17 @@
 
                     <div v-else-if="activeTab === 'map'" key="map" class="h-full flex flex-col">
                         <div class="bg-white p-2 rounded-xl shadow-sm mb-4 relative">
-                            <iframe 
-                                :src="currentMapUrl" 
-                                width="100%" height="400" 
-                                style="border:0; border-radius: 12px;" 
-                                allowfullscreen="" loading="lazy">
-                            </iframe>
-                            <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-gray-600 shadow-sm border">
-                                <i class="fa-solid fa-map-pin text-christmas-red mr-1"></i> 點擊下方列表導航
-                            </div>
+                            <iframe :src="currentMapUrl" width="100%" height="400" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"></iframe>
+                            <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-gray-600 shadow-sm border"><i class="fa-solid fa-map-pin text-christmas-red mr-1"></i> 點擊下方列表導航</div>
                         </div>
-
                         <div class="bg-white p-4 rounded-xl shadow-sm flex-1 overflow-y-auto">
                             <div class="flex justify-between items-center mb-3">
                                 <h3 class="font-bold text-gray-800">Saved Locations <span class="text-gray-400 text-xs font-normal">({{ savedLocations.length }})</span></h3>
                                 <button class="text-christmas-blue text-xs font-bold">View All</button>
                             </div>
                             <ul class="space-y-2">
-                                <li v-for="(loc, idx) in savedLocations" :key="idx" 
-                                    @click="updateMap(loc)"
-                                    class="flex items-center p-3 rounded-lg hover:bg-gray-50 transition cursor-pointer group border border-transparent hover:border-gray-100">
-                                    <div :class="['w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm transition-colors', 
-                                        loc.active ? 'bg-christmas-red text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-white group-hover:text-christmas-red group-hover:shadow-sm']">
-                                        <i :class="loc.icon"></i>
-                                    </div>
+                                <li v-for="(loc, idx) in savedLocations" :key="idx" @click="updateMap(loc)" class="flex items-center p-3 rounded-lg hover:bg-gray-50 transition cursor-pointer group border border-transparent hover:border-gray-100">
+                                    <div :class="['w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm transition-colors', loc.active ? 'bg-christmas-red text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-white group-hover:text-christmas-red group-hover:shadow-sm']"><i :class="loc.icon"></i></div>
                                     <div class="flex-1">
                                         <div :class="['font-bold text-sm transition-colors', loc.active ? 'text-christmas-red' : 'text-gray-700']">{{ loc.name }}</div>
                                         <div class="text-[10px] text-gray-400">{{ loc.desc }}</div>
@@ -292,7 +276,6 @@
                             </ul>
                         </div>
                     </div>
-
                     <div v-else-if="activeTab === 'budget'" key="budget">
                          <div class="bg-gradient-to-r from-christmas-blue to-christmas-dark text-white p-5 rounded-2xl shadow-lg mb-6 relative overflow-hidden">
                             <div class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 rounded-full bg-white/10 blur-xl"></div>
@@ -303,23 +286,12 @@
                             <h2 class="text-4xl font-bold relative z-10 mb-4 tracking-tight">¥ {{ totalExpense.toLocaleString() }}</h2>
                             <div class="flex gap-2 relative z-10">
                                 <div class="bg-white/20 rounded-lg text-xs backdrop-blur-md flex items-center transition-all duration-200 border border-white/10 hover:bg-white/30 h-8">
-                                    <div v-if="!isEditingBudget" @click="editBudget" class="px-3 h-full flex items-center cursor-pointer select-none">
-                                        <span class="opacity-70 mr-1">預算:</span> 
-                                        <span class="font-bold">¥{{ budgetAmount.toLocaleString() }}</span>
-                                        <i class="fa-solid fa-pen ml-2 text-[10px] opacity-60"></i>
-                                    </div>
-                                    <div v-else class="px-1 h-full flex items-center">
-                                        <span class="pl-2 opacity-70 mr-1">¥</span>
-                                        <input ref="budgetInputRef" v-model.number="budgetAmount" @blur="saveBudget" @keyup.enter="saveBudget" type="number" class="w-20 bg-transparent text-white font-bold outline-none placeholder-white/50">
-                                    </div>
+                                    <div v-if="!isEditingBudget" @click="editBudget" class="px-3 h-full flex items-center cursor-pointer select-none"><span class="opacity-70 mr-1">預算:</span> <span class="font-bold">¥{{ budgetAmount.toLocaleString() }}</span><i class="fa-solid fa-pen ml-2 text-[10px] opacity-60"></i></div>
+                                    <div v-else class="px-1 h-full flex items-center"><span class="pl-2 opacity-70 mr-1">¥</span><input ref="budgetInputRef" v-model.number="budgetAmount" @blur="saveBudget" @keyup.enter="saveBudget" type="number" class="w-20 bg-transparent text-white font-bold outline-none placeholder-white/50"></div>
                                 </div>
-                                <div class="bg-white/20 px-3 h-8 flex items-center rounded-lg text-xs backdrop-blur-md border border-white/10">
-                                    <span class="opacity-70 mr-1">剩餘:</span> 
-                                    <span :class="['font-bold', remaining < 0 ? 'text-red-300' : 'text-white']">¥{{ remaining.toLocaleString() }}</span>
-                                </div>
+                                <div class="bg-white/20 px-3 h-8 flex items-center rounded-lg text-xs backdrop-blur-md border border-white/10"><span class="opacity-70 mr-1">剩餘:</span> <span :class="['font-bold', remaining < 0 ? 'text-red-300' : 'text-white']">¥{{ remaining.toLocaleString() }}</span></div>
                             </div>
                         </div>
-
                         <div class="bg-white p-4 rounded-xl shadow-sm mb-6">
                             <h3 class="font-bold text-gray-700 mb-3 text-sm">新增支出</h3>
                             <div class="flex gap-2 mb-2">
@@ -328,66 +300,32 @@
                             </div>
                             <button @click="addExpense" class="w-full bg-christmas-red text-white py-2 rounded-lg font-bold text-sm shadow-md active:scale-95 transition">新增</button>
                         </div>
-
                         <div class="space-y-3">
                             <div v-for="(exp, idx) in expenses" :key="idx" class="bg-white p-3 rounded-xl shadow-sm flex justify-between items-center group">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mr-3 text-lg">{{ getIcon(exp.title) }}</div>
-                                    <div><div class="font-bold text-gray-800">{{ exp.title }}</div><div class="text-xs text-gray-400">{{ exp.date }}</div></div>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <div class="font-bold text-christmas-red">-¥{{ exp.amount.toLocaleString() }}</div>
-                                    <button @click="deleteExpense(idx)" class="w-6 h-6 rounded-full bg-gray-100 text-gray-400 hover:bg-red-100 hover:text-red-500 flex items-center justify-center transition">
-                                        <i class="fa-solid fa-trash-can text-xs"></i>
-                                    </button>
-                                </div>
+                                <div class="flex items-center"><div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mr-3 text-lg">{{ getIcon(exp.title) }}</div><div><div class="font-bold text-gray-800">{{ exp.title }}</div><div class="text-xs text-gray-400">{{ exp.date }}</div></div></div>
+                                <div class="flex items-center gap-3"><div class="font-bold text-christmas-red">-¥{{ exp.amount.toLocaleString() }}</div><button @click="deleteExpense(idx)" class="w-6 h-6 rounded-full bg-gray-100 text-gray-400 hover:bg-red-100 hover:text-red-500 flex items-center justify-center transition"><i class="fa-solid fa-trash-can text-xs"></i></button></div>
                             </div>
                             <div v-if="expenses.length === 0" class="text-center text-gray-400 text-xs py-4">目前沒有支出紀錄</div>
                         </div>
                     </div>
-
                     <div v-else-if="activeTab === 'shopping'" key="shopping">
                         <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
-                            <div v-if="newItemImage" class="mb-2 relative w-16 h-16 group">
-                                <img :src="newItemImage" class="w-full h-full object-cover rounded-lg border shadow-sm">
-                                <button @click="newItemImage = null" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] shadow">×</button>
-                            </div>
-
+                            <div v-if="newItemImage" class="mb-2 relative w-16 h-16 group"><img :src="newItemImage" class="w-full h-full object-cover rounded-lg border shadow-sm"><button @click="newItemImage = null" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] shadow">×</button></div>
                             <div class="flex gap-2">
-                                <button @click="$refs.fileInput.click()" class="bg-gray-100 text-gray-500 w-12 rounded-lg hover:bg-gray-200 transition">
-                                    <i class="fa-solid fa-camera"></i>
-                                </button>
+                                <button @click="$refs.fileInput.click()" class="bg-gray-100 text-gray-500 w-12 rounded-lg hover:bg-gray-200 transition"><i class="fa-solid fa-camera"></i></button>
                                 <input type="file" ref="fileInput" @change="handleFileChange" accept="image/*" class="hidden">
-
                                 <input v-model="newItem" @keyup.enter="addItem" type="text" placeholder="想買什麼？" class="flex-1 bg-gray-100 p-3 rounded-lg outline-none focus:ring-2 focus:ring-christmas-blue">
                                 <button @click="addItem" class="bg-christmas-dark text-white w-12 rounded-lg"><i class="fa-solid fa-plus"></i></button>
                             </div>
                         </div>
-
                         <div class="grid grid-cols-2 gap-3">
-                            <div v-for="(item, idx) in shoppingList" :key="idx" 
-                                 :class="['p-4 rounded-xl shadow-sm transition-all relative overflow-hidden group border', item.checked ? 'bg-gray-200 border-transparent' : 'bg-white border-transparent']">
-                                
-                                <div v-if="item.checked" class="absolute inset-0 flex items-center justify-center bg-black/10 z-10 pointer-events-none">
-                                    <i class="fa-solid fa-check text-4xl text-green-500 opacity-50"></i>
-                                </div>
-
+                            <div v-for="(item, idx) in shoppingList" :key="idx" :class="['p-4 rounded-xl shadow-sm transition-all relative overflow-hidden group border', item.checked ? 'bg-gray-200 border-transparent' : 'bg-white border-transparent']">
+                                <div v-if="item.checked" class="absolute inset-0 flex items-center justify-center bg-black/10 z-10 pointer-events-none"><i class="fa-solid fa-check text-4xl text-green-500 opacity-50"></i></div>
                                 <div class="flex justify-between items-start mb-2 relative z-20">
-                                    <div v-if="item.image" class="w-10 h-10 rounded-lg overflow-hidden border cursor-pointer" @click.stop="openLightbox(item.image)">
-                                        <img :src="item.image" class="w-full h-full object-cover">
-                                    </div>
-                                    <i v-else class="fa-solid fa-gift text-christmas-red text-xl"></i>
-                                    
-                                    <div @click.stop="item.checked = !item.checked" 
-                                         :class="['w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer transition-colors', item.checked ? 'border-green-500 bg-green-500' : 'border-gray-300 hover:border-green-400']">
-                                        <i v-if="item.checked" class="fa-solid fa-check text-white text-xs"></i>
-                                    </div>
+                                    <div v-if="item.image" class="w-10 h-10 rounded-lg overflow-hidden border cursor-pointer" @click.stop="openLightbox(item.image)"><img :src="item.image" class="w-full h-full object-cover"></div><i v-else class="fa-solid fa-gift text-christmas-red text-xl"></i>
+                                    <div @click.stop="item.checked = !item.checked" :class="['w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer transition-colors', item.checked ? 'border-green-500 bg-green-500' : 'border-gray-300 hover:border-green-400']"><i v-if="item.checked" class="fa-solid fa-check text-white text-xs"></i></div>
                                 </div>
-                                
-                                <button @click.stop="deleteShoppingItem(idx)" class="absolute top-2 right-10 w-6 h-6 rounded-full bg-white/50 text-gray-400 hover:bg-red-500 hover:text-white flex items-center justify-center z-20 transition shadow-sm">
-                                    <i class="fa-solid fa-trash-can text-[10px]"></i>
-                                </button>
-
+                                <button @click.stop="deleteShoppingItem(idx)" class="absolute top-2 right-10 w-6 h-6 rounded-full bg-white/50 text-gray-400 hover:bg-red-500 hover:text-white flex items-center justify-center z-20 transition shadow-sm"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
                                 <h4 :class="['font-bold mt-2 truncate', item.checked ? 'text-gray-500 line-through' : 'text-gray-800']" @click="item.checked = !item.checked">{{ item.name }}</h4>
                                 <p class="text-xs text-gray-400">必買清單</p>
                             </div>
@@ -400,18 +338,10 @@
 
         <div class="shrink-0 bg-[#f3f4f6] z-20 relative">
             <nav class="bg-white w-full px-2 pt-3 pb-[calc(10px+env(safe-area-inset-bottom))] rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.05)] flex justify-around items-center">
-                <button @click="activeTab = 'itinerary'" :class="['flex flex-1 flex-col items-center space-y-1 transition py-2', activeTab === 'itinerary' ? 'text-christmas-red' : 'text-gray-400']">
-                    <i class="fa-solid fa-calendar-days text-lg"></i><span class="text-[10px] font-bold">行程</span>
-                </button>
-                <button @click="activeTab = 'map'" :class="['flex flex-1 flex-col items-center space-y-1 transition py-2', activeTab === 'map' ? 'text-christmas-red' : 'text-gray-400']">
-                    <i class="fa-solid fa-map-location-dot text-lg"></i><span class="text-[10px] font-bold">地圖</span>
-                </button>
-                <button @click="activeTab = 'budget'" :class="['flex flex-1 flex-col items-center space-y-1 transition py-2', activeTab === 'budget' ? 'text-christmas-red' : 'text-gray-400']">
-                    <i class="fa-solid fa-wallet text-lg"></i><span class="text-[10px] font-bold">記帳</span>
-                </button>
-                <button @click="activeTab = 'shopping'" :class="['flex flex-1 flex-col items-center space-y-1 transition py-2', activeTab === 'shopping' ? 'text-christmas-red' : 'text-gray-400']">
-                    <i class="fa-solid fa-bag-shopping text-lg"></i><span class="text-[10px] font-bold">購物</span>
-                </button>
+                <button @click="activeTab = 'itinerary'" :class="['flex flex-1 flex-col items-center space-y-1 transition py-2', activeTab === 'itinerary' ? 'text-christmas-red' : 'text-gray-400']"><i class="fa-solid fa-calendar-days text-lg"></i><span class="text-[10px] font-bold">行程</span></button>
+                <button @click="activeTab = 'map'" :class="['flex flex-1 flex-col items-center space-y-1 transition py-2', activeTab === 'map' ? 'text-christmas-red' : 'text-gray-400']"><i class="fa-solid fa-map-location-dot text-lg"></i><span class="text-[10px] font-bold">地圖</span></button>
+                <button @click="activeTab = 'budget'" :class="['flex flex-1 flex-col items-center space-y-1 transition py-2', activeTab === 'budget' ? 'text-christmas-red' : 'text-gray-400']"><i class="fa-solid fa-wallet text-lg"></i><span class="text-[10px] font-bold">記帳</span></button>
+                <button @click="activeTab = 'shopping'" :class="['flex flex-1 flex-col items-center space-y-1 transition py-2', activeTab === 'shopping' ? 'text-christmas-red' : 'text-gray-400']"><i class="fa-solid fa-bag-shopping text-lg"></i><span class="text-[10px] font-bold">購物</span></button>
             </nav>
         </div>
 
@@ -419,9 +349,7 @@
             <div v-if="lightboxState.show" class="fixed inset-0 z-[10000] bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm" @click="closeLightbox">
                 <div class="relative w-full max-w-lg">
                     <img :src="lightboxState.image" class="w-full h-auto rounded-lg shadow-2xl">
-                    <button class="absolute -top-12 right-0 text-white bg-white/20 rounded-full w-10 h-10 flex items-center justify-center" @click.stop="closeLightbox">
-                        <i class="fa-solid fa-xmark text-xl"></i>
-                    </button>
+                    <button class="absolute -top-12 right-0 text-white bg-white/20 rounded-full w-10 h-10 flex items-center justify-center" @click.stop="closeLightbox"><i class="fa-solid fa-xmark text-xl"></i></button>
                 </div>
             </div>
         </transition>
@@ -463,12 +391,12 @@
                     currentMapUrl.value = `https://maps.google.com/maps?q=${encodeURIComponent(location.query)}&z=15&output=embed`;
                 };
 
-                // --- Weather Logic (2-Day Forecast) ---
+                // --- Weather Logic (Updated: forecast_days=2) ---
                 const hourlyWeather = ref([])
                 const getLocationByDate = (date) => {
                     if (date === 20) return { lat: 35.5494, lon: 139.7798, name: '東京轉機 (Tokyo)' };
-                    if (date === 21) return { lat: 42.5937, lon: 140.8246, name: '洞爺湖 (Lake Toya)' }; // Updated
-                    if (date === 22) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' }; // Updated
+                    if (date === 21) return { lat: 42.5937, lon: 140.8246, name: '洞爺湖 (Lake Toya)' };
+                    if (date === 22) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
                     if (date >= 23) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' }; 
                     return { lat: 43.0618, lon: 141.3545, name: '北海道 (Hokkaido)' };
                 }
@@ -488,13 +416,15 @@
                     weatherLoading.value = true;
                     try {
                         const loc = getLocationByDate(selectedDate.value);
-                        // Using forecast_days=2 to cover late night hours
+                        // Changed to forecast_days=2 to handle late night hours
                         const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&hourly=temperature_2m,weathercode&timezone=Asia%2FTokyo&forecast_days=2`);
                         const data = await response.json();
                         const currentHour = new Date().getHours();
                         const mappedData = [];
+                        // Loop through 24 hours starting from current hour
                         for(let i = 0; i < 24; i++) {
                             const dataIndex = currentHour + i;
+                            // Ensure data exists (in case query at end of Day 2)
                             if (data.hourly.temperature_2m[dataIndex] !== undefined) {
                                 let displayHour = (currentHour + i) % 24;
                                 let timeStr = `${displayHour}:00`;
@@ -532,7 +462,7 @@
 
                 // --- Itinerary Data ---
                 const itineraryData = ref([
-                    // --- Day 20 (Original) ---
+                    // Day 20
                     {
                         date: 20, 
                         title: '廣州往東京 (NH924)',
@@ -576,7 +506,7 @@
                         details: { distance: '一站距離', transport: '電車/接駁', stay: '過夜' }
                     },
                     
-                    // --- Day 21 (New) ---
+                    // Day 21
                     {
                         date: 21,
                         title: '飛往札幌 (新千歲)',
@@ -587,6 +517,7 @@
                         icon: 'fa-solid fa-plane',
                         image: 'https://images.unsplash.com/photo-1548181655-46e326292b0c?q=80&w=600&auto=format&fit=crop',
                         mapLink: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d321',
+                        suggestion: '建議到達時間 : 06:30 (需於 06:15 從 KEIKYU EX INN 出發)',
                         details: { distance: '820km', transport: '1h 30m', stay: '航程' }
                     },
                     {
@@ -633,12 +564,17 @@
                         category: 'Hotel',
                         desc: '抵達洞爺湖畔的 Hotel Cocoa。享受湖景與舒適的住宿環境，放鬆一天的疲憊。',
                         icon: 'fa-solid fa-hotel',
-                        image: 'https://pix8.agoda.net/hotelImages/16791240/0/d20e722a983377709559779262295697.jpg?ce=0&s=1024x', 
+                        images: [
+                            'https://q-xx.bstatic.com/xdata/images/hotel/840x460/445146130.jpg?k=f502e84c5929f5529ae905690d6b97012de0fff071b942fd1301ab4aa008b541&o=&s=1024x',
+                            'https://pix8.agoda.net/hotelImages/26079610/410029220/fd0b49e14e153112c980fa9fc78aba7f.jpg?ce=2&s=1024x',
+                            'https://pix8.agoda.net/hotelImages/26079610/410029220/1dbe30d5b439f5476c1881a794cc5aea.jpg?ce=2&s=1024x'
+                        ],
+                        currentImageIndex: 0,
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hotel Cocoa Toyako")}',
                         details: { distance: '50km', transport: '自駕 1h', stay: '過夜' }
                     },
 
-                    // --- Day 22 (New) ---
+                    // Day 22
                     {
                         date: 22,
                         title: '洞爺湖晨間散策',
@@ -684,7 +620,11 @@
                         category: 'Stay',
                         desc: '入住位於札幌的 Airbnb 民宿。連住兩晚，方便探索市區美食與聖誕市集。',
                         icon: 'fa-solid fa-house-user',
-                        image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800', // Generic cozy room
+                        images: [
+                            'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTUwOTg5OTcyODkyNTI1Mjk4Mg==/original/6a9e98b6-f65e-4c79-a37c-6fe7e2c19f9f.png?im_w=1440',
+                            'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTUwOTg5OTcyODkyNTI1Mjk4Mg==/original/0891bfb0-08b3-4138-8b19-aada9920e40d.png?im_w=1440'
+                        ],
+                        currentImageIndex: 0,
                         mapLink: 'https://www.airbnb.com/l/B6IGd7Ac',
                         details: { distance: '市區', transport: '自駕', stay: '連住兩晚' }
                     }
@@ -703,7 +643,7 @@
                 const savedShopping = localStorage.getItem('trip_shopping')
                 const shoppingList = ref(savedShopping ? JSON.parse(savedShopping) : [{ name: '白色戀人', checked: false }])
                 const newItem = ref('')
-                const newItemImage = ref(null) // New image state
+                const newItemImage = ref(null)
 
                 watch(expenses, (newVal) => localStorage.setItem('trip_expenses', JSON.stringify(newVal)), { deep: true })
                 watch(budgetAmount, (newVal) => localStorage.setItem('trip_budget', JSON.stringify(newVal)))
