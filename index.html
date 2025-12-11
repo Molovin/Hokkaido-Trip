@@ -258,14 +258,42 @@
                     </div>
 
                     <div v-else-if="activeTab === 'map'" key="map" class="h-full flex flex-col">
-                        <div class="bg-white p-2 rounded-xl shadow-sm mb-4">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3244.5910729792686!2d139.77764727677846!3d35.58882573503251!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601861033282eb11%3A0xc6c76193796d857d!2z576955Sw5qZf5aC0!5e0!3m2!1szh-TW!2stw!4v1700000000000!5m2!1szh-TW!2stw" width="100%" height="400" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"></iframe>
+                        <div class="bg-white p-2 rounded-xl shadow-sm mb-4 relative">
+                            <iframe 
+                                :src="currentMapUrl" 
+                                width="100%" height="400" 
+                                style="border:0; border-radius: 12px;" 
+                                allowfullscreen="" loading="lazy">
+                            </iframe>
+                            
+                            <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-gray-600 shadow-sm border">
+                                <i class="fa-solid fa-map-pin text-christmas-red mr-1"></i> 點擊下方列表導航
+                            </div>
                         </div>
-                        <div class="bg-white p-4 rounded-xl shadow-sm">
-                            <h3 class="font-bold text-gray-800 mb-2">Saved Locations</h3>
-                            <ul class="space-y-3">
-                                <li class="flex items-center text-gray-600 border-b pb-2"><i class="fa-solid fa-hotel text-christmas-red mr-3 w-6 text-center"></i> KEIKYU EX INN</li>
-                                <li class="flex items-center text-gray-600 border-b pb-2"><i class="fa-solid fa-plane text-christmas-blue mr-3 w-6 text-center"></i> 羽田機場 T2</li>
+
+                        <div class="bg-white p-4 rounded-xl shadow-sm flex-1 overflow-y-auto">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-gray-800">Saved Locations <span class="text-gray-400 text-xs font-normal">({{ savedLocations.length }})</span></h3>
+                                <button class="text-christmas-blue text-xs font-bold">View All</button>
+                            </div>
+                            
+                            <ul class="space-y-2">
+                                <li v-for="(loc, idx) in savedLocations" :key="idx" 
+                                    @click="updateMap(loc)"
+                                    class="flex items-center p-3 rounded-lg hover:bg-gray-50 transition cursor-pointer group border border-transparent hover:border-gray-100">
+                                    
+                                    <div :class="['w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm transition-colors', 
+                                        loc.active ? 'bg-christmas-red text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-white group-hover:text-christmas-red group-hover:shadow-sm']">
+                                        <i :class="loc.icon"></i>
+                                    </div>
+                                    
+                                    <div class="flex-1">
+                                        <div :class="['font-bold text-sm transition-colors', loc.active ? 'text-christmas-red' : 'text-gray-700']">{{ loc.name }}</div>
+                                        <div class="text-[10px] text-gray-400">{{ loc.desc }}</div>
+                                    </div>
+                                    
+                                    <i class="fa-solid fa-chevron-right text-gray-300 text-xs group-hover:text-christmas-red group-hover:translate-x-1 transition-all"></i>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -401,6 +429,32 @@
                     { day: 29, weekday: '週一' }, { day: 30, weekday: '週二' }
                 ]
 
+                // --- Map Feature: Saved Locations & Dynamic Switch ---
+                // 預設地圖連結 (可以是您提供的連結，或一般 Google Maps Embed)
+                const defaultMapUrl = 'https://www.google.com/maps/@39.4251772,138.06764,891750m/data=!3m1!1e3!4m6!1m2!10m1!1e1!11m2!2sYGJ0SvKNgoh2ac1dipr88iyDSmigrQ!3e7?entry=ttu&g_ep=EgoyMDI1MTIwOC4wIKXMDSoASAFQAw%3D%3D';
+                const currentMapUrl = ref(defaultMapUrl);
+
+                // 模擬的收藏地點資料 (包含地名、座標 query 用)
+                const savedLocations = ref([
+                    { name: 'KEIKYU EX INN', query: 'KEIKYU EX INN Haneda', icon: 'fa-solid fa-hotel', desc: '羽田機場住宿', active: false },
+                    { name: '札幌電視塔', query: 'Sapporo TV Tower', icon: 'fa-solid fa-tower-broadcast', desc: '大通公園地標', active: false },
+                    { name: '小樽運河', query: 'Otaru Canal', icon: 'fa-solid fa-water', desc: '浪漫散步景點', active: false },
+                    { name: '星野度假村 Tomamu', query: 'Hoshino Resorts Tomamu', icon: 'fa-solid fa-person-skiing', desc: '滑雪與冰城', active: false },
+                    { name: '白金青池', query: 'Shirogane Blue Pond', icon: 'fa-solid fa-image', desc: '美瑛絕景', active: false },
+                    { name: '函館山夜景', query: 'Mount Hakodate', icon: 'fa-solid fa-star', desc: '百萬夜景', active: false },
+                ]);
+
+                // 切換地圖函式
+                const updateMap = (location) => {
+                    // 1. 更新 active 狀態
+                    savedLocations.value.forEach(l => l.active = false);
+                    location.active = true;
+
+                    // 2. 切換 iframe src 到 Google Maps Embed 模式
+                    // 使用 output=embed 參數讓其適合嵌入
+                    currentMapUrl.value = `https://maps.google.com/maps?q=${encodeURIComponent(location.query)}&z=15&output=embed`;
+                };
+
                 // --- Weather Logic ---
                 const hourlyWeather = ref([])
                 const getLocationByDate = (date) => {
@@ -461,7 +515,6 @@
                 const handleScroll = (e, item) => {
                     const scrollLeft = e.target.scrollLeft;
                     const width = e.target.clientWidth;
-                    // 計算目前顯示的是第幾張圖
                     const newIndex = Math.round(scrollLeft / width);
                     if (item.currentImageIndex !== newIndex) {
                         item.currentImageIndex = newIndex;
@@ -587,7 +640,8 @@
                     budgetAmount, isEditingBudget, editBudget, saveBudget, budgetInputRef, remaining, totalExpenseHkd,
                     shoppingList, newItem, addItem, deleteShoppingItem, tabTitles, imageError,
                     currentLocationName, weatherLoading,
-                    lightboxState, openLightbox, closeLightbox, handleScroll
+                    lightboxState, openLightbox, closeLightbox, handleScroll,
+                    currentMapUrl, savedLocations, updateMap
                 }
             }
         }).mount('#app')
