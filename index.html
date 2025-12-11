@@ -174,6 +174,7 @@
                         </div>
 
                         <div class="relative pl-6 space-y-8 ml-2">
+                            
                             <div class="absolute left-0 top-2 bottom-0 w-[3px] bg-gradient-to-b from-[#d9888e] via-[#d4af37] to-[#76a5af] shadow-[0_0_8px_rgba(212,175,55,0.4)] rounded-full"></div>
 
                             <div v-if="filteredItinerary.length === 0" class="py-10 text-center text-gray-400">
@@ -182,15 +183,18 @@
                             </div>
 
                             <div v-for="(item, idx) in filteredItinerary" :key="idx" class="relative">
+                                
                                 <div class="absolute -left-[8px] top-6 w-4 h-4 rounded-full bg-gray-300 border-2 border-white shadow-sm z-10"></div>
                                 
                                 <div class="bg-white rounded-2xl shadow-sm overflow-hidden ml-4 transform transition hover:scale-[1.01] duration-200">
+                                    
                                     <div class="h-44 w-full relative group bg-gray-200">
                                         <div v-if="item.images && item.images.length > 1" class="w-full h-full relative">
                                             <div class="flex overflow-x-auto snap-x snap-mandatory w-full h-full no-scrollbar"
                                                  @scroll="(e) => handleScroll(e, item)">
                                                 <img v-for="(img, imgIdx) in item.images" :key="imgIdx"
-                                                     :src="img" @click="openLightbox(img)"
+                                                     :src="img"
+                                                     @click="openLightbox(img)"
                                                      class="w-full h-full object-cover flex-shrink-0 snap-center cursor-pointer">
                                             </div>
                                             <div class="absolute bottom-3 left-0 right-0 flex justify-center space-x-1.5 z-20 pointer-events-none">
@@ -198,18 +202,24 @@
                                                      :class="['slider-dot', index === item.currentImageIndex ? 'active' : '']"></div>
                                             </div>
                                         </div>
+                                        
                                         <div v-else-if="item.image" class="w-full h-full relative">
-                                            <img :src="item.image" @click="openLightbox(item.image)"
-                                                 class="w-full h-full object-cover cursor-pointer" referrerpolicy="no-referrer" @error="imageError">
+                                            <img :src="item.image" 
+                                                 @click="openLightbox(item.image)"
+                                                 class="w-full h-full object-cover cursor-pointer"
+                                                 referrerpolicy="no-referrer" @error="imageError">
                                         </div>
 
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none"></div>
+                                        
                                         <div class="absolute top-4 left-4 text-white/90 text-xs font-medium flex items-center shadow-black drop-shadow-sm pointer-events-none">
                                             <i class="fa-solid fa-location-dot mr-1.5"></i> {{ item.location }}
                                         </div>
+
                                         <a :href="item.mapLink" target="_blank" class="absolute top-4 right-4 w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center backdrop-blur-md border border-white/30 hover:bg-white hover:text-christmas-blue transition-colors z-30 pointer-events-auto">
                                             <i class="fa-solid fa-location-arrow text-xs"></i>
                                         </a>
+
                                         <div class="absolute bottom-4 left-4 text-white pointer-events-none">
                                             <h3 class="text-xl font-bold tracking-wide shadow-black drop-shadow-md">{{ item.title }}</h3>
                                         </div>
@@ -249,19 +259,30 @@
 
                     <div v-else-if="activeTab === 'map'" key="map" class="h-full flex flex-col">
                         <div class="bg-white p-2 rounded-xl shadow-sm mb-4 relative">
-                            <iframe :src="currentMapUrl" width="100%" height="400" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"></iframe>
+                            <iframe 
+                                :src="currentMapUrl" 
+                                width="100%" height="400" 
+                                style="border:0; border-radius: 12px;" 
+                                allowfullscreen="" loading="lazy">
+                            </iframe>
                             <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-gray-600 shadow-sm border">
                                 <i class="fa-solid fa-map-pin text-christmas-red mr-1"></i> 點擊下方列表導航
                             </div>
                         </div>
+
                         <div class="bg-white p-4 rounded-xl shadow-sm flex-1 overflow-y-auto">
                             <div class="flex justify-between items-center mb-3">
                                 <h3 class="font-bold text-gray-800">Saved Locations <span class="text-gray-400 text-xs font-normal">({{ savedLocations.length }})</span></h3>
                                 <button class="text-christmas-blue text-xs font-bold">View All</button>
                             </div>
                             <ul class="space-y-2">
-                                <li v-for="(loc, idx) in savedLocations" :key="idx" @click="updateMap(loc)" class="flex items-center p-3 rounded-lg hover:bg-gray-50 transition cursor-pointer group border border-transparent hover:border-gray-100">
-                                    <div :class="['w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm transition-colors', loc.active ? 'bg-christmas-red text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-white group-hover:text-christmas-red group-hover:shadow-sm']"><i :class="loc.icon"></i></div>
+                                <li v-for="(loc, idx) in savedLocations" :key="idx" 
+                                    @click="updateMap(loc)"
+                                    class="flex items-center p-3 rounded-lg hover:bg-gray-50 transition cursor-pointer group border border-transparent hover:border-gray-100">
+                                    <div :class="['w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm transition-colors', 
+                                        loc.active ? 'bg-christmas-red text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-white group-hover:text-christmas-red group-hover:shadow-sm']">
+                                        <i :class="loc.icon"></i>
+                                    </div>
                                     <div class="flex-1">
                                         <div :class="['font-bold text-sm transition-colors', loc.active ? 'text-christmas-red' : 'text-gray-700']">{{ loc.name }}</div>
                                         <div class="text-[10px] text-gray-400">{{ loc.desc }}</div>
@@ -442,13 +463,13 @@
                     currentMapUrl.value = `https://maps.google.com/maps?q=${encodeURIComponent(location.query)}&z=15&output=embed`;
                 };
 
-                // --- Weather Logic ---
+                // --- Weather Logic (2-Day Forecast) ---
                 const hourlyWeather = ref([])
                 const getLocationByDate = (date) => {
                     if (date === 20) return { lat: 35.5494, lon: 139.7798, name: '東京轉機 (Tokyo)' };
-                    if (date === 21) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
-                    if (date >= 22 && date <= 23) return { lat: 43.0626, lon: 142.6113, name: 'Tomamu' };
-                    if (date === 24) return { lat: 43.1907, lon: 140.9947, name: '小樽 (Otaru)' };
+                    if (date === 21) return { lat: 42.5937, lon: 140.8246, name: '洞爺湖 (Lake Toya)' }; // Updated
+                    if (date === 22) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' }; // Updated
+                    if (date >= 23) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' }; 
                     return { lat: 43.0618, lon: 141.3545, name: '北海道 (Hokkaido)' };
                 }
                 const currentLocationName = computed(() => getLocationByDate(selectedDate.value).name)
@@ -467,6 +488,7 @@
                     weatherLoading.value = true;
                     try {
                         const loc = getLocationByDate(selectedDate.value);
+                        // Using forecast_days=2 to cover late night hours
                         const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&hourly=temperature_2m,weathercode&timezone=Asia%2FTokyo&forecast_days=2`);
                         const data = await response.json();
                         const currentHour = new Date().getHours();
@@ -510,6 +532,7 @@
 
                 // --- Itinerary Data ---
                 const itineraryData = ref([
+                    // --- Day 20 (Original) ---
                     {
                         date: 20, 
                         title: '廣州往東京 (NH924)',
@@ -552,17 +575,118 @@
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda', 
                         details: { distance: '一站距離', transport: '電車/接駁', stay: '過夜' }
                     },
+                    
+                    // --- Day 21 (New) ---
                     {
                         date: 21,
-                        title: '飛往札幌',
-                        location: '羽田機場',
-                        time: '09:00',
+                        title: '飛往札幌 (新千歲)',
+                        location: '羽田機場 -> 新千歲',
+                        time: '08:00',
                         category: 'Flight',
-                        desc: '準備前往北海道！記得穿暖和一點。',
+                        desc: '搭乘早班機前往北海道新千歲機場，準備開始自駕之旅！',
                         icon: 'fa-solid fa-plane',
                         image: 'https://images.unsplash.com/photo-1548181655-46e326292b0c?q=80&w=600&auto=format&fit=crop',
-                        mapLink: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3244.5910729792686!2d139.77764727677846!3d35.58882573503251!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601861033282eb11%3A0xc6c76193796d857d!2z576955Sw5qZf5aC0!5e0!3m2!1szh-TW!2stw!4v1700000000000!5m2!1szh-TW!2stw',
+                        mapLink: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d321',
                         details: { distance: '820km', transport: '1h 30m', stay: '航程' }
+                    },
+                    {
+                        date: 21,
+                        title: 'Budget 租車取車',
+                        location: '新千歲機場店',
+                        time: '10:00',
+                        category: 'Car Rental',
+                        desc: '前往 Budget 櫃檯辦理取車手續。檢查車況、安裝雪胎，準備出發！',
+                        icon: 'fa-solid fa-car',
+                        image: 'https://www.budgetrentacar.co.jp/common/images/shop/0700/0700_main.jpg',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Budget Car Rental New Chitose")}',
+                        details: { distance: '機場接駁', transport: '接駁車', stay: '30分' }
+                    },
+                    {
+                        date: 21,
+                        title: '午餐：北海道湯咖哩',
+                        location: '千歲市區 / 機場',
+                        time: '11:30',
+                        category: 'Lunch',
+                        desc: '抵達北海道的第一餐，當然要吃熱騰騰的湯咖哩暖胃！推薦嘗試 Rojiura Curry SAMURAI 或 Lavi。',
+                        icon: 'fa-solid fa-utensils',
+                        image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b485c?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Rojiura Curry SAMURAI Chitose")}',
+                        details: { distance: '市區內', transport: '自駕', stay: '1.5小時' }
+                    },
+                    {
+                        date: 21,
+                        title: '登別地獄谷',
+                        location: '登別溫泉',
+                        time: '14:00',
+                        category: 'Sightseeing',
+                        desc: '觀賞火山爆發後形成的火山口遺跡，煙霧繚繞，景色壯觀。空氣中瀰漫著濃濃的硫磺味。',
+                        icon: 'fa-solid fa-volcano',
+                        image: 'https://images.unsplash.com/photo-1627883393922-a7f474966627?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Noboribetsu Jigokudani")}',
+                        details: { distance: '60km', transport: '自駕 1h', stay: '1.5小時' }
+                    },
+                    {
+                        date: 21,
+                        title: '入住 Hotel Cocoa',
+                        location: '洞爺湖',
+                        time: '18:00',
+                        category: 'Hotel',
+                        desc: '抵達洞爺湖畔的 Hotel Cocoa。享受湖景與舒適的住宿環境，放鬆一天的疲憊。',
+                        icon: 'fa-solid fa-hotel',
+                        image: 'https://pix8.agoda.net/hotelImages/16791240/0/d20e722a983377709559779262295697.jpg?ce=0&s=1024x', 
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hotel Cocoa Toyako")}',
+                        details: { distance: '50km', transport: '自駕 1h', stay: '過夜' }
+                    },
+
+                    // --- Day 22 (New) ---
+                    {
+                        date: 22,
+                        title: '洞爺湖晨間散策',
+                        location: '洞爺湖畔',
+                        time: '09:30',
+                        category: 'Sightseeing',
+                        desc: '早晨在湖邊漫步，欣賞羊蹄山的倒影。推薦前往 Lake Hill Farm 品嚐新鮮的義式冰淇淋。',
+                        icon: 'fa-solid fa-camera',
+                        image: 'https://images.unsplash.com/photo-1614343152528-94e09581827e?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Lake Toya")}',
+                        details: { distance: '周邊', transport: '自駕', stay: '2小時' }
+                    },
+                    {
+                        date: 22,
+                        title: '前往札幌 & 午餐',
+                        location: '往札幌途中',
+                        time: '12:00',
+                        category: 'Drive',
+                        desc: '享用午餐後，驅車前往北海道第一大城——札幌。沿途欣賞雪國公路風光。',
+                        icon: 'fa-solid fa-car-side',
+                        image: 'https://images.unsplash.com/photo-1542931287-023b922fa89b?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Sapporo")}',
+                        details: { distance: '100km', transport: '自駕 2h', stay: '車程' }
+                    },
+                    {
+                        date: 22,
+                        title: '滑雪體驗 (天氣許可)',
+                        location: '札幌手稻滑雪場',
+                        time: '15:30',
+                        category: 'Activity',
+                        desc: '如果天氣狀況良好，前往市區附近的滑雪場體驗粉雪！(推薦：札幌手稻或札幌國際滑雪場)',
+                        icon: 'fa-solid fa-person-skiing',
+                        image: 'https://images.unsplash.com/photo-1551524559-8af4e6624178?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Sapporo Teine Ski Resort")}',
+                        suggestion: '視當日風雪狀況決定',
+                        details: { distance: '20km', transport: '自駕 40分', stay: '2-3小時' }
+                    },
+                    {
+                        date: 22,
+                        title: '入住 Airbnb',
+                        location: '札幌市區',
+                        time: '19:00',
+                        category: 'Stay',
+                        desc: '入住位於札幌的 Airbnb 民宿。連住兩晚，方便探索市區美食與聖誕市集。',
+                        icon: 'fa-solid fa-house-user',
+                        image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800', // Generic cozy room
+                        mapLink: 'https://www.airbnb.com/l/B6IGd7Ac',
+                        details: { distance: '市區', transport: '自駕', stay: '連住兩晚' }
                     }
                 ])
 
@@ -616,10 +740,10 @@
                         shoppingList.value.push({ 
                             name: newItem.value, 
                             checked: false,
-                            image: newItemImage.value // Store image
+                            image: newItemImage.value 
                         }); 
                         newItem.value = '';
-                        newItemImage.value = null; // Reset
+                        newItemImage.value = null;
                     }
                 }
                 const deleteShoppingItem = (index) => { if(confirm('確定要刪除這個項目嗎？')) shoppingList.value.splice(index, 1); }
