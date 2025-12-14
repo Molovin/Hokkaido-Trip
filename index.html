@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Hokkaido Trip">
@@ -360,14 +361,14 @@
                                 <button @click="newItemImage = null" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] shadow">×</button>
                             </div>
 
-                            <div class="flex gap-3">
-                                <button @click="$refs.fileInput.click()" class="bg-gray-100 text-gray-500 w-14 rounded-lg hover:bg-gray-200 transition">
+                            <div class="flex gap-3 h-12">
+                                <button @click="$refs.fileInput.click()" class="bg-gray-100 text-gray-500 w-14 h-full rounded-lg hover:bg-gray-200 transition flex items-center justify-center">
                                     <i class="fa-solid fa-camera"></i>
                                 </button>
                                 <input type="file" ref="fileInput" @change="handleFileChange" accept="image/*" class="hidden">
 
-                                <input v-model="newItem" @keyup.enter="addItem" type="text" placeholder="想買什麼？" class="flex-1 bg-gray-100 p-3 rounded-lg outline-none focus:ring-2 focus:ring-christmas-blue">
-                                <button @click="addItem" class="bg-christmas-dark text-white w-14 rounded-lg"><i class="fa-solid fa-plus"></i></button>
+                                <input v-model="newItem" @keyup.enter="addItem" type="text" placeholder="想買什麼？" class="flex-1 h-full bg-gray-100 px-3 rounded-lg outline-none focus:ring-2 focus:ring-christmas-blue text-sm min-w-0">
+                                <button @click="addItem" class="bg-christmas-dark text-white w-14 h-full rounded-lg hover:bg-christmas-blue transition flex items-center justify-center"><i class="fa-solid fa-plus"></i></button>
                             </div>
                         </div>
 
