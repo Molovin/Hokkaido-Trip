@@ -450,7 +450,7 @@
                     { day: 20, weekday: '週六' }, { day: 21, weekday: '週日' }, { day: 22, weekday: '週一' }, 
                     { day: 23, weekday: '週二' }, { day: 24, weekday: '週三' }, { day: 25, weekday: '週四' }, 
                     { day: 26, weekday: '週五' }, { day: 27, weekday: '週六' }, { day: 28, weekday: '週日' },
-                    { day: 29, weekday: '週一' }, { day: 30, weekday: '週二' }
+                    { day: 29, weekday: '週一' }, { day: 30, weekday: '週二' }, { day: 31, weekday: '週三' }
                 ]
 
                 // --- Map Feature ---
@@ -476,10 +476,10 @@
                 const getLocationByDate = (date) => {
                     if (date === 20) return { lat: 35.5494, lon: 139.7798, name: '東京轉機 (Tokyo)' };
                     if (date === 21) return { lat: 42.5937, lon: 140.8246, name: '洞爺湖 (Lake Toya)' };
-                    if (date === 22) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
-                    if (date === 23) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
-                    if (date === 24) return { lat: 42.7688, lon: 141.4047, name: '支笏湖 (Lake Shikotsu)' }; // Day 24: Lake Shikotsu
-                    if (date === 25) return { lat: 43.0400, lon: 141.4700, name: '新札幌 (Shin-Sapporo)' }; // Day 25: Shin-Sapporo
+                    if (date >= 22 && date <= 23) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
+                    if (date === 24) return { lat: 42.7688, lon: 141.4047, name: '支笏湖 (Lake Shikotsu)' };
+                    if (date >= 25 && date <= 29) return { lat: 43.0400, lon: 141.4700, name: '新札幌 (Shin-Sapporo)' };
+                    if (date >= 30) return { lat: 35.6895, lon: 139.6917, name: '東京 (Tokyo)' };
                     return { lat: 43.0618, lon: 141.3545, name: '北海道 (Hokkaido)' };
                 }
                 const currentLocationName = computed(() => getLocationByDate(selectedDate.value).name)
@@ -827,6 +827,60 @@
                         details: { distance: '5分', transport: '車/步行', stay: '1.5小時' }
                     },
                     
+
+                    // Day 30 (Last Day in Hokkaido -> Tokyo)
+                    {
+                        date: 30,
+                        title: '早班機 NH052 (CTS->HND)',
+                        location: '新千歲機場',
+                        time: '08:30',
+                        category: 'Flight',
+                        desc: '早起還車(如需)，搭乘 08:30 班機飛往東京。抵達後開始最後的購物衝刺！',
+                        icon: 'fa-solid fa-plane-departure',
+                        image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("New Chitose Airport")}',
+                        suggestion: '建議 07:00 抵達機場辦理還車/登機',
+                        details: { distance: '東京', transport: '飛行', stay: '航程' }
+                    },
+                    {
+                        date: 30,
+                        title: '東京銀座購物',
+                        location: '銀座 (Ginza)',
+                        time: '13:00',
+                        category: 'Shopping',
+                        desc: '抵達東京並寄放行李後，前往銀座。這裡有最新的時尚精品、Uniqlo 旗艦店與各種伴手禮。',
+                        icon: 'fa-solid fa-bag-shopping',
+                        image: 'https://images.unsplash.com/photo-1570591752532-3a33990cb89c?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Ginza")}',
+                        details: { distance: '市區', transport: '電車', stay: '4小時' }
+                    },
+                    {
+                        date: 30,
+                        title: '入住 KEIKYU EX INN',
+                        location: '天空橋站',
+                        time: '19:00',
+                        category: 'Hotel',
+                        desc: '再次入住交通便利的 KEIKYU EX INN。晚餐可選擇羽田機場花園的餐廳，早點休息準備明天回程。',
+                        icon: 'fa-solid fa-bed',
+                        image: 'https://pix8.agoda.net/hotelImages/16791240/803978242/bc74de46d2361212f60426dc71338600.jpg?ce=0&s=1024x',
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda', 
+                        details: { distance: '機場旁', transport: '步行/接駁', stay: '過夜' }
+                    },
+
+                    // Day 31 (Departure)
+                    {
+                        date: 31,
+                        title: '早起退房 & 機場早餐',
+                        location: '羽田機場 T3',
+                        time: '06:40',
+                        category: 'Departure',
+                        desc: '09:20 的班機，建議 06:40 抵達第三航廈。辦理登機後，在機場內的江戶小路或出境區享用早餐。',
+                        icon: 'fa-solid fa-passport',
+                        image: 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Haneda Airport Terminal 3")}',
+                        suggestion: 'NH923 09:20 起飛',
+                        details: { distance: '回國', transport: '飛行', stay: '再見' }
+                    }
                 ])
 
                 const filteredItinerary = computed(() => itineraryData.value.filter(item => item.date === selectedDate.value))
