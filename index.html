@@ -833,14 +833,14 @@
                         details: { distance: '室內', transport: '烹飪', stay: '晚餐' }
                     },
 
-                    // Day 26 (Otaru Day Trip)
+                    // Day 26 (Otaru Day Trip - Updated to Self-Drive)
                     {
                         date: 26,
                         title: '自駕前往小樽',
                         location: '新札幌 -> 小樽',
-                        time: '09:00',
+                        time: '08:00',
                         category: 'Drive',
-                        desc: '沿著札樽自動車道前往小樽，享受沿途雪景。車程約 45 分鐘。',
+                        desc: '從民宿出發，沿著札樽自動車道前往小樽。車程約 45 分鐘。',
                         icon: 'fa-solid fa-car',
                         image: 'https://images.unsplash.com/photo-1542289947-2342cb2338bd?q=80&w=800',
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru")}',
@@ -850,36 +850,62 @@
                         date: 26,
                         title: '小樽散策',
                         location: '小樽運河 & 堺町通',
-                        time: '10:30',
+                        time: '09:00',
                         category: 'Sightseeing',
-                        desc: '漫步小樽運河，參觀音樂盒堂、北一硝子館。午餐推薦在三角市場享用新鮮海鮮丼。',
+                        desc: '漫步小樽運河，參觀北一硝子、音樂盒堂。午餐推薦：政壽司、魚真或三角市場海鮮丼。',
                         icon: 'fa-solid fa-camera-retro',
-                        image: 'https://images.unsplash.com/photo-1549694770-362963032777?q=80&w=800', // Otaru Canal generic
+                        image: 'https://images.unsplash.com/photo-1549694770-362963032777?q=80&w=800',
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru Canal")}',
-                        details: { distance: '步行', transport: '散步', stay: '5小時' }
+                        suggestion: '停車：小樽市觀光停車場 (付費)',
+                        details: { distance: '步行', transport: '散步', stay: '3小時' }
                     },
                     {
                         date: 26,
-                        title: '甜點時光',
-                        location: 'LeTAO 本店',
+                        title: '小樽午餐',
+                        location: '壽司通 / 三角市場',
+                        time: '12:00',
+                        category: 'Lunch',
+                        desc: '享用新鮮的海鮮丼或壽司。推薦：政壽司 (有停車場) 或 魚真。',
+                        icon: 'fa-solid fa-utensils',
+                        image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Masa Zushi Otaru")}',
+                        details: { distance: '市區', transport: '自駕', stay: '1.5小時' }
+                    },
+                    {
+                        date: 26,
+                        title: '天狗山 (日落/夜景)',
+                        location: '天狗山纜車',
                         time: '15:00',
-                        category: 'Cafe',
-                        desc: '品嚐北海道最著名的 LeTAO 雙層起司蛋糕，享受甜蜜的下午茶時光。',
-                        icon: 'fa-solid fa-cake-candles',
-                        image: 'https://images.unsplash.com/photo-1563729768-6af58466dfd9?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("LeTAO Main Store")}',
-                        details: { distance: '堺町通', transport: '步行', stay: '1小時' }
+                        category: 'Sightseeing',
+                        desc: '開車前往天狗山，欣賞從黃昏到夜晚的絕美景色 (日落約 16:05)。山上有免費停車場。',
+                        icon: 'fa-solid fa-mountain',
+                        image: 'https://images.unsplash.com/photo-1516466723877-e4ec1d736c8a?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru Tenguyama Ropeway")}',
+                        suggestion: '免費停車場 (150台)',
+                        details: { distance: '15分', transport: '自駕', stay: '1.5小時' }
+                    },
+                    {
+                        date: 26,
+                        title: '返回新札幌 & 晚餐',
+                        location: '新札幌 / 厚別',
+                        time: '17:00',
+                        category: 'Drive',
+                        desc: '下山後開車返回民宿。晚餐可選擇在附近的 AEON Mall 或厚別區餐廳享用。',
+                        icon: 'fa-solid fa-car-side',
+                        image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shin-Sapporo")}',
+                        details: { distance: '40km', transport: '自駕 50分', stay: '晚餐' }
                     },
 
-                    // Day 27 (Asahikawa & Biei)
+                    // Day 27 (Asahikawa & Biei - Self Drive)
                     {
                         date: 27,
-                        title: '前往旭川 (旭山動物園)',
-                        location: '旭川市',
+                        title: '自駕前往旭川',
+                        location: '新札幌 -> 旭川',
                         time: '08:30',
                         category: 'Drive',
-                        desc: '早起出發前往旭川。冬季必看：旭山動物園的企鵝散步！(通常 11:00 開始)',
-                        icon: 'fa-solid fa-paw',
+                        desc: '經道央自動車道前往旭川。車程約 2 小時。請注意冬季路面狀況。',
+                        icon: 'fa-solid fa-car',
                         image: 'https://images.unsplash.com/photo-1598439210625-5067c578f3f6?q=80&w=800',
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Asahiyama Zoo")}',
                         details: { distance: '130km', transport: '自駕 2h', stay: '3小時' }
@@ -890,21 +916,21 @@
                         location: '美瑛町',
                         time: '14:00',
                         category: 'Sightseeing',
-                        desc: '前往美瑛欣賞「肯與瑪麗之樹」、「七星之樹」在雪原中的孤寂美景。',
+                        desc: '開車遊覽美瑛雪景：「肯與瑪麗之樹」、「七星之樹」。自駕最方便停靠拍照。',
                         icon: 'fa-solid fa-tree',
                         image: 'https://images.unsplash.com/photo-1548749449-33db24f33664?q=80&w=800',
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Ken and Mary Tree")}',
                         details: { distance: '20km', transport: '自駕 30分', stay: '2小時' }
                     },
 
-                    // Day 28 (Sapporo Classics)
+                    // Day 28 (Sapporo Classics - Self Drive)
                     {
                         date: 28,
                         title: '白色戀人公園',
                         location: '札幌西區',
                         time: '10:00',
                         category: 'Sightseeing',
-                        desc: '參觀像童話城堡般的巧克力工廠，體驗餅乾製作或享用著名的白色戀人霜淇淋。',
+                        desc: '自駕前往白色戀人公園 (有付費停車場 1000日圓/小時，消費可折抵)。參觀童話般的工廠。',
                         icon: 'fa-solid fa-cookie-bite',
                         image: 'https://images.unsplash.com/photo-1611029289297-c2447952a20b?q=80&w=800',
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shiroi Koibito Park")}',
@@ -916,11 +942,11 @@
                         location: '札幌東區',
                         time: '18:00',
                         category: 'Dinner',
-                        desc: '在歷史悠久的紅磚建築內，大口吃成吉思汗烤羊肉、大口喝新鮮生啤酒！',
+                        desc: '開車前往札幌啤酒園 (有免費停車場)。享用成吉思汗烤肉。*若喝酒請務必使用代駕*',
                         icon: 'fa-solid fa-beer-mug-empty',
                         image: 'https://images.unsplash.com/photo-1555562723-3b10294747c3?q=80&w=800', 
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Sapporo Beer Garden")}',
-                        suggestion: '注意：開車不喝酒',
+                        suggestion: '停車免費 (喝酒請找代駕)',
                         details: { distance: '市區', transport: '自駕 15分', stay: '2小時' }
                     },
 
