@@ -477,7 +477,9 @@
                     if (date === 20) return { lat: 35.5494, lon: 139.7798, name: '東京轉機 (Tokyo)' };
                     if (date === 21) return { lat: 42.5937, lon: 140.8246, name: '洞爺湖 (Lake Toya)' };
                     if (date === 22) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
-                    if (date >= 23) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' }; 
+                    if (date === 23) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
+                    if (date === 24) return { lat: 42.7688, lon: 141.4047, name: '支笏湖 (Lake Shikotsu)' }; // Day 24: Lake Shikotsu
+                    if (date === 25) return { lat: 43.0400, lon: 141.4700, name: '新札幌 (Shin-Sapporo)' }; // Day 25: Shin-Sapporo
                     return { lat: 43.0618, lon: 141.3545, name: '北海道 (Hokkaido)' };
                 }
                 const currentLocationName = computed(() => getLocationByDate(selectedDate.value).name)
@@ -758,6 +760,83 @@
                         image: 'https://images.unsplash.com/photo-1542353956-62024220c326?q=80&w=800',
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Zen Sukiyaki Sapporo")}',
                         details: { distance: '步行', transport: '5-8分鐘', stay: '晚餐' }
+                    },
+
+                    // Day 24 (Christmas Eve)
+                    {
+                        date: 24,
+                        title: '前往支笏湖 & 午餐',
+                        location: '支笏湖畔',
+                        time: '11:30',
+                        category: 'Drive',
+                        desc: '離開札幌，前往日本最北的不凍湖—支笏湖。在湖畔餐廳 (推薦 Log Bear) 享用午餐，欣賞湖光山色。',
+                        icon: 'fa-solid fa-water',
+                        image: 'https://images.unsplash.com/photo-1612255737525-4c0920b72a94?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Lake Shikotsu")}',
+                        details: { distance: '45km', transport: '自駕 1h', stay: '2小時' }
+                    },
+                    {
+                        date: 24,
+                        title: '入住 翠山亭',
+                        location: '支笏湖温泉',
+                        time: '15:00',
+                        category: 'Hotel',
+                        desc: '入住「支笏湖第一寶亭留 翠山亭」。享受一泊二食的奢華溫泉體驗，度過寧靜浪漫的平安夜。',
+                        icon: 'fa-solid fa-hot-tub-person',
+                        image: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/336239563.jpg?k=2397c88e999c0087790885567789785089088788',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shikotsuko Daiichi Hotel Suizantei")}',
+                        details: { distance: '湖畔', transport: '步行', stay: '一泊二食' }
+                    },
+
+                    // Day 25 (Christmas Day)
+                    {
+                        date: 25,
+                        title: '聖誕晨間溫泉 & 早餐',
+                        location: '翠山亭',
+                        time: '09:00',
+                        category: 'Relax',
+                        desc: '在支笏湖的寧靜中醒來，享受晨間溫泉與精緻的日式早餐，度過悠閒的聖誕早晨。',
+                        icon: 'fa-solid fa-mug-hot',
+                        image: 'https://images.unsplash.com/photo-1544473244-f6895e672d6a?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shikotsuko Daiichi Hotel Suizantei")}',
+                        details: { distance: '飯店內', transport: '放鬆', stay: '至退房' }
+                    },
+                    {
+                        date: 25,
+                        title: '入住 新札幌 Airbnb',
+                        location: '厚別區 (新札幌)',
+                        time: '15:00',
+                        category: 'Stay',
+                        desc: '前往位於新札幌的寬敞 Airbnb。這裡交通便利，適合家庭聚會。',
+                        icon: 'fa-solid fa-house-chimney',
+                        image: 'https://a0.muscache.com/im/pictures/miso/Hosting-32963798/original/fd9b9c75-a508-4672-87ec-2cf9bd5f3720.jpeg?im_w=720',
+                        mapLink: 'https://www.airbnb.com.hk/rooms/32963798',
+                        details: { distance: '40km', transport: '自駕 1h', stay: '過夜' }
+                    },
+                    {
+                        date: 25,
+                        title: '聖誕大餐採買',
+                        location: 'AEON 新札幌店',
+                        time: '16:30',
+                        category: 'Shopping',
+                        desc: '前往附近的大型超市「AEON 新札幌店」採買聖誕晚餐食材。這裡食材種類豐富，非常適合準備大餐。',
+                        icon: 'fa-solid fa-cart-shopping',
+                        image: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Aeon Shin-Sapporo")}',
+                        suggestion: '推薦買北海道產牛排與海鮮！',
+                        details: { distance: '5分', transport: '車/步行', stay: '1.5小時' }
+                    },
+                    {
+                        date: 25,
+                        title: '自製聖誕大餐',
+                        location: 'Airbnb 民宿',
+                        time: '18:30',
+                        category: 'Dinner',
+                        desc: '在民宿的廚房大展身手，享用溫馨的自製聖誕晚餐，度過美好的夜晚。',
+                        icon: 'fa-solid fa-kitchen-set',
+                        image: 'https://images.unsplash.com/photo-1543362906-ac1b4526c1e0?q=80&w=800',
+                        mapLink: 'https://www.airbnb.com.hk/rooms/32963798',
+                        details: { distance: '室內', transport: '烹飪', stay: '晚餐' }
                     }
                 ])
 
