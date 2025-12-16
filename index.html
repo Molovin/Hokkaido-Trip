@@ -478,7 +478,11 @@
                     if (date === 21) return { lat: 42.5937, lon: 140.8246, name: '洞爺湖 (Lake Toya)' };
                     if (date >= 22 && date <= 23) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
                     if (date === 24) return { lat: 42.7688, lon: 141.4047, name: '支笏湖 (Lake Shikotsu)' };
-                    if (date >= 25 && date <= 29) return { lat: 43.0400, lon: 141.4700, name: '新札幌 (Shin-Sapporo)' };
+                    if (date === 25) return { lat: 43.0400, lon: 141.4700, name: '新札幌 (Shin-Sapporo)' };
+                    if (date === 26) return { lat: 43.1907, lon: 140.9947, name: '小樽 (Otaru)' }; // Day 26: Otaru
+                    if (date === 27) return { lat: 43.7706, lon: 142.3649, name: '旭川 (Asahikawa)' }; // Day 27: Asahikawa
+                    if (date === 28) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' }; // Day 28: Sapporo
+                    if (date === 29) return { lat: 42.8273, lon: 141.6525, name: '千歲 (Chitose)' }; // Day 29: Chitose
                     if (date >= 30) return { lat: 35.6895, lon: 139.6917, name: '東京 (Tokyo)' };
                     return { lat: 43.0618, lon: 141.3545, name: '北海道 (Hokkaido)' };
                 }
@@ -541,7 +545,7 @@
 
                 // --- Itinerary Data ---
                 const itineraryData = ref([
-                    // Day 20
+                    // ... Day 20-25 (Keep existing) ...
                     {
                         date: 20, 
                         title: '廣州往東京 (NH924)',
@@ -584,8 +588,6 @@
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda', 
                         details: { distance: '一站距離', transport: '電車/接駁', stay: '過夜' }
                     },
-                    
-                    // Day 21
                     {
                         date: 21,
                         title: '飛往札幌 (新千歲)',
@@ -652,8 +654,6 @@
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hotel Cocoa Toyako")}',
                         details: { distance: '50km', transport: '自駕 1h', stay: '過夜' }
                     },
-
-                    // Day 22
                     {
                         date: 22,
                         title: '洞爺湖晨間散策',
@@ -707,8 +707,6 @@
                         mapLink: 'https://www.airbnb.com/l/B6IGd7Ac',
                         details: { distance: '市區', transport: '自駕', stay: '連住兩晚' }
                     },
-
-                    // Day 23
                     {
                         date: 23,
                         title: '國營瀧野鈴蘭丘陵公園',
@@ -761,8 +759,6 @@
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Zen Sukiyaki Sapporo")}',
                         details: { distance: '步行', transport: '5-8分鐘', stay: '晚餐' }
                     },
-
-                    // Day 24 (Christmas Eve)
                     {
                         date: 24,
                         title: '前往支笏湖 & 午餐',
@@ -787,8 +783,6 @@
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shikotsuko Daiichi Hotel Suizantei")}',
                         details: { distance: '湖畔', transport: '步行', stay: '一泊二食' }
                     },
-
-                    // Day 25 (Christmas Day)
                     {
                         date: 25,
                         title: '聖誕晨間溫泉 & 早餐',
@@ -815,7 +809,7 @@
                     },
                     {
                         date: 25,
-                        title: '超市采購',
+                        title: '聖誕大餐採買',
                         location: 'AEON 新札幌店',
                         time: '16:30',
                         category: 'Shopping',
@@ -826,9 +820,149 @@
                         suggestion: '推薦買北海道產牛排與海鮮！',
                         details: { distance: '5分', transport: '車/步行', stay: '1.5小時' }
                     },
-                    
+                    {
+                        date: 25,
+                        title: '自製聖誕大餐',
+                        location: 'Airbnb 民宿',
+                        time: '18:30',
+                        category: 'Dinner',
+                        desc: '在民宿的廚房大展身手，享用溫馨的自製聖誕晚餐，度過美好的夜晚。',
+                        icon: 'fa-solid fa-kitchen-set',
+                        image: 'https://images.unsplash.com/photo-1543362906-ac1b4526c1e0?q=80&w=800',
+                        mapLink: 'https://www.airbnb.com.hk/rooms/32963798',
+                        details: { distance: '室內', transport: '烹飪', stay: '晚餐' }
+                    },
 
-                    // Day 30 (Last Day in Hokkaido -> Tokyo)
+                    // Day 26 (Otaru Day Trip)
+                    {
+                        date: 26,
+                        title: '自駕前往小樽',
+                        location: '新札幌 -> 小樽',
+                        time: '09:00',
+                        category: 'Drive',
+                        desc: '沿著札樽自動車道前往小樽，享受沿途雪景。車程約 45 分鐘。',
+                        icon: 'fa-solid fa-car',
+                        image: 'https://images.unsplash.com/photo-1542289947-2342cb2338bd?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru")}',
+                        details: { distance: '40km', transport: '自駕 45分', stay: '車程' }
+                    },
+                    {
+                        date: 26,
+                        title: '小樽散策',
+                        location: '小樽運河 & 堺町通',
+                        time: '10:30',
+                        category: 'Sightseeing',
+                        desc: '漫步小樽運河，參觀音樂盒堂、北一硝子館。午餐推薦在三角市場享用新鮮海鮮丼。',
+                        icon: 'fa-solid fa-camera-retro',
+                        image: 'https://images.unsplash.com/photo-1549694770-362963032777?q=80&w=800', // Otaru Canal generic
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru Canal")}',
+                        details: { distance: '步行', transport: '散步', stay: '5小時' }
+                    },
+                    {
+                        date: 26,
+                        title: '甜點時光',
+                        location: 'LeTAO 本店',
+                        time: '15:00',
+                        category: 'Cafe',
+                        desc: '品嚐北海道最著名的 LeTAO 雙層起司蛋糕，享受甜蜜的下午茶時光。',
+                        icon: 'fa-solid fa-cake-candles',
+                        image: 'https://images.unsplash.com/photo-1563729768-6af58466dfd9?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("LeTAO Main Store")}',
+                        details: { distance: '堺町通', transport: '步行', stay: '1小時' }
+                    },
+
+                    // Day 27 (Asahikawa & Biei)
+                    {
+                        date: 27,
+                        title: '前往旭川 (旭山動物園)',
+                        location: '旭川市',
+                        time: '08:30',
+                        category: 'Drive',
+                        desc: '早起出發前往旭川。冬季必看：旭山動物園的企鵝散步！(通常 11:00 開始)',
+                        icon: 'fa-solid fa-paw',
+                        image: 'https://images.unsplash.com/photo-1598439210625-5067c578f3f6?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Asahiyama Zoo")}',
+                        details: { distance: '130km', transport: '自駕 2h', stay: '3小時' }
+                    },
+                    {
+                        date: 27,
+                        title: '美瑛拼布之路',
+                        location: '美瑛町',
+                        time: '14:00',
+                        category: 'Sightseeing',
+                        desc: '前往美瑛欣賞「肯與瑪麗之樹」、「七星之樹」在雪原中的孤寂美景。',
+                        icon: 'fa-solid fa-tree',
+                        image: 'https://images.unsplash.com/photo-1548749449-33db24f33664?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Ken and Mary Tree")}',
+                        details: { distance: '20km', transport: '自駕 30分', stay: '2小時' }
+                    },
+
+                    // Day 28 (Sapporo Classics)
+                    {
+                        date: 28,
+                        title: '白色戀人公園',
+                        location: '札幌西區',
+                        time: '10:00',
+                        category: 'Sightseeing',
+                        desc: '參觀像童話城堡般的巧克力工廠，體驗餅乾製作或享用著名的白色戀人霜淇淋。',
+                        icon: 'fa-solid fa-cookie-bite',
+                        image: 'https://images.unsplash.com/photo-1611029289297-c2447952a20b?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shiroi Koibito Park")}',
+                        details: { distance: '市區', transport: '自駕 25分', stay: '3小時' }
+                    },
+                    {
+                        date: 28,
+                        title: '札幌啤酒園 (晚餐)',
+                        location: '札幌東區',
+                        time: '18:00',
+                        category: 'Dinner',
+                        desc: '在歷史悠久的紅磚建築內，大口吃成吉思汗烤羊肉、大口喝新鮮生啤酒！',
+                        icon: 'fa-solid fa-beer-mug-empty',
+                        image: 'https://images.unsplash.com/photo-1555562723-3b10294747c3?q=80&w=800', 
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Sapporo Beer Garden")}',
+                        suggestion: '注意：開車不喝酒',
+                        details: { distance: '市區', transport: '自駕 15分', stay: '2小時' }
+                    },
+
+                    // Day 29 (Move to Chitose)
+                    {
+                        date: 29,
+                        title: '前往三井 Outlet',
+                        location: '北廣島',
+                        time: '10:30',
+                        category: 'Shopping',
+                        desc: '退房後，前往前往機場順路的「三井 Outlet Park 札幌北廣島」進行最後採購。',
+                        icon: 'fa-solid fa-bags-shopping',
+                        image: 'https://mitsui-shopping-park.com/mop/sapporo/images/main_visual_sp.jpg', 
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Mitsui Outlet Park Sapporo Kitahiroshima")}',
+                        details: { distance: '15km', transport: '自駕 20分', stay: '3小時' }
+                    },
+                    {
+                        date: 29,
+                        title: '千歲水族館',
+                        location: '千歲市',
+                        time: '15:00',
+                        category: 'Activity',
+                        desc: '參觀擁有日本最大淡水水槽的水族館，還可以透過水中觀察窗直接看到千歲川的鮭魚。',
+                        icon: 'fa-solid fa-fish-fins',
+                        image: 'https://chitose-aq.jp/wp-content/uploads/2019/04/main_visual01.jpg',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Chitose Aquarium")}',
+                        details: { distance: '25km', transport: '自駕 30分', stay: '1.5小時' }
+                    },
+                    {
+                        date: 29,
+                        title: '入住 千歲 Airbnb',
+                        location: '千歲市中心',
+                        time: '18:00',
+                        category: 'Stay',
+                        desc: '入住千歲市區的民宿，整理行李，準備明天一早前往機場。地址：5-18-24 Shinonomecho。',
+                        icon: 'fa-solid fa-house-chimney',
+                        image: 'https://a0.muscache.com/im/pictures/e4d94358-0053-4322-9653-730623326773.jpg?im_w=1200', 
+                        mapLink: 'https://www.airbnb.com.hk/rooms/28018907',
+                        details: { distance: '市區', transport: '自駕', stay: '過夜' }
+                    },
+
+                    // Day 30-31 (Keep existing)
                     {
                         date: 30,
                         title: '早班機 NH052 (CTS->HND)',
@@ -866,8 +1000,6 @@
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda', 
                         details: { distance: '機場旁', transport: '步行/接駁', stay: '過夜' }
                     },
-
-                    // Day 31 (Departure)
                     {
                         date: 31,
                         title: '早起退房 & 機場早餐',
