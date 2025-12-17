@@ -480,7 +480,7 @@
                     if (date === 24) return { lat: 42.7688, lon: 141.4047, name: '支笏湖 (Lake Shikotsu)' };
                     if (date === 25) return { lat: 43.0400, lon: 141.4700, name: '新札幌 (Shin-Sapporo)' };
                     if (date === 26) return { lat: 43.1907, lon: 140.9947, name: '小樽 (Otaru)' };
-                    if (date === 27) return { lat: 43.5859, lon: 142.4746, name: '美瑛 (Biei)' }; // Updated to Biei/Shirogane
+                    if (date === 27) return { lat: 43.5859, lon: 142.4746, name: '美瑛 (Biei)' };
                     if (date === 28) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
                     if (date === 29) return { lat: 42.8273, lon: 141.6525, name: '千歲 (Chitose)' };
                     if (date >= 30) return { lat: 35.6895, lon: 139.6917, name: '東京 (Tokyo)' };
@@ -910,14 +910,14 @@
                         details: { distance: '40km', transport: '自駕 50分', stay: '晚餐' }
                     },
 
-                    // Day 27 (Asahikawa & Biei - Revised)
+                    // Day 27 (Waterfalls & Biei - Revised)
                     {
                         date: 27,
                         title: '自駕前往美瑛',
                         location: '新札幌 -> 美瑛',
                         time: '08:00',
                         category: 'Drive',
-                        desc: '經道央自動車道前往美瑛。車程約 2.5 小時。請注意冬季路面狀況。',
+                        desc: '出發前往美瑛，直奔深山的白金溫泉區。',
                         icon: 'fa-solid fa-car',
                         image: 'https://images.unsplash.com/photo-1548749449-33db24f33664?q=80&w=800',
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Biei")}',
@@ -942,29 +942,28 @@
                     },
                     {
                         date: 27,
-                        title: '午餐：旭川拉麵',
-                        location: '旭川拉麵村',
-                        time: '13:00',
+                        title: '午餐：美瑛當地美食',
+                        location: '美瑛市區',
+                        time: '12:30',
                         category: 'Lunch',
-                        desc: '開車前往旭川 (約45分)，享用熱騰騰的醬油拉麵。這裡集結了多家名店。',
+                        desc: '推薦：Daimaru (咖哩烏龍麵/拉麵) 或 Junpei (炸蝦丼)。都在美瑛車站附近。',
                         icon: 'fa-solid fa-utensils',
-                        image: 'https://images.unsplash.com/photo-1569924376483-3a6473ba7544?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Asahikawa Ramen Village")}',
-                        suggestion: '免費大型停車場',
-                        details: { distance: '35km', transport: '自駕 45分', stay: '1小時' }
+                        image: 'https://images.unsplash.com/photo-1574484284002-952d92456975?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Daimaru Biei")}',
+                        suggestion: '市區有公共停車場',
+                        details: { distance: '20km', transport: '自駕 25分', stay: '1.5小時' }
                     },
                     {
                         date: 27,
-                        title: '美瑛小鎮散策',
-                        location: '美瑛市區',
-                        time: '14:30',
+                        title: '美瑛小鎮 & 拼布之路',
+                        location: '美瑛',
+                        time: '14:00',
                         category: 'Sightseeing',
-                        desc: '漫步在美麗的美瑛小鎮，參觀美瑛選果 (Biei Senka) 或在 Gosh Café 喝杯咖啡。',
-                        icon: 'fa-solid fa-store',
-                        image: 'https://www.visit-hokkaido.jp/assets/images/spot/10043/1.jpg', // Placeholder for Biei town
+                        desc: '開車遊覽拼布之路（Ken & Mary 之樹），並在美麗的美瑛小鎮閒逛、喝咖啡。',
+                        icon: 'fa-solid fa-tree',
+                        image: 'https://www.visit-hokkaido.jp/assets/images/spot/10043/1.jpg',
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Biei Station")}',
-                        suggestion: '道の駅 びえい「丘のくら」',
-                        details: { distance: '15km', transport: '自駕 20分', stay: '2小時' }
+                        details: { distance: '周邊', transport: '自駕', stay: '3小時' }
                     },
                     {
                         date: 27,
