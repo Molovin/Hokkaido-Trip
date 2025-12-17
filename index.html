@@ -1153,7 +1153,7 @@
                     }
                 }
                 const deleteShoppingItem = (index) => { if(confirm('確定要刪除這個項目嗎？')) shoppingList.value.splice(index, 1); }
-                const imageError = (e) => { e.target.src = 'https://via.placeholder.com/600x400?text=No+Image'; }
+                const imageError = (e) => { e.target.src = 'https://placehold.co/600x400?text=No+Image'; }
 
                 onMounted(() => {
                     const snowContainer = document.getElementById('snow-container');
