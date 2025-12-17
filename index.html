@@ -942,13 +942,13 @@
                     },
                     {
                         date: 27,
-                        title: '午餐：美瑛當地美食',
-                        location: '美瑛市區',
+                        title: '午餐：美瑛咖哩烏龍麵',
+                        location: 'Family Restaurant Daimaru',
                         time: '12:30',
                         category: 'Lunch',
-                        desc: '推薦：Daimaru (咖哩烏龍麵/拉麵) 或 Junpei (炸蝦丼)。都在美瑛車站附近。',
+                        desc: '前往美瑛市區，品嚐當地靈魂美食「美瑛咖哩烏龍麵」。這家是當地人氣名店！',
                         icon: 'fa-solid fa-utensils',
-                        image: 'https://images.unsplash.com/photo-1574484284002-952d92456975?q=80&w=800',
+                        image: 'https://images.unsplash.com/photo-1548507200-dd1e6957367e?q=80&w=800', // Udon generic
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Daimaru Biei")}',
                         suggestion: '市區有公共停車場',
                         details: { distance: '20km', transport: '自駕 25分', stay: '1.5小時' }
@@ -978,31 +978,82 @@
                         details: { distance: '140km', transport: '自駕 2.5h', stay: '晚餐' }
                     },
 
-                    // Day 28 (Sapporo Classics - Self Drive)
+                    // Day 28 (Relaxed Sapporo)
                     {
                         date: 28,
-                        title: '白色戀人公園',
-                        location: '札幌西區',
+                        title: '自然醒 & 出發',
+                        location: '厚別民宿',
                         time: '10:00',
-                        category: 'Sightseeing',
-                        desc: '自駕前往白色戀人公園 (有付費停車場 1000日圓/小時，消費可折抵)。參觀童話般的工廠。',
-                        icon: 'fa-solid fa-cookie-bite',
-                        image: 'https://images.unsplash.com/photo-1611029289297-c2447952a20b?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shiroi Koibito Park")}',
-                        details: { distance: '市區', transport: '自駕 25分', stay: '3小時' }
+                        category: 'Relax',
+                        desc: '享受一個睡到自然醒的早晨。悠閒地吃過早餐後，約 10:30 出發前往第一個景點。',
+                        icon: 'fa-solid fa-bed',
+                        image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=800',
+                        mapLink: '',
+                        details: { distance: '民宿', transport: '休息', stay: '至10:30' }
                     },
                     {
                         date: 28,
-                        title: '札幌啤酒園 (晚餐)',
-                        location: '札幌東區',
+                        title: '羊之丘展望台',
+                        location: '羊之丘',
+                        time: '10:30',
+                        category: 'Sightseeing',
+                        desc: '與著名的克拉克博士像合影 ("Boys, be ambitious!")，欣賞札幌市區的雪景全景。',
+                        icon: 'fa-solid fa-binoculars',
+                        image: 'https://images.unsplash.com/photo-1534234828563-02622e18926b?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hitsujigaoka Observation Hill")}',
+                        suggestion: '免費停車場',
+                        details: { distance: '15km', transport: '自駕 30分', stay: '1.5小時' }
+                    },
+                    {
+                        date: 28,
+                        title: '午餐：湯咖哩',
+                        location: '札幌市區',
+                        time: '12:00',
+                        category: 'Lunch',
+                        desc: '在前往神宮的途中享用午餐。推薦：奧芝商店或 Suage+ (如果還沒吃過的話)。',
+                        icon: 'fa-solid fa-utensils',
+                        image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b485c?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Suage+ Sapporo")}',
+                        details: { distance: '市區', transport: '自駕', stay: '1.5小時' }
+                    },
+                    {
+                        date: 28,
+                        title: '北海道神宮',
+                        location: '圓山公園',
+                        time: '13:30',
+                        category: 'Sightseeing',
+                        desc: '參拜北海道總鎮守。冬天的神宮在雪中顯得格外莊嚴寧靜。',
+                        icon: 'fa-solid fa-torii-gate',
+                        image: 'https://images.unsplash.com/photo-1570459027562-4a916cc6113f?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hokkaido Shrine")}',
+                        suggestion: '停車費：參拜者免費1小時',
+                        details: { distance: '10km', transport: '自駕 20分', stay: '1.5小時' }
+                    },
+                    {
+                        date: 28,
+                        title: '白色戀人公園 (點燈)',
+                        location: '札幌西區',
+                        time: '15:30',
+                        category: 'Sightseeing',
+                        desc: '傍晚前往，剛好可以欣賞戶外的聖誕點燈 (Illumination)，非常浪漫。',
+                        icon: 'fa-solid fa-cookie-bite',
+                        image: 'https://images.unsplash.com/photo-1611029289297-c2447952a20b?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shiroi Koibito Park")}',
+                        suggestion: '付費停車場 (1000円/h)',
+                        details: { distance: '15分', transport: '自駕', stay: '1.5小時' }
+                    },
+                    {
+                        date: 28,
+                        title: '迴轉壽司 Toriton (晚餐)',
+                        location: '豐平店 (好停車)',
                         time: '18:00',
                         category: 'Dinner',
-                        desc: '開車前往札幌啤酒園 (有免費停車場)。享用成吉思汗烤肉。*若喝酒請務必使用代駕*',
-                        icon: 'fa-solid fa-beer-mug-empty',
-                        image: 'https://images.unsplash.com/photo-1555562723-3b10294747c3?q=80&w=800', 
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Sapporo Beer Garden")}',
-                        suggestion: '停車免費 (喝酒請找代駕)',
-                        details: { distance: '市區', transport: '自駕 15分', stay: '2小時' }
+                        desc: '北海道當地人氣第一的迴轉壽司！食材新鮮、份量大。推薦：生干貝、大牡丹蝦。',
+                        icon: 'fa-solid fa-fish',
+                        image: 'https://tblg.k-img.com/restaurant/images/Rvw/136030/640x640_rect_136030097.jpg',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Toriton Toyohira")}',
+                        suggestion: '無法預約，建議提早去抽號碼牌',
+                        details: { distance: '市區', transport: '自駕 20分', stay: '1.5小時' }
                     },
 
                     // Day 29 (Move to Chitose)
