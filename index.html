@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Hokkaido Trip">
-    
     <title>Hokkaido Christmas Trip 2025</title>
     
     <link rel="apple-touch-icon" href="https://i.meee.com.tw/m8KEd5j.jpg">
@@ -23,17 +20,9 @@
             theme: {
                 extend: {
                     colors: {
-                        christmas: {
-                            red: '#E63946',
-                            dark: '#1D3557',
-                            light: '#F1FAEE',
-                            blue: '#457B9D',
-                            snow: '#A8DADC'
-                        }
+                        christmas: { red: '#E63946', dark: '#1D3557', light: '#F1FAEE', blue: '#457B9D', snow: '#A8DADC' }
                     },
-                    fontFamily: {
-                        sans: ['Noto Sans TC', 'sans-serif'],
-                    }
+                    fontFamily: { sans: ['Noto Sans TC', 'sans-serif'] }
                 }
             }
         }
@@ -62,7 +51,6 @@
         <header class="relative shrink-0 z-20 overflow-hidden rounded-b-[2rem] shadow-xl flex flex-col justify-end transition-all duration-300 pt-[max(env(safe-area-inset-top),20px)] pb-4">
             <div class="absolute inset-0 header-bg"></div>
             <div class="absolute inset-0 bg-christmas-dark/40 header-blur"></div>
-            
             <div class="relative z-10 px-6 mt-2">
                 <div class="flex justify-between items-end mb-4">
                     <div>
@@ -73,28 +61,22 @@
                         <img src="https://i.meee.com.tw/kYUJZ1x.png" alt="Profile" class="w-full h-full object-cover">
                     </div>
                 </div>
-
                 <div v-if="activeTab === 'itinerary'" class="flex space-x-3 overflow-x-auto no-scrollbar pb-1 px-1">
                     <div v-for="(date, index) in dates" :key="index" @click="selectedDate = date.day" :class="['flex-shrink-0 w-20 h-20 rounded-xl flex flex-col items-center justify-center transition-all cursor-pointer border', selectedDate === date.day ? 'bg-christmas-red text-white border-christmas-red transform scale-105 shadow-md' : 'bg-white/10 text-white border-white/20 backdrop-blur-sm']">
-                        <span class="text-[10px] opacity-80">{{ date.weekday }}</span>
-                        <span class="text-xl font-bold">{{ date.day }}</span>
+                        <span class="text-[10px] opacity-80">{{ date.weekday }}</span><span class="text-xl font-bold">{{ date.day }}</span>
                     </div>
                 </div>
-                <div v-else class="mt-1 pb-2">
-                    <h2 class="text-lg font-medium text-white opacity-90">{{ tabTitles[activeTab] }}</h2>
-                </div>
+                <div v-else class="mt-1 pb-2"><h2 class="text-lg font-medium text-white opacity-90">{{ tabTitles[activeTab] }}</h2></div>
             </div>
         </header>
 
         <main class="flex-1 overflow-y-auto no-scrollbar bg-[#f3f4f6] relative z-10 w-full">
             <div class="pt-6 px-4 pb-6">
                 <transition name="fade" mode="out-in">
+                    
                     <div v-if="activeTab === 'itinerary'" key="itinerary">
                         <div class="flex justify-between items-end mb-4 px-2">
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-800">{{ currentLocationName }} <span class="text-sm font-normal text-gray-500 font-serif ml-2">Dec {{ selectedDate }}</span></h3>
-                                <p class="text-[10px] text-christmas-blue/70 mt-1"><i class="fa-solid fa-satellite-dish mr-1"></i>Open-Meteo 當地實時天氣</p>
-                            </div>
+                            <div><h3 class="text-xl font-bold text-gray-800">{{ currentLocationName }} <span class="text-sm font-normal text-gray-500 font-serif ml-2">Dec {{ selectedDate }}</span></h3><p class="text-[10px] text-christmas-blue/70 mt-1"><i class="fa-solid fa-satellite-dish mr-1"></i>Open-Meteo 當地實時天氣</p></div>
                         </div>
                         <div class="relative min-h-[100px]">
                             <div v-if="weatherLoading" class="absolute inset-0 flex items-center justify-center bg-gray-50/50 z-10 rounded-xl"><div class="loader"></div></div>
@@ -187,7 +169,7 @@
                         <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
                             <div v-if="newItemImage" class="mb-2 relative w-16 h-16 group">
                                 <img :src="newItemImage" class="w-full h-full object-cover rounded-lg border shadow-sm">
-                                <button @click="newItemImage = null" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] shadow">×</button>
+                                <button @click="clearImage" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] shadow">×</button>
                             </div>
                             <div class="flex gap-3 h-12">
                                 <button @click="$refs.fileInput.click()" class="bg-gray-100 text-gray-500 w-14 h-full rounded-lg hover:bg-gray-200 transition flex items-center justify-center">
@@ -242,22 +224,22 @@
 
         createApp({
             setup() {
-                const activeTab = ref('itinerary')
-                const selectedDate = ref(20)
-                const weatherLoading = ref(false)
+                const activeTab = ref('itinerary');
+                const selectedDate = ref(20);
+                const weatherLoading = ref(false);
                 
-                // ... (Dates, Map, Weather Logic kept same) ...
-                const tabTitles = { 'itinerary': '行程表', 'map': '探索地圖', 'budget': '旅行記帳', 'shopping': '購物清單' }
+                // DATA
+                const tabTitles = { 'itinerary': '行程表', 'map': '探索地圖', 'budget': '旅行記帳', 'shopping': '購物清單' };
                 const dates = [
                     { day: 20, weekday: '週六' }, { day: 21, weekday: '週日' }, { day: 22, weekday: '週一' }, 
                     { day: 23, weekday: '週二' }, { day: 24, weekday: '週三' }, { day: 25, weekday: '週四' }, 
                     { day: 26, weekday: '週五' }, { day: 27, weekday: '週六' }, { day: 28, weekday: '週日' },
                     { day: 29, weekday: '週一' }, { day: 30, weekday: '週二' }, { day: 31, weekday: '週三' }
-                ]
+                ];
 
-                const hourlyWeather = ref([])
+                // WEATHER & LOCATION
+                const hourlyWeather = ref([]);
                 const getLocationByDate = (date) => {
-                    // (Same location logic as before)
                     if (date === 20) return { lat: 35.5494, lon: 139.7798, name: '東京轉機 (Tokyo)' };
                     if (date === 21) return { lat: 42.5937, lon: 140.8246, name: '洞爺湖 (Lake Toya)' };
                     if (date >= 22 && date <= 23) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
@@ -270,7 +252,7 @@
                     if (date >= 30) return { lat: 35.6895, lon: 139.6917, name: '東京 (Tokyo)' };
                     return { lat: 43.0618, lon: 141.3545, name: '北海道 (Hokkaido)' };
                 }
-                const currentLocationName = computed(() => getLocationByDate(selectedDate.value).name)
+                const currentLocationName = computed(() => getLocationByDate(selectedDate.value).name);
                 const getWeatherIcon = (code) => {
                     if (code <= 1) return 'fa-solid fa-sun'; if (code <= 3) return 'fa-solid fa-cloud-sun'; if (code <= 48) return 'fa-solid fa-smog';
                     if (code <= 67) return 'fa-solid fa-cloud-rain'; if (code <= 77) return 'fa-regular fa-snowflake'; if (code <= 82) return 'fa-solid fa-cloud-showers-heavy';
@@ -295,9 +277,9 @@
                         hourlyWeather.value = mappedData;
                     } catch (e) { hourlyWeather.value = [{ time: 'Error', temp: '--', icon: 'fa-solid fa-triangle-exclamation' }]; } finally { weatherLoading.value = false; }
                 }
-                watch(selectedDate, () => { fetchWeather(); }, { immediate: true })
+                watch(selectedDate, () => { fetchWeather(); }, { immediate: true });
 
-                // --- Map (Kept same) ---
+                // MAP & ITINERARY
                 const defaultMapUrl = 'https://maps.google.com/maps?q=Hokkaido&z=6&output=embed';
                 const currentMapUrl = ref(defaultMapUrl);
                 const savedLocations = ref([
@@ -315,643 +297,92 @@
                 };
 
                 const itineraryData = ref([
-                    // ... (Days 20-27 kept exactly as previously updated) ...
-                    {
-                        date: 20, 
-                        title: '廣州往東京 (NH924)',
-                        location: '廣州白雲國際機場 T1',
-                        time: '15:05',
-                        category: 'Flight',
-                        desc: '航班 : ANA NH924。預訂參考編號 : XK6OCG。機型舒適，飛行時間 3小時55分。',
-                        icon: 'fa-solid fa-plane-departure',
-                        image: 'https://dayooimg.dayoo.com/www/202402/06/54628485_bfb1e75b-3a34-491c-befd-52c4a4a38c11.jpg', 
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Haneda+Airport', 
-                        suggestion: '建議到達時間 : 12:35',
-                        details: { distance: '飛行距離\n2,900 km', transport: '3小時55分', stay: '航程' }
-                    },
-                    {
-                        date: 20, 
-                        title: '抵達東京 (羽田機場)',
-                        location: '羽田機場 T2',
-                        time: '20:00',
-                        category: 'Arrival',
-                        desc: '抵達羽田機場第2航廈 (T2)。辦理入境手續，感受日本冬日氣息。',
-                        icon: 'fa-solid fa-location-dot',
-                        image: 'https://lh7-us.googleusercontent.com/WjfbIrlhtJ-Z7HwnV6h7fXSfhk0ZOgfZG-fI7yJ4MqxAPtXYUoj6L3RUnAxWS6rqfjNEEgscg0NPRJutSOZS3LW_50-XEycs8gIHwrEafiIMImvLvbYBtTo5HaJtXBii3Nxro_y-sYXR9aGcCkeHdUU',
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Haneda+Airport+Terminal+2',
-                        details: { distance: '機場內', transport: '步行', stay: '1小時' }
-                    },
-                    {
-                        date: 20, 
-                        title: '入住 KEIKYU EX INN',
-                        location: 'KEIKYU EX INN',
-                        time: '21:30',
-                        category: 'Hotel',
-                        desc: '地址：1-1-4 Haneda Airport。位於天空橋站 HICity 出口步行2分鐘。備有大浴場可放鬆身心。',
-                        icon: 'fa-solid fa-bed',
-                        images: [
-                            'https://pix8.agoda.net/hotelImages/16791240/803978242/bc74de46d2361212f60426dc71338600.jpg?ce=0&s=1024x',
-                            'https://pix8.agoda.net/hotelImages/16791240/803978242/b69c0182316827d1c477e36427be07c3.jpg?ce=0&s=1024x',
-                            'https://pix8.agoda.net/hotelImages/16791240/803978242/1bd9a4da30ccb7860ad744bfa3f47ae3.jpg?ce=0&s=1024x'
-                        ],
-                        currentImageIndex: 0,
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda', 
-                        details: { distance: '一站距離', transport: '電車/接駁', stay: '過夜' }
-                    },
-                    {
-                        date: 21,
-                        title: '飛往札幌 (新千歲)',
-                        location: '羽田機場 -> 新千歲',
-                        time: '08:00',
-                        category: 'Flight',
-                        desc: '搭乘早班機前往北海道新千歲機場，準備開始自駕之旅！',
-                        icon: 'fa-solid fa-plane',
-                        image: 'https://images.unsplash.com/photo-1548181655-46e326292b0c?q=80&w=600&auto=format&fit=crop',
-                        mapLink: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d321',
-                        suggestion: '建議到達時間 : 06:30 (需於 06:15 從 KEIKYU EX INN 出發)',
-                        details: { distance: '820km', transport: '1h 30m', stay: '航程' }
-                    },
-                    {
-                        date: 21,
-                        title: 'Budget 租車取車',
-                        location: '新千歲機場店',
-                        time: '10:00',
-                        category: 'Car Rental',
-                        desc: '前往 Budget 櫃檯辦理取車手續。檢查車況、安裝雪胎，準備出發！',
-                        icon: 'fa-solid fa-car',
-                        image: 'https://www.budgetrentacar.co.jp/common/images/shop/0700/0700_main.jpg',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Budget Car Rental New Chitose")}',
-                        details: { distance: '機場接駁', transport: '接駁車', stay: '30分' }
-                    },
-                    {
-                        date: 21,
-                        title: '午餐：北海道湯咖哩',
-                        location: '千歲市區 / 機場',
-                        time: '11:30',
-                        category: 'Lunch',
-                        desc: '抵達北海道的第一餐，當然要吃熱騰騰的湯咖哩暖胃！推薦嘗試 Rojiura Curry SAMURAI 或 Lavi。',
-                        icon: 'fa-solid fa-utensils',
-                        image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b485c?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Rojiura Curry SAMURAI Chitose")}',
-                        details: { distance: '市區內', transport: '自駕', stay: '1.5小時' }
-                    },
-                    {
-                        date: 21,
-                        title: '登別地獄谷',
-                        location: '登別溫泉',
-                        time: '14:00',
-                        category: 'Sightseeing',
-                        desc: '觀賞火山爆發後形成的火山口遺跡，煙霧繚繞，景色壯觀。空氣中瀰漫著濃濃的硫磺味。',
-                        icon: 'fa-solid fa-volcano',
-                        image: 'https://images.unsplash.com/photo-1627883393922-a7f474966627?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Noboribetsu Jigokudani")}',
-                        details: { distance: '60km', transport: '自駕 1h', stay: '1.5小時' }
-                    },
-                    {
-                        date: 21,
-                        title: '入住 Hotel Cocoa',
-                        location: '洞爺湖',
-                        time: '18:00',
-                        category: 'Hotel',
-                        desc: '抵達洞爺湖畔的 Hotel Cocoa。享受湖景與舒適的住宿環境，放鬆一天的疲憊。',
-                        icon: 'fa-solid fa-hotel',
-                        images: [
-                            'https://q-xx.bstatic.com/xdata/images/hotel/840x460/445146130.jpg?k=f502e84c5929f5529ae905690d6b97012de0fff071b942fd1301ab4aa008b541&o=&s=1024x',
-                            'https://pix8.agoda.net/hotelImages/26079610/410029220/fd0b49e14e153112c980fa9fc78aba7f.jpg?ce=2&s=1024x',
-                            'https://pix8.agoda.net/hotelImages/26079610/410029220/1dbe30d5b439f5476c1881a794cc5aea.jpg?ce=2&s=1024x'
-                        ],
-                        currentImageIndex: 0,
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hotel Cocoa Toyako")}',
-                        details: { distance: '50km', transport: '自駕 1h', stay: '過夜' }
-                    },
-                    {
-                        date: 22,
-                        title: '洞爺湖晨間散策',
-                        location: '洞爺湖畔',
-                        time: '09:30',
-                        category: 'Sightseeing',
-                        desc: '早晨在湖邊漫步，欣賞羊蹄山的倒影。推薦前往 Lake Hill Farm 品嚐新鮮的義式冰淇淋。',
-                        icon: 'fa-solid fa-camera',
-                        image: 'https://images.unsplash.com/photo-1614343152528-94e09581827e?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Lake Toya")}',
-                        details: { distance: '周邊', transport: '自駕', stay: '2小時' }
-                    },
-                    {
-                        date: 22,
-                        title: '前往札幌 & 午餐',
-                        location: '往札幌途中',
-                        time: '12:00',
-                        category: 'Drive',
-                        desc: '享用午餐後，驅車前往北海道第一大城——札幌。沿途欣賞雪國公路風光。',
-                        icon: 'fa-solid fa-car-side',
-                        image: 'https://images.unsplash.com/photo-1542931287-023b922fa89b?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Sapporo")}',
-                        details: { distance: '100km', transport: '自駕 2h', stay: '車程' }
-                    },
-                    {
-                        date: 22,
-                        title: '滑雪體驗 (天氣許可)',
-                        location: '札幌手稻滑雪場',
-                        time: '15:30',
-                        category: 'Activity',
-                        desc: '如果天氣狀況良好，前往市區附近的滑雪場體驗粉雪！(推薦：札幌手稻或札幌國際滑雪場)',
-                        icon: 'fa-solid fa-person-skiing',
-                        image: 'https://images.unsplash.com/photo-1551524559-8af4e6624178?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Sapporo Teine Ski Resort")}',
-                        suggestion: '視當日風雪狀況決定',
-                        details: { distance: '20km', transport: '自駕 40分', stay: '2-3小時' }
-                    },
-                    {
-                        date: 22,
-                        title: '入住 Airbnb',
-                        location: '札幌市區',
-                        time: '19:00',
-                        category: 'Stay',
-                        desc: '入住位於札幌的 Airbnb 民宿。連住兩晚，方便探索市區美食與聖誕市集。',
-                        icon: 'fa-solid fa-house-user',
-                        images: [
-                            'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTUwOTg5OTcyODkyNTI1Mjk4Mg==/original/6a9e98b6-f65e-4c79-a37c-6fe7e2c19f9f.png?im_w=1440',
-                            'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTUwOTg5OTcyODkyNTI1Mjk4Mg==/original/0891bfb0-08b3-4138-8b19-aada9920e40d.png?im_w=1440'
-                        ],
-                        currentImageIndex: 0,
-                        mapLink: 'https://www.airbnb.com/l/B6IGd7Ac',
-                        details: { distance: '市區', transport: '自駕', stay: '連住兩晚' }
-                    },
-                    {
-                        date: 23,
-                        title: '國營瀧野鈴蘭丘陵公園',
-                        location: '札幌南區',
-                        time: '09:30',
-                        category: 'Activity',
-                        desc: '冬季開園首日！盡情體驗長達200公尺的輪胎滑雪(Tube Sledding)、雪地漫步等雪上活動。',
-                        icon: 'fa-solid fa-snowflake',
-                        image: 'https://images.unsplash.com/photo-1518659685799-923cb7a2a07d?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Takino Suzuran Hillside Park")}',
-                        details: { distance: '20km', transport: '自駕 45分', stay: '3小時' }
-                    },
-                    {
-                        date: 23,
-                        title: '午餐：Restaurant Moai',
-                        location: '真駒內瀧野靈園',
-                        time: '12:30',
-                        category: 'Sightseeing',
-                        desc: '探訪安藤忠雄設計的「頭大佛」與壯觀的摩艾石像群。午餐可在園區內的 Restaurant Moai 享用。',
-                        icon: 'fa-solid fa-monument',
-                        images: [
-                            'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Makomanai_Takino_Cemetery_Moai.jpg/800px-Makomanai_Takino_Cemetery_Moai.jpg',
-                            'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Hill_of_the_Buddha_August_2019.jpg/800px-Hill_of_the_Buddha_August_2019.jpg'
-                        ],
-                        currentImageIndex: 0,
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hill of the Buddha")}',
-                        details: { distance: '10分', transport: '車程', stay: '2小時' }
-                    },
-                    {
-                        date: 23,
-                        title: '慕尼黑聖誕市集',
-                        location: '大通公園 2丁目',
-                        time: '15:30',
-                        category: 'Event',
-                        desc: '感受濃厚的歐洲聖誕氛圍！逛逛德式木屋攤位，品嚐熱紅酒、烤杏仁，挑選精緻的聖誕飾品。',
-                        icon: 'fa-solid fa-tree',
-                        image: 'https://images.unsplash.com/photo-1543589077-47d81606c1bf?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Sapporo Munich Christmas Market")}',
-                        details: { distance: '市區', transport: '自駕回市區', stay: '自由' }
-                    },
-                    {
-                        date: 23,
-                        title: '晚餐：禪 (ZEN) 壽喜燒',
-                        location: '南2條西1丁目',
-                        time: '20:15',
-                        category: 'Dinner',
-                        desc: '預約席。享用高品質的和牛壽喜燒與涮涮鍋放題。地址：山口中央ビル B1F。',
-                        icon: 'fa-solid fa-utensils',
-                        image: 'https://images.unsplash.com/photo-1542353956-62024220c326?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Zen Sukiyaki Sapporo")}',
-                        details: { distance: '步行', transport: '5-8分鐘', stay: '晚餐' }
-                    },
-                    {
-                        date: 24,
-                        title: '前往支笏湖 & 午餐',
-                        location: '支笏湖畔',
-                        time: '11:30',
-                        category: 'Drive',
-                        desc: '離開札幌，前往日本最北的不凍湖—支笏湖。在湖畔餐廳 (推薦 Log Bear) 享用午餐，欣賞湖光山色。',
-                        icon: 'fa-solid fa-water',
-                        image: 'https://images.unsplash.com/photo-1612255737525-4c0920b72a94?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Lake Shikotsu")}',
-                        details: { distance: '45km', transport: '自駕 1h', stay: '2小時' }
-                    },
-                    {
-                        date: 24,
-                        title: '入住 翠山亭',
-                        location: '支笏湖温泉',
-                        time: '15:00',
-                        category: 'Hotel',
-                        desc: '入住「支笏湖第一寶亭留 翠山亭」。享受一泊二食的奢華溫泉體驗，度過寧靜浪漫的平安夜。',
-                        icon: 'fa-solid fa-hot-tub-person',
-                        image: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/336239563.jpg?k=2397c88e999c0087790885567789785089088788',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shikotsuko Daiichi Hotel Suizantei")}',
-                        details: { distance: '湖畔', transport: '步行', stay: '一泊二食' }
-                    },
-                    {
-                        date: 25,
-                        title: '聖誕晨間溫泉 & 早餐',
-                        location: '翠山亭',
-                        time: '09:00',
-                        category: 'Relax',
-                        desc: '在支笏湖的寧靜中醒來，享受晨間溫泉與精緻的日式早餐，度過悠閒的聖誕早晨。',
-                        icon: 'fa-solid fa-mug-hot',
-                        image: 'https://images.unsplash.com/photo-1544473244-f6895e672d6a?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shikotsuko Daiichi Hotel Suizantei")}',
-                        details: { distance: '飯店內', transport: '放鬆', stay: '至退房' }
-                    },
-                    {
-                        date: 25,
-                        title: '入住 新札幌 Airbnb',
-                        location: '厚別區 (新札幌)',
-                        time: '15:00',
-                        category: 'Stay',
-                        desc: '前往位於新札幌的寬敞 Airbnb。這裡交通便利，適合家庭聚會。',
-                        icon: 'fa-solid fa-house-chimney',
-                        image: 'https://a0.muscache.com/im/pictures/miso/Hosting-32963798/original/fd9b9c75-a508-4672-87ec-2cf9bd5f3720.jpeg?im_w=720',
-                        mapLink: 'https://www.airbnb.com.hk/rooms/32963798',
-                        details: { distance: '40km', transport: '自駕 1h', stay: '過夜' }
-                    },
-                    {
-                        date: 25,
-                        title: '聖誕大餐採買',
-                        location: 'AEON 新札幌店',
-                        time: '16:30',
-                        category: 'Shopping',
-                        desc: '前往附近的大型超市「AEON 新札幌店」採買聖誕晚餐食材。這裡食材種類豐富，非常適合準備大餐。',
-                        icon: 'fa-solid fa-cart-shopping',
-                        image: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Aeon Shin-Sapporo")}',
-                        suggestion: '推薦買北海道產牛排與海鮮！',
-                        details: { distance: '5分', transport: '車/步行', stay: '1.5小時' }
-                    },
-                    {
-                        date: 25,
-                        title: '自製聖誕大餐',
-                        location: 'Airbnb 民宿',
-                        time: '18:30',
-                        category: 'Dinner',
-                        desc: '在民宿的廚房大展身手，享用溫馨的自製聖誕晚餐，度過美好的夜晚。',
-                        icon: 'fa-solid fa-kitchen-set',
-                        image: 'https://images.unsplash.com/photo-1543362906-ac1b4526c1e0?q=80&w=800',
-                        mapLink: 'https://www.airbnb.com.hk/rooms/32963798',
-                        details: { distance: '室內', transport: '烹飪', stay: '晚餐' }
-                    },
-                    {
-                        date: 26,
-                        title: '出發前往小樽',
-                        location: '新札幌 -> 小樽',
-                        time: '08:00',
-                        category: 'Drive',
-                        desc: '從民宿出發，沿著札樽自動車道前往小樽。車程約 45 分鐘。',
-                        icon: 'fa-solid fa-car',
-                        image: 'https://images.unsplash.com/photo-1542289947-2342cb2338bd?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru")}',
-                        details: { distance: '40km', transport: '自駕 45分', stay: '車程' }
-                    },
-                    {
-                        date: 26,
-                        title: '小樽散策',
-                        location: '小樽運河 & 堺町通',
-                        time: '09:00',
-                        category: 'Sightseeing',
-                        desc: '漫步小樽運河，參觀北一硝子本館、音樂盒堂。欣賞美麗的聖誕燈飾。',
-                        icon: 'fa-solid fa-camera-retro',
-                        image: 'https://images.unsplash.com/photo-1549694770-362963032777?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru Canal")}',
-                        suggestion: '停車：小樽市觀光停車場 (付費)',
-                        details: { distance: '步行', transport: '散步', stay: '3小時' }
-                    },
-                    {
-                        date: 26,
-                        title: '小樽午餐',
-                        location: '壽司通 / 三角市場',
-                        time: '12:00',
-                        category: 'Lunch',
-                        desc: '推薦：政壽司、魚真或三角市場海鮮丼。',
-                        icon: 'fa-solid fa-utensils',
-                        image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Masa Zushi Otaru")}',
-                        suggestion: '政壽司有專用停車場',
-                        details: { distance: '市區', transport: '自駕', stay: '1.5小時' }
-                    },
-                    {
-                        date: 26,
-                        title: '市區購物 & 閒逛',
-                        location: '小樽市區',
-                        time: '13:30',
-                        category: 'Shopping',
-                        desc: '在前往天狗山之前，先在市區購買伴手禮 (LeTAO, 六花亭等)。',
-                        icon: 'fa-solid fa-bag-shopping',
-                        image: 'https://images.unsplash.com/photo-1563729768-6af58466dfd9?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("LeTAO Main Store")}',
-                        details: { distance: '堺町通', transport: '步行', stay: '1.5小時' }
-                    },
-                    {
-                        date: 26,
-                        title: '天狗山 (日落/夜景)',
-                        location: '天狗山纜車',
-                        time: '15:00',
-                        category: 'Sightseeing',
-                        desc: '開車前往天狗山，欣賞從黃昏到夜晚的絕美景色 (日落約 16:05)。山上有免費停車場。',
-                        icon: 'fa-solid fa-mountain',
-                        image: 'https://images.unsplash.com/photo-1516466723877-e4ec1d736c8a?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru Tenguyama Ropeway")}',
-                        suggestion: '免費停車場 (150台)',
-                        details: { distance: '15分', transport: '自駕', stay: '2小時' }
-                    },
-                    {
-                        date: 26,
-                        title: '返回新札幌 & 晚餐',
-                        location: '新札幌 / 厚別',
-                        time: '17:00',
-                        category: 'Drive',
-                        desc: '下山後開車返回民宿。晚餐可選擇在附近的 AEON Mall 或厚別區餐廳享用。',
-                        icon: 'fa-solid fa-car-side',
-                        image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shin-Sapporo")}',
-                        details: { distance: '40km', transport: '自駕 50分', stay: '晚餐' }
-                    },
-                    {
-                        date: 27,
-                        title: '自駕前往美瑛',
-                        location: '新札幌 -> 美瑛',
-                        time: '08:00',
-                        category: 'Drive',
-                        desc: '出發前往美瑛，直奔深山的白金溫泉區。',
-                        icon: 'fa-solid fa-car',
-                        image: 'https://images.unsplash.com/photo-1548749449-33db24f33664?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Biei")}',
-                        details: { distance: '130km', transport: '自駕 2.5h', stay: '車程' }
-                    },
-                    {
-                        date: 27,
-                        title: '白金不動瀑布 & 白鬚瀑布',
-                        location: '美瑛白金溫泉',
-                        time: '10:30',
-                        category: 'Sightseeing',
-                        desc: '欣賞冬日結冰的壯觀瀑布，以及藍色的美瑛川。兩處瀑布距離很近。',
-                        icon: 'fa-solid fa-water',
-                        images: [
-                            'https://www.dreamstime.com/shirogane-waterfall-winter-bie-shirogane-waterfall-winter-biei-hokkaido-japan-image135766816',
-                            'https://www.dreamstime.com/photos-images/shirahige-waterfall-snow-winter-season-hokkaido.html'
-                        ],
-                        currentImageIndex: 0,
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shirahige Waterfall")}',
-                        suggestion: '免費停車場',
-                        details: { distance: '山區', transport: '自駕', stay: '2小時' }
-                    },
-                    {
-                        date: 27,
-                        title: '午餐：美瑛咖哩烏龍麵',
-                        location: 'Family Restaurant Daimaru',
-                        time: '12:30',
-                        category: 'Lunch',
-                        desc: '前往美瑛市區，品嚐當地靈魂美食「美瑛咖哩烏龍麵」。這家是當地人氣名店！',
-                        icon: 'fa-solid fa-utensils',
-                        image: 'https://images.unsplash.com/photo-1548507200-dd1e6957367e?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Daimaru Biei")}',
-                        suggestion: '市區有公共停車場',
-                        details: { distance: '20km', transport: '自駕 25分', stay: '1.5小時' }
-                    },
-                    {
-                        date: 27,
-                        title: '美瑛小鎮 & 拼布之路',
-                        location: '美瑛',
-                        time: '14:00',
-                        category: 'Sightseeing',
-                        desc: '開車遊覽拼布之路（Ken & Mary 之樹），並在美麗的美瑛小鎮閒逛、喝咖啡。',
-                        icon: 'fa-solid fa-tree',
-                        image: 'https://www.visit-hokkaido.jp/assets/images/spot/10043/1.jpg',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Biei Station")}',
-                        details: { distance: '周邊', transport: '自駕', stay: '3小時' }
-                    },
-                    {
-                        date: 27,
-                        title: '返回新札幌 & 晚餐',
-                        location: '新札幌 / 厚別',
-                        time: '17:00',
-                        category: 'Drive',
-                        desc: '結束充實的一天，開車返回民宿。晚餐在厚別周邊享用。',
-                        icon: 'fa-solid fa-car-side',
-                        image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shin-Sapporo")}',
-                        details: { distance: '140km', transport: '自駕 2.5h', stay: '晚餐' }
-                    },
+                    // ... (Full itinerary data 20-31 as previously agreed) ...
+                    { date: 20, title: '廣州往東京 (NH924)', location: '廣州白雲國際機場 T1', time: '15:05', category: 'Flight', desc: '航班 : ANA NH924。預訂參考編號 : XK6OCG。機型舒適，飛行時間 3小時55分。', icon: 'fa-solid fa-plane-departure', image: 'https://dayooimg.dayoo.com/www/202402/06/54628485_bfb1e75b-3a34-491c-befd-52c4a4a38c11.jpg', mapLink: 'https://www.google.com/maps/search/?api=1&query=Haneda+Airport', suggestion: '建議到達時間 : 12:35', details: { distance: '飛行距離\n2,900 km', transport: '3小時55分', stay: '航程' } },
+                    { date: 20, title: '抵達東京 (羽田機場)', location: '羽田機場 T2', time: '20:00', category: 'Arrival', desc: '抵達羽田機場第2航廈 (T2)。辦理入境手續，感受日本冬日氣息。', icon: 'fa-solid fa-location-dot', image: 'https://lh7-us.googleusercontent.com/WjfbIrlhtJ-Z7HwnV6h7fXSfhk0ZOgfZG-fI7yJ4MqxAPtXYUoj6L3RUnAxWS6rqfjNEEgscg0NPRJutSOZS3LW_50-XEycs8gIHwrEafiIMImvLvbYBtTo5HaJtXBii3Nxro_y-sYXR9aGcCkeHdUU', mapLink: 'https://www.google.com/maps/search/?api=1&query=Haneda+Airport+Terminal+2', details: { distance: '機場內', transport: '步行', stay: '1小時' } },
+                    { date: 20, title: '入住 KEIKYU EX INN', location: 'KEIKYU EX INN', time: '21:30', category: 'Hotel', desc: '地址：1-1-4 Haneda Airport。位於天空橋站 HICity 出口步行2分鐘。備有大浴場可放鬆身心。', icon: 'fa-solid fa-bed', images: ['https://pix8.agoda.net/hotelImages/16791240/803978242/bc74de46d2361212f60426dc71338600.jpg?ce=0&s=1024x', 'https://pix8.agoda.net/hotelImages/16791240/803978242/b69c0182316827d1c477e36427be07c3.jpg?ce=0&s=1024x', 'https://pix8.agoda.net/hotelImages/16791240/803978242/1bd9a4da30ccb7860ad744bfa3f47ae3.jpg?ce=0&s=1024x'], currentImageIndex: 0, mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda', details: { distance: '一站距離', transport: '電車/接駁', stay: '過夜' } },
+                    { date: 21, title: '飛往札幌 (新千歲)', location: '羽田機場 -> 新千歲', time: '08:00', category: 'Flight', desc: '搭乘早班機前往北海道新千歲機場，準備開始自駕之旅！', icon: 'fa-solid fa-plane', image: 'https://images.unsplash.com/photo-1548181655-46e326292b0c?q=80&w=600&auto=format&fit=crop', mapLink: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d321', suggestion: '建議到達時間 : 06:30 (需於 06:15 從 KEIKYU EX INN 出發)', details: { distance: '820km', transport: '1h 30m', stay: '航程' } },
+                    { date: 21, title: 'Budget 租車取車', location: '新千歲機場店', time: '10:00', category: 'Car Rental', desc: '前往 Budget 櫃檯辦理取車手續。檢查車況、安裝雪胎，準備出發！', icon: 'fa-solid fa-car', image: 'https://www.budgetrentacar.co.jp/common/images/shop/0700/0700_main.jpg', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Budget Car Rental New Chitose")}', details: { distance: '機場接駁', transport: '接駁車', stay: '30分' } },
+                    { date: 21, title: '午餐：北海道湯咖哩', location: '千歲市區 / 機場', time: '11:30', category: 'Lunch', desc: '抵達北海道的第一餐，當然要吃熱騰騰的湯咖哩暖胃！推薦嘗試 Rojiura Curry SAMURAI 或 Lavi。', icon: 'fa-solid fa-utensils', image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b485c?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Rojiura Curry SAMURAI Chitose")}', details: { distance: '市區內', transport: '自駕', stay: '1.5小時' } },
+                    { date: 21, title: '登別地獄谷', location: '登別溫泉', time: '14:00', category: 'Sightseeing', desc: '觀賞火山爆發後形成的火山口遺跡，煙霧繚繞，景色壯觀。空氣中瀰漫著濃濃的硫磺味。', icon: 'fa-solid fa-volcano', image: 'https://images.unsplash.com/photo-1627883393922-a7f474966627?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Noboribetsu Jigokudani")}', details: { distance: '60km', transport: '自駕 1h', stay: '1.5小時' } },
+                    { date: 21, title: '入住 Hotel Cocoa', location: '洞爺湖', time: '18:00', category: 'Hotel', desc: '抵達洞爺湖畔的 Hotel Cocoa。享受湖景與舒適的住宿環境，放鬆一天的疲憊。', icon: 'fa-solid fa-hotel', images: ['https://q-xx.bstatic.com/xdata/images/hotel/840x460/445146130.jpg?k=f502e84c5929f5529ae905690d6b97012de0fff071b942fd1301ab4aa008b541&o=&s=1024x', 'https://pix8.agoda.net/hotelImages/26079610/410029220/fd0b49e14e153112c980fa9fc78aba7f.jpg?ce=2&s=1024x', 'https://pix8.agoda.net/hotelImages/26079610/410029220/1dbe30d5b439f5476c1881a794cc5aea.jpg?ce=2&s=1024x'], currentImageIndex: 0, mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hotel Cocoa Toyako")}', details: { distance: '50km', transport: '自駕 1h', stay: '過夜' } },
+                    { date: 22, title: '洞爺湖晨間散策', location: '洞爺湖畔', time: '09:30', category: 'Sightseeing', desc: '早晨在湖邊漫步，欣賞羊蹄山的倒影。推薦前往 Lake Hill Farm 品嚐新鮮的義式冰淇淋。', icon: 'fa-solid fa-camera', image: 'https://images.unsplash.com/photo-1614343152528-94e09581827e?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Lake Toya")}', details: { distance: '周邊', transport: '自駕', stay: '2小時' } },
+                    { date: 22, title: '前往札幌 & 午餐', location: '往札幌途中', time: '12:00', category: 'Drive', desc: '享用午餐後，驅車前往北海道第一大城——札幌。沿途欣賞雪國公路風光。', icon: 'fa-solid fa-car-side', image: 'https://images.unsplash.com/photo-1542931287-023b922fa89b?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Sapporo")}', details: { distance: '100km', transport: '自駕 2h', stay: '車程' } },
+                    { date: 22, title: '滑雪體驗 (天氣許可)', location: '札幌手稻滑雪場', time: '15:30', category: 'Activity', desc: '如果天氣狀況良好，前往市區附近的滑雪場體驗粉雪！(推薦：札幌手稻或札幌國際滑雪場)', icon: 'fa-solid fa-person-skiing', image: 'https://images.unsplash.com/photo-1551524559-8af4e6624178?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Sapporo Teine Ski Resort")}', suggestion: '視當日風雪狀況決定', details: { distance: '20km', transport: '自駕 40分', stay: '2-3小時' } },
+                    { date: 22, title: '入住 Airbnb', location: '札幌市區', time: '19:00', category: 'Stay', desc: '入住位於札幌的 Airbnb 民宿。連住兩晚，方便探索市區美食與聖誕市集。', icon: 'fa-solid fa-house-user', images: ['https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTUwOTg5OTcyODkyNTI1Mjk4Mg==/original/6a9e98b6-f65e-4c79-a37c-6fe7e2c19f9f.png?im_w=1440', 'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTUwOTg5OTcyODkyNTI1Mjk4Mg==/original/0891bfb0-08b3-4138-8b19-aada9920e40d.png?im_w=1440'], currentImageIndex: 0, mapLink: 'https://www.airbnb.com/l/B6IGd7Ac', details: { distance: '市區', transport: '自駕', stay: '連住兩晚' } },
+                    { date: 23, title: '國營瀧野鈴蘭丘陵公園', location: '札幌南區', time: '09:30', category: 'Activity', desc: '冬季開園首日！盡情體驗長達200公尺的輪胎滑雪(Tube Sledding)、雪地漫步等雪上活動。', icon: 'fa-solid fa-snowflake', image: 'https://images.unsplash.com/photo-1518659685799-923cb7a2a07d?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Takino Suzuran Hillside Park")}', details: { distance: '20km', transport: '自駕 45分', stay: '3小時' } },
+                    { date: 23, title: '午餐：Restaurant Moai', location: '真駒內瀧野靈園', time: '12:30', category: 'Sightseeing', desc: '探訪安藤忠雄設計的「頭大佛」與壯觀的摩艾石像群。午餐可在園區內的 Restaurant Moai 享用。', icon: 'fa-solid fa-monument', images: ['https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Makomanai_Takino_Cemetery_Moai.jpg/800px-Makomanai_Takino_Cemetery_Moai.jpg', 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Hill_of_the_Buddha_August_2019.jpg/800px-Hill_of_the_Buddha_August_2019.jpg'], currentImageIndex: 0, mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hill of the Buddha")}', details: { distance: '10分', transport: '車程', stay: '2小時' } },
+                    { date: 23, title: '慕尼黑聖誕市集', location: '大通公園 2丁目', time: '15:30', category: 'Event', desc: '感受濃厚的歐洲聖誕氛圍！逛逛德式木屋攤位，品嚐熱紅酒、烤杏仁，挑選精緻的聖誕飾品。', icon: 'fa-solid fa-tree', image: 'https://images.unsplash.com/photo-1543589077-47d81606c1bf?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Sapporo Munich Christmas Market")}', details: { distance: '市區', transport: '自駕回市區', stay: '自由' } },
+                    { date: 23, title: '晚餐：禪 (ZEN) 壽喜燒', location: '南2條西1丁目', time: '20:15', category: 'Dinner', desc: '預約席。享用高品質的和牛壽喜燒與涮涮鍋放題。地址：山口中央ビル B1F。', icon: 'fa-solid fa-utensils', image: 'https://images.unsplash.com/photo-1542353956-62024220c326?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Zen Sukiyaki Sapporo")}', details: { distance: '步行', transport: '5-8分鐘', stay: '晚餐' } },
+                    { date: 24, title: '前往支笏湖 & 午餐', location: '支笏湖畔', time: '11:30', category: 'Drive', desc: '離開札幌，前往日本最北的不凍湖—支笏湖。在湖畔餐廳 (推薦 Log Bear) 享用午餐，欣賞湖光山色。', icon: 'fa-solid fa-water', image: 'https://images.unsplash.com/photo-1612255737525-4c0920b72a94?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Lake Shikotsu")}', details: { distance: '45km', transport: '自駕 1h', stay: '2小時' } },
+                    { date: 24, title: '入住 翠山亭', location: '支笏湖温泉', time: '15:00', category: 'Hotel', desc: '入住「支笏湖第一寶亭留 翠山亭」。享受一泊二食的奢華溫泉體驗，度過寧靜浪漫的平安夜。', icon: 'fa-solid fa-hot-tub-person', image: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/336239563.jpg?k=2397c88e999c0087790885567789785089088788', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shikotsuko Daiichi Hotel Suizantei")}', details: { distance: '湖畔', transport: '步行', stay: '一泊二食' } },
+                    { date: 25, title: '聖誕晨間溫泉 & 早餐', location: '翠山亭', time: '09:00', category: 'Relax', desc: '在支笏湖的寧靜中醒來，享受晨間溫泉與精緻的日式早餐，度過悠閒的聖誕早晨。', icon: 'fa-solid fa-mug-hot', image: 'https://images.unsplash.com/photo-1544473244-f6895e672d6a?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shikotsuko Daiichi Hotel Suizantei")}', details: { distance: '飯店內', transport: '放鬆', stay: '至退房' } },
+                    { date: 25, title: '入住 新札幌 Airbnb', location: '厚別區 (新札幌)', time: '15:00', category: 'Stay', desc: '前往位於新札幌的寬敞 Airbnb。這裡交通便利，適合家庭聚會。', icon: 'fa-solid fa-house-chimney', image: 'https://a0.muscache.com/im/pictures/miso/Hosting-32963798/original/fd9b9c75-a508-4672-87ec-2cf9bd5f3720.jpeg?im_w=720', mapLink: 'https://www.airbnb.com.hk/rooms/32963798', details: { distance: '40km', transport: '自駕 1h', stay: '過夜' } },
+                    { date: 25, title: '聖誕大餐採買', location: 'AEON 新札幌店', time: '16:30', category: 'Shopping', desc: '前往附近的大型超市「AEON 新札幌店」採買聖誕晚餐食材。這裡食材種類豐富，非常適合準備大餐。', icon: 'fa-solid fa-cart-shopping', image: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Aeon Shin-Sapporo")}', suggestion: '推薦買北海道產牛排與海鮮！', details: { distance: '5分', transport: '車/步行', stay: '1.5小時' } },
+                    { date: 25, title: '自製聖誕大餐', location: 'Airbnb 民宿', time: '18:30', category: 'Dinner', desc: '在民宿的廚房大展身手，享用溫馨的自製聖誕晚餐，度過美好的夜晚。', icon: 'fa-solid fa-kitchen-set', image: 'https://images.unsplash.com/photo-1543362906-ac1b4526c1e0?q=80&w=800', mapLink: 'https://www.airbnb.com.hk/rooms/32963798', details: { distance: '室內', transport: '烹飪', stay: '晚餐' } },
+                    { date: 26, title: '出發前往小樽', location: '新札幌 -> 小樽', time: '08:00', category: 'Drive', desc: '從民宿出發，沿著札樽自動車道前往小樽。車程約 45 分鐘。', icon: 'fa-solid fa-car', image: 'https://images.unsplash.com/photo-1542289947-2342cb2338bd?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru")}', details: { distance: '40km', transport: '自駕 45分', stay: '車程' } },
+                    { date: 26, title: '小樽散策', location: '小樽運河 & 堺町通', time: '09:00', category: 'Sightseeing', desc: '漫步小樽運河，參觀北一硝子本館、音樂盒堂。欣賞美麗的聖誕燈飾。', icon: 'fa-solid fa-camera-retro', image: 'https://images.unsplash.com/photo-1549694770-362963032777?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru Canal")}', suggestion: '停車：小樽市觀光停車場 (付費)', details: { distance: '步行', transport: '散步', stay: '3小時' } },
+                    { date: 26, title: '小樽午餐', location: '壽司通 / 三角市場', time: '12:00', category: 'Lunch', desc: '推薦：政壽司、魚真或三角市場海鮮丼。', icon: 'fa-solid fa-utensils', image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Masa Zushi Otaru")}', suggestion: '政壽司有專用停車場', details: { distance: '市區', transport: '自駕', stay: '1.5小時' } },
+                    { date: 26, title: '市區購物 & 閒逛', location: '小樽市區', time: '13:30', category: 'Shopping', desc: '在前往天狗山之前，先在市區購買伴手禮 (LeTAO, 六花亭等)。', icon: 'fa-solid fa-bag-shopping', image: 'https://images.unsplash.com/photo-1563729768-6af58466dfd9?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("LeTAO Main Store")}', details: { distance: '堺町通', transport: '步行', stay: '1.5小時' } },
+                    { date: 26, title: '天狗山 (日落/夜景)', location: '天狗山纜車', time: '15:00', category: 'Sightseeing', desc: '開車前往天狗山，欣賞從黃昏到夜晚的絕美景色 (日落約 16:05)。山上有免費停車場。', icon: 'fa-solid fa-mountain', image: 'https://images.unsplash.com/photo-1516466723877-e4ec1d736c8a?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru Tenguyama Ropeway")}', suggestion: '免費停車場 (150台)', details: { distance: '15分', transport: '自駕', stay: '2小時' } },
+                    { date: 26, title: '返回新札幌 & 晚餐', location: '新札幌 / 厚別', time: '17:00', category: 'Drive', desc: '下山後開車返回民宿。晚餐可選擇在附近的 AEON Mall 或厚別區餐廳享用。', icon: 'fa-solid fa-car-side', image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shin-Sapporo")}', details: { distance: '40km', transport: '自駕 50分', stay: '晚餐' } },
+                    { date: 27, title: '自駕前往美瑛', location: '新札幌 -> 美瑛', time: '08:00', category: 'Drive', desc: '出發前往美瑛，直奔深山的白金溫泉區。', icon: 'fa-solid fa-car', image: 'https://images.unsplash.com/photo-1548749449-33db24f33664?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Biei")}', details: { distance: '130km', transport: '自駕 2.5h', stay: '車程' } },
+                    { date: 27, title: '白金不動瀑布 & 白鬚瀑布', location: '美瑛白金溫泉', time: '10:30', category: 'Sightseeing', desc: '欣賞冬日結冰的壯觀瀑布，以及藍色的美瑛川。兩處瀑布距離很近。', icon: 'fa-solid fa-water', images: ['https://www.dreamstime.com/shirogane-waterfall-winter-bie-shirogane-waterfall-winter-biei-hokkaido-japan-image135766816', 'https://www.dreamstime.com/photos-images/shirahige-waterfall-snow-winter-season-hokkaido.html'], currentImageIndex: 0, mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shirahige Waterfall")}', suggestion: '免費停車場', details: { distance: '山區', transport: '自駕', stay: '2小時' } },
+                    { date: 27, title: '午餐：美瑛咖哩烏龍麵', location: 'Family Restaurant Daimaru', time: '12:30', category: 'Lunch', desc: '前往美瑛市區，品嚐當地靈魂美食「美瑛咖哩烏龍麵」。這家是當地人氣名店！', icon: 'fa-solid fa-utensils', image: 'https://images.unsplash.com/photo-1548507200-dd1e6957367e?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Daimaru Biei")}', suggestion: '市區有公共停車場', details: { distance: '20km', transport: '自駕 25分', stay: '1.5小時' } },
+                    { date: 27, title: '美瑛小鎮 & 拼布之路', location: '美瑛', time: '14:00', category: 'Sightseeing', desc: '開車遊覽拼布之路（Ken & Mary 之樹），並在美麗的美瑛小鎮閒逛、喝咖啡。', icon: 'fa-solid fa-tree', image: 'https://www.visit-hokkaido.jp/assets/images/spot/10043/1.jpg', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Biei Station")}', details: { distance: '周邊', transport: '自駕', stay: '3小時' } },
+                    { date: 27, title: '返回新札幌 & 晚餐', location: '新札幌 / 厚別', time: '17:00', category: 'Drive', desc: '結束充實的一天，開車返回民宿。晚餐在厚別周邊享用。', icon: 'fa-solid fa-car-side', image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shin-Sapporo")}', details: { distance: '140km', transport: '自駕 2.5h', stay: '晚餐' } },
+                    { date: 28, title: '自然醒 & 出發', location: '厚別民宿', time: '10:00', category: 'Relax', desc: '享受一個睡到自然醒的早晨。悠閒地吃過早餐後，約 10:30 出發前往第一個景點。', icon: 'fa-solid fa-bed', image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=800', mapLink: '', details: { distance: '民宿', transport: '休息', stay: '至10:30' } },
+                    { date: 28, title: '羊之丘展望台', location: '羊之丘', time: '10:30', category: 'Sightseeing', desc: '與著名的克拉克博士像合影 ("Boys, be ambitious!")，欣賞札幌市區的雪景全景。', icon: 'fa-solid fa-binoculars', image: 'https://images.unsplash.com/photo-1534234828563-02622e18926b?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hitsujigaoka Observation Hill")}', suggestion: '免費停車場', details: { distance: '15km', transport: '自駕 30分', stay: '1.5小時' } },
+                    { date: 28, title: '午餐：湯咖哩', location: '札幌市區', time: '12:00', category: 'Lunch', desc: '在前往神宮的途中享用午餐。推薦：奧芝商店或 Suage+ (如果還沒吃過的話)。', icon: 'fa-solid fa-utensils', image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b485c?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Suage+ Sapporo")}', details: { distance: '市區', transport: '自駕', stay: '1.5小時' } },
+                    { date: 28, title: '北海道神宮', location: '圓山公園', time: '13:30', category: 'Sightseeing', desc: '參拜北海道總鎮守。冬天的神宮在雪中顯得格外莊嚴寧靜。', icon: 'fa-solid fa-torii-gate', image: 'https://images.unsplash.com/photo-1570459027562-4a916cc6113f?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hokkaido Shrine")}', suggestion: '停車費：參拜者免費1小時', details: { distance: '10km', transport: '自駕 20分', stay: '1.5小時' } },
+                    { date: 28, title: '白色戀人公園 (點燈)', location: '札幌西區', time: '15:30', category: 'Sightseeing', desc: '傍晚前往，剛好可以欣賞戶外的聖誕點燈 (Illumination)，非常浪漫。', icon: 'fa-solid fa-cookie-bite', image: 'https://images.unsplash.com/photo-1611029289297-c2447952a20b?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shiroi Koibito Park")}', suggestion: '付費停車場 (1000円/h)', details: { distance: '15分', transport: '自駕', stay: '1.5小時' } },
+                    { date: 28, title: '迴轉壽司 Toriton (晚餐)', location: '豐平店 (好停車)', time: '18:00', category: 'Dinner', desc: '北海道當地人氣第一的迴轉壽司！食材新鮮、份量大。推薦：生干貝、大牡丹蝦。', icon: 'fa-solid fa-fish', image: 'https://tblg.k-img.com/restaurant/images/Rvw/136030/640x640_rect_136030097.jpg', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Toriton Toyohira")}', suggestion: '無法預約，建議提早去抽號碼牌', details: { distance: '市區', transport: '自駕 20分', stay: '1.5小時' } },
+                    { date: 29, title: '前往三井 Outlet', location: '北廣島', time: '10:30', category: 'Shopping', desc: '退房後，前往前往機場順路的「三井 Outlet Park 札幌北廣島」進行最後採購。', icon: 'fa-solid fa-bags-shopping', image: 'https://mitsui-shopping-park.com/mop/sapporo/images/main_visual_sp.jpg', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Mitsui Outlet Park Sapporo Kitahiroshima")}', details: { distance: '15km', transport: '自駕 20分', stay: '3小時' } },
+                    { date: 29, title: '千歲水族館', location: '千歲市', time: '15:00', category: 'Activity', desc: '參觀擁有日本最大淡水水槽的水族館，還可以透過水中觀察窗直接看到千歲川的鮭魚。', icon: 'fa-solid fa-fish-fins', image: 'https://chitose-aq.jp/wp-content/uploads/2019/04/main_visual01.jpg', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Chitose Aquarium")}', details: { distance: '25km', transport: '自駕 30分', stay: '1.5小時' } },
+                    { date: 29, title: '入住 千歲 Airbnb', location: '千歲市中心', time: '18:00', category: 'Stay', desc: '入住千歲市區的民宿，整理行李，準備明天一早前往機場。地址：5-18-24 Shinonomecho。', icon: 'fa-solid fa-house-chimney', image: 'https://a0.muscache.com/im/pictures/e4d94358-0053-4322-9653-730623326773.jpg?im_w=1200', mapLink: 'https://www.airbnb.com.hk/rooms/28018907', details: { distance: '市區', transport: '自駕', stay: '過夜' } },
+                    { date: 30, title: '早班機 NH052 (CTS->HND)', location: '新千歲機場', time: '08:30', category: 'Flight', desc: '早起還車(如需)，搭乘 08:30 班機飛往東京。抵達後開始最後的購物衝刺！', icon: 'fa-solid fa-plane-departure', image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("New Chitose Airport")}', suggestion: '建議 07:00 抵達機場辦理還車/登機', details: { distance: '東京', transport: '飛行', stay: '航程' } },
+                    { date: 30, title: '東京銀座購物', location: '銀座 (Ginza)', time: '13:00', category: 'Shopping', desc: '抵達東京並寄放行李後，前往銀座。這裡有最新的時尚精品、Uniqlo 旗艦店與各種伴手禮。', icon: 'fa-solid fa-bag-shopping', image: 'https://images.unsplash.com/photo-1570591752532-3a33990cb89c?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Ginza")}', details: { distance: '市區', transport: '電車', stay: '4小時' } },
+                    { date: 30, title: '入住 KEIKYU EX INN', location: '天空橋站', time: '19:00', category: 'Hotel', desc: '再次入住交通便利的 KEIKYU EX INN。晚餐可選擇羽田機場花園的餐廳，早點休息準備明天回程。', icon: 'fa-solid fa-bed', image: 'https://pix8.agoda.net/hotelImages/16791240/803978242/bc74de46d2361212f60426dc71338600.jpg?ce=0&s=1024x', mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda', details: { distance: '機場旁', transport: '步行/接駁', stay: '過夜' } },
+                    { date: 31, title: '早起退房 & 機場早餐', location: '羽田機場 T3', time: '06:40', category: 'Departure', desc: '09:20 的班機，建議 06:40 抵達第三航廈。辦理登機後，在機場內的江戶小路或出境區享用早餐。', icon: 'fa-solid fa-passport', image: 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800', mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Haneda Airport Terminal 3")}', suggestion: 'NH923 09:20 起飛', details: { distance: '回國', transport: '飛行', stay: '再見' } }
+                ]);
 
-                    // Day 28 (Updated: Toriton Dinner)
-                    {
-                        date: 28,
-                        title: '自然醒 & 出發',
-                        location: '厚別民宿',
-                        time: '10:00',
-                        category: 'Relax',
-                        desc: '享受一個睡到自然醒的早晨。悠閒地吃過早餐後，約 10:30 出發前往第一個景點。',
-                        icon: 'fa-solid fa-bed',
-                        image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=800',
-                        mapLink: '',
-                        details: { distance: '民宿', transport: '休息', stay: '至10:30' }
-                    },
-                    {
-                        date: 28,
-                        title: '羊之丘展望台',
-                        location: '羊之丘',
-                        time: '10:30',
-                        category: 'Sightseeing',
-                        desc: '與著名的克拉克博士像合影 ("Boys, be ambitious!")，欣賞札幌市區的雪景全景。',
-                        icon: 'fa-solid fa-binoculars',
-                        image: 'https://images.unsplash.com/photo-1534234828563-02622e18926b?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hitsujigaoka Observation Hill")}',
-                        suggestion: '免費停車場',
-                        details: { distance: '15km', transport: '自駕 30分', stay: '1.5小時' }
-                    },
-                    {
-                        date: 28,
-                        title: '午餐：湯咖哩',
-                        location: '札幌市區',
-                        time: '12:00',
-                        category: 'Lunch',
-                        desc: '在前往神宮的途中享用午餐。推薦：奧芝商店或 Suage+ (如果還沒吃過的話)。',
-                        icon: 'fa-solid fa-utensils',
-                        image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b485c?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Suage+ Sapporo")}',
-                        details: { distance: '市區', transport: '自駕', stay: '1.5小時' }
-                    },
-                    {
-                        date: 28,
-                        title: '北海道神宮',
-                        location: '圓山公園',
-                        time: '13:30',
-                        category: 'Sightseeing',
-                        desc: '參拜北海道總鎮守。冬天的神宮在雪中顯得格外莊嚴寧靜。',
-                        icon: 'fa-solid fa-torii-gate',
-                        image: 'https://images.unsplash.com/photo-1570459027562-4a916cc6113f?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Hokkaido Shrine")}',
-                        suggestion: '停車費：參拜者免費1小時',
-                        details: { distance: '10km', transport: '自駕 20分', stay: '1.5小時' }
-                    },
-                    {
-                        date: 28,
-                        title: '白色戀人公園 (點燈)',
-                        location: '札幌西區',
-                        time: '15:30',
-                        category: 'Sightseeing',
-                        desc: '傍晚前往，剛好可以欣賞戶外的聖誕點燈 (Illumination)，非常浪漫。',
-                        icon: 'fa-solid fa-cookie-bite',
-                        image: 'https://images.unsplash.com/photo-1611029289297-c2447952a20b?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shiroi Koibito Park")}',
-                        suggestion: '付費停車場 (1000円/h)',
-                        details: { distance: '15分', transport: '自駕', stay: '1.5小時' }
-                    },
-                    {
-                        date: 28,
-                        title: '迴轉壽司 Toriton (晚餐)',
-                        location: '豐平店 (好停車)',
-                        time: '18:00',
-                        category: 'Dinner',
-                        desc: '北海道當地人氣第一的迴轉壽司！食材新鮮、份量大。推薦：生干貝、大牡丹蝦。',
-                        icon: 'fa-solid fa-fish',
-                        image: 'https://tblg.k-img.com/restaurant/images/Rvw/136030/640x640_rect_136030097.jpg',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Toriton Toyohira")}',
-                        suggestion: '無法預約，建議提早去抽號碼牌',
-                        details: { distance: '市區', transport: '自駕 20分', stay: '1.5小時' }
-                    },
-                    {
-                        date: 29,
-                        title: '前往三井 Outlet',
-                        location: '北廣島',
-                        time: '10:30',
-                        category: 'Shopping',
-                        desc: '退房後，前往前往機場順路的「三井 Outlet Park 札幌北廣島」進行最後採購。',
-                        icon: 'fa-solid fa-bags-shopping',
-                        image: 'https://mitsui-shopping-park.com/mop/sapporo/images/main_visual_sp.jpg', 
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Mitsui Outlet Park Sapporo Kitahiroshima")}',
-                        details: { distance: '15km', transport: '自駕 20分', stay: '3小時' }
-                    },
-                    {
-                        date: 29,
-                        title: '千歲水族館',
-                        location: '千歲市',
-                        time: '15:00',
-                        category: 'Activity',
-                        desc: '參觀擁有日本最大淡水水槽的水族館，還可以透過水中觀察窗直接看到千歲川的鮭魚。',
-                        icon: 'fa-solid fa-fish-fins',
-                        image: 'https://chitose-aq.jp/wp-content/uploads/2019/04/main_visual01.jpg',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Chitose Aquarium")}',
-                        details: { distance: '25km', transport: '自駕 30分', stay: '1.5小時' }
-                    },
-                    {
-                        date: 29,
-                        title: '入住 千歲 Airbnb',
-                        location: '千歲市中心',
-                        time: '18:00',
-                        category: 'Stay',
-                        desc: '入住千歲市區的民宿，整理行李，準備明天一早前往機場。地址：5-18-24 Shinonomecho。',
-                        icon: 'fa-solid fa-house-chimney',
-                        image: 'https://a0.muscache.com/im/pictures/e4d94358-0053-4322-9653-730623326773.jpg?im_w=1200', 
-                        mapLink: 'https://www.airbnb.com.hk/rooms/28018907',
-                        details: { distance: '市區', transport: '自駕', stay: '過夜' }
-                    },
-                    {
-                        date: 30,
-                        title: '早班機 NH052 (CTS->HND)',
-                        location: '新千歲機場',
-                        time: '08:30',
-                        category: 'Flight',
-                        desc: '早起還車(如需)，搭乘 08:30 班機飛往東京。抵達後開始最後的購物衝刺！',
-                        icon: 'fa-solid fa-plane-departure',
-                        image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("New Chitose Airport")}',
-                        suggestion: '建議 07:00 抵達機場辦理還車/登機',
-                        details: { distance: '東京', transport: '飛行', stay: '航程' }
-                    },
-                    {
-                        date: 30,
-                        title: '東京銀座購物',
-                        location: '銀座 (Ginza)',
-                        time: '13:00',
-                        category: 'Shopping',
-                        desc: '抵達東京並寄放行李後，前往銀座。這裡有最新的時尚精品、Uniqlo 旗艦店與各種伴手禮。',
-                        icon: 'fa-solid fa-bag-shopping',
-                        image: 'https://images.unsplash.com/photo-1570591752532-3a33990cb89c?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Ginza")}',
-                        details: { distance: '市區', transport: '電車', stay: '4小時' }
-                    },
-                    {
-                        date: 30,
-                        title: '入住 KEIKYU EX INN',
-                        location: '天空橋站',
-                        time: '19:00',
-                        category: 'Hotel',
-                        desc: '再次入住交通便利的 KEIKYU EX INN。晚餐可選擇羽田機場花園的餐廳，早點休息準備明天回程。',
-                        icon: 'fa-solid fa-bed',
-                        image: 'https://pix8.agoda.net/hotelImages/16791240/803978242/bc74de46d2361212f60426dc71338600.jpg?ce=0&s=1024x',
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda', 
-                        details: { distance: '機場旁', transport: '步行/接駁', stay: '過夜' }
-                    },
-                    {
-                        date: 31,
-                        title: '早起退房 & 機場早餐',
-                        location: '羽田機場 T3',
-                        time: '06:40',
-                        category: 'Departure',
-                        desc: '09:20 的班機，建議 06:40 抵達第三航廈。辦理登機後，在機場內的江戶小路或出境區享用早餐。',
-                        icon: 'fa-solid fa-passport',
-                        image: 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Haneda Airport Terminal 3")}',
-                        suggestion: 'NH923 09:20 起飛',
-                        details: { distance: '回國', transport: '飛行', stay: '再見' }
-                    }
-                ])
+                const filteredItinerary = computed(() => itineraryData.value.filter(item => item.date === selectedDate.value));
 
-                const filteredItinerary = computed(() => itineraryData.value.filter(item => item.date === selectedDate.value))
-
-                // --- Other Features (Expenses, Shopping with Image Upload) ---
-                const savedExpenses = localStorage.getItem('trip_expenses')
-                const expenses = ref(savedExpenses ? JSON.parse(savedExpenses) : [{ title: '機場星巴克', amount: 800, date: '12/20' }])
-                const savedBudget = localStorage.getItem('trip_budget')
-                const budgetAmount = ref(savedBudget ? JSON.parse(savedBudget) : 200000)
-                const isEditingBudget = ref(false)
-                const budgetInputRef = ref(null)
+                // STORAGE & LOGIC
+                const savedExpenses = localStorage.getItem('trip_expenses');
+                const expenses = ref(savedExpenses ? JSON.parse(savedExpenses) : [{ title: '機場星巴克', amount: 800, date: '12/20' }]);
+                const savedBudget = localStorage.getItem('trip_budget');
+                const budgetAmount = ref(savedBudget ? JSON.parse(savedBudget) : 200000);
+                const isEditingBudget = ref(false);
+                const budgetInputRef = ref(null);
                 
-                const savedShopping = localStorage.getItem('trip_shopping')
-                const shoppingList = ref(savedShopping ? JSON.parse(savedShopping) : [{ name: '白色戀人', checked: false }])
-                const newItem = ref('')
-                const newItemImage = ref(null) // New image state
-                const isCompressing = ref(false)
+                const savedShopping = localStorage.getItem('trip_shopping');
+                const shoppingList = ref(savedShopping ? JSON.parse(savedShopping) : [{ name: '白色戀人', checked: false }]);
+                const newItem = ref('');
+                const newItemImage = ref(null);
+                const isCompressing = ref(false);
 
-                watch(expenses, (newVal) => localStorage.setItem('trip_expenses', JSON.stringify(newVal)), { deep: true })
-                watch(budgetAmount, (newVal) => localStorage.setItem('trip_budget', JSON.stringify(newVal)))
+                watch(expenses, (newVal) => localStorage.setItem('trip_expenses', JSON.stringify(newVal)), { deep: true });
+                watch(budgetAmount, (newVal) => localStorage.setItem('trip_budget', JSON.stringify(newVal)));
                 watch(shoppingList, (newVal) => {
                     try {
-                        localStorage.setItem('trip_shopping', JSON.stringify(newVal))
+                        localStorage.setItem('trip_shopping', JSON.stringify(newVal));
                     } catch (e) {
                         alert('儲存空間不足，請刪除部分項目或圖片！');
                     }
-                }, { deep: true })
+                }, { deep: true });
 
-                const newExpense = ref({ title: '', amount: '' })
-                const addExpense = () => {
-                    if(newExpense.value.title && newExpense.value.amount) {
-                        expenses.value.unshift({ title: newExpense.value.title, amount: newExpense.value.amount, date: '12/' + selectedDate.value })
-                        newExpense.value = { title: '', amount: '' }
-                    }
-                }
-                const deleteExpense = (index) => { if(confirm('確定要刪除這筆支出嗎？')) expenses.value.splice(index, 1); }
-                const totalExpense = computed(() => expenses.value.reduce((sum, item) => sum + item.amount, 0))
-                const remaining = computed(() => budgetAmount.value - totalExpense.value)
-                const totalExpenseHkd = computed(() => (totalExpense.value * 0.052).toFixed(0))
-                
-                const editBudget = () => { isEditingBudget.value = true; nextTick(() => { if(budgetInputRef.value) budgetInputRef.value.focus() }) }
-                const saveBudget = () => { isEditingBudget.value = false; if(budgetAmount.value < 0) budgetAmount.value = 0; }
-                const getIcon = (title) => { if(title.includes('食') || title.includes('拉麵')) return '🍜'; return '💸'; }
-                
-                // --- Shopping Logic with Image Compression ---
+                const newExpense = ref({ title: '', amount: '' });
+                const addExpense = () => { if(newExpense.value.title && newExpense.value.amount) { expenses.value.unshift({ title: newExpense.value.title, amount: newExpense.value.amount, date: '12/' + selectedDate.value }); newExpense.value = { title: '', amount: '' }; } };
+                const deleteExpense = (index) => { if(confirm('確定要刪除這筆支出嗎？')) expenses.value.splice(index, 1); };
+                const totalExpense = computed(() => expenses.value.reduce((sum, item) => sum + item.amount, 0));
+                const remaining = computed(() => budgetAmount.value - totalExpense.value);
+                const totalExpenseHkd = computed(() => (totalExpense.value * 0.052).toFixed(0));
+                const editBudget = () => { isEditingBudget.value = true; nextTick(() => { if(budgetInputRef.value) budgetInputRef.value.focus(); }); };
+                const saveBudget = () => { isEditingBudget.value = false; if(budgetAmount.value < 0) budgetAmount.value = 0; };
+                const getIcon = (title) => { if(title.includes('食') || title.includes('拉麵')) return '🍜'; return '💸'; };
+
+                // IMAGE COMPRESSION LOGIC (CRITICAL FIX)
                 const resizeImage = (file) => {
                     return new Promise((resolve) => {
                         const reader = new FileReader();
@@ -960,19 +391,17 @@
                             img.onload = () => {
                                 const canvas = document.createElement('canvas');
                                 const ctx = canvas.getContext('2d');
-                                const maxWidth = 800;
+                                const maxWidth = 800; // Limit width to 800px
                                 let width = img.width;
                                 let height = img.height;
-
                                 if (width > maxWidth) {
                                     height *= maxWidth / width;
                                     width = maxWidth;
                                 }
-
                                 canvas.width = width;
                                 canvas.height = height;
                                 ctx.drawImage(img, 0, 0, width, height);
-                                resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality JPEG
+                                resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality
                             };
                             img.src = e.target.result;
                         };
@@ -994,7 +423,7 @@
                             isCompressing.value = false;
                         }
                     }
-                }
+                };
                 
                 const addItem = () => {
                     if(newItem.value) { 
@@ -1006,9 +435,20 @@
                         newItem.value = '';
                         newItemImage.value = null;
                     }
-                }
-                const deleteShoppingItem = (index) => { if(confirm('確定要刪除這個項目嗎？')) shoppingList.value.splice(index, 1); }
-                const imageError = (e) => { e.target.src = 'https://placehold.co/600x400?text=No+Image'; }
+                };
+                const deleteShoppingItem = (index) => { if(confirm('確定要刪除這個項目嗎？')) shoppingList.value.splice(index, 1); };
+                const imageError = (e) => { e.target.src = 'https://placehold.co/600x400?text=No+Image'; }; // Fixed error source
+
+                // LIGHTBOX & SNOW
+                const lightboxState = reactive({ show: false, image: '' });
+                const openLightbox = (imgUrl) => { lightboxState.image = imgUrl; lightboxState.show = true; };
+                const closeLightbox = () => { lightboxState.show = false; };
+                const handleScroll = (e, item) => {
+                    const scrollLeft = e.target.scrollLeft;
+                    const width = e.target.clientWidth;
+                    const newIndex = Math.round(scrollLeft / width);
+                    if (item.currentImageIndex !== newIndex) item.currentImageIndex = newIndex;
+                };
 
                 onMounted(() => {
                     const snowContainer = document.getElementById('snow-container');
@@ -1027,15 +467,14 @@
                     };
                     for(let i=0; i<8; i++) setTimeout(createSnowflake, i * 500);
                     setInterval(createSnowflake, 800);
-                })
+                });
 
                 return {
                     activeTab, dates, selectedDate, hourlyWeather, filteredItinerary,
                     expenses, newExpense, addExpense, deleteExpense, totalExpense, getIcon,
                     budgetAmount, isEditingBudget, editBudget, saveBudget, budgetInputRef, remaining, totalExpenseHkd,
                     shoppingList, newItem, addItem, deleteShoppingItem, newItemImage, handleFileChange, tabTitles, imageError,
-                    currentLocationName, weatherLoading,
-                    lightboxState, openLightbox, closeLightbox, handleScroll,
+                    currentLocationName, weatherLoading, lightboxState, openLightbox, closeLightbox, handleScroll,
                     currentMapUrl, savedLocations, updateMap, isCompressing
                 }
             }
