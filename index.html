@@ -479,10 +479,10 @@
                     if (date >= 22 && date <= 23) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
                     if (date === 24) return { lat: 42.7688, lon: 141.4047, name: '支笏湖 (Lake Shikotsu)' };
                     if (date === 25) return { lat: 43.0400, lon: 141.4700, name: '新札幌 (Shin-Sapporo)' };
-                    if (date === 26) return { lat: 43.1907, lon: 140.9947, name: '小樽 (Otaru)' }; // Day 26: Otaru
-                    if (date === 27) return { lat: 43.7706, lon: 142.3649, name: '旭川 (Asahikawa)' }; // Day 27: Asahikawa
-                    if (date === 28) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' }; // Day 28: Sapporo
-                    if (date === 29) return { lat: 42.8273, lon: 141.6525, name: '千歲 (Chitose)' }; // Day 29: Chitose
+                    if (date === 26) return { lat: 43.1907, lon: 140.9947, name: '小樽 (Otaru)' };
+                    if (date === 27) return { lat: 43.5859, lon: 142.4746, name: '美瑛 (Biei)' }; // Updated to Biei/Shirogane
+                    if (date === 28) return { lat: 43.0618, lon: 141.3545, name: '札幌 (Sapporo)' };
+                    if (date === 29) return { lat: 42.8273, lon: 141.6525, name: '千歲 (Chitose)' };
                     if (date >= 30) return { lat: 35.6895, lon: 139.6917, name: '東京 (Tokyo)' };
                     return { lat: 43.0618, lon: 141.3545, name: '北海道 (Hokkaido)' };
                 }
@@ -809,7 +809,7 @@
                     },
                     {
                         date: 25,
-                        title: '超市采購',
+                        title: '聖誕大餐採買',
                         location: 'AEON 新札幌店',
                         time: '16:30',
                         category: 'Shopping',
@@ -820,11 +820,23 @@
                         suggestion: '推薦買北海道產牛排與海鮮！',
                         details: { distance: '5分', transport: '車/步行', stay: '1.5小時' }
                     },
-                    
-                    // Day 26 (Otaru Day Trip - Updated to Self-Drive)
+                    {
+                        date: 25,
+                        title: '自製聖誕大餐',
+                        location: 'Airbnb 民宿',
+                        time: '18:30',
+                        category: 'Dinner',
+                        desc: '在民宿的廚房大展身手，享用溫馨的自製聖誕晚餐，度過美好的夜晚。',
+                        icon: 'fa-solid fa-kitchen-set',
+                        image: 'https://images.unsplash.com/photo-1543362906-ac1b4526c1e0?q=80&w=800',
+                        mapLink: 'https://www.airbnb.com.hk/rooms/32963798',
+                        details: { distance: '室內', transport: '烹飪', stay: '晚餐' }
+                    },
+
+                    // Day 26 (Otaru Day Trip - Final Revised)
                     {
                         date: 26,
-                        title: '自駕前往小樽',
+                        title: '出發前往小樽',
                         location: '新札幌 -> 小樽',
                         time: '08:00',
                         category: 'Drive',
@@ -840,7 +852,7 @@
                         location: '小樽運河 & 堺町通',
                         time: '09:00',
                         category: 'Sightseeing',
-                        desc: '漫步小樽運河，參觀北一硝子、音樂盒堂。午餐推薦：政壽司、魚真或三角市場海鮮丼。',
+                        desc: '漫步小樽運河，參觀北一硝子本館、音樂盒堂。欣賞美麗的聖誕燈飾。',
                         icon: 'fa-solid fa-camera-retro',
                         image: 'https://images.unsplash.com/photo-1549694770-362963032777?q=80&w=800',
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru Canal")}',
@@ -853,11 +865,24 @@
                         location: '壽司通 / 三角市場',
                         time: '12:00',
                         category: 'Lunch',
-                        desc: '享用新鮮的海鮮丼或壽司。推薦：政壽司 (有停車場) 或 魚真。',
+                        desc: '推薦：政壽司、魚真或三角市場海鮮丼。',
                         icon: 'fa-solid fa-utensils',
                         image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=800',
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Masa Zushi Otaru")}',
+                        suggestion: '政壽司有專用停車場',
                         details: { distance: '市區', transport: '自駕', stay: '1.5小時' }
+                    },
+                    {
+                        date: 26,
+                        title: '市區購物 & 閒逛',
+                        location: '小樽市區',
+                        time: '13:30',
+                        category: 'Shopping',
+                        desc: '在前往天狗山之前，先在市區購買伴手禮 (LeTAO, 六花亭等)。',
+                        icon: 'fa-solid fa-bag-shopping',
+                        image: 'https://images.unsplash.com/photo-1563729768-6af58466dfd9?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("LeTAO Main Store")}',
+                        details: { distance: '堺町通', transport: '步行', stay: '1.5小時' }
                     },
                     {
                         date: 26,
@@ -870,7 +895,7 @@
                         image: 'https://images.unsplash.com/photo-1516466723877-e4ec1d736c8a?q=80&w=800',
                         mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Otaru Tenguyama Ropeway")}',
                         suggestion: '免費停車場 (150台)',
-                        details: { distance: '15分', transport: '自駕', stay: '1.5小時' }
+                        details: { distance: '15分', transport: '自駕', stay: '2小時' }
                     },
                     {
                         date: 26,
@@ -885,30 +910,73 @@
                         details: { distance: '40km', transport: '自駕 50分', stay: '晚餐' }
                     },
 
-                    // Day 27 (Asahikawa & Biei - Self Drive)
+                    // Day 27 (Asahikawa & Biei - Revised)
                     {
                         date: 27,
-                        title: '自駕前往旭川',
-                        location: '新札幌 -> 旭川',
-                        time: '08:30',
+                        title: '自駕前往美瑛',
+                        location: '新札幌 -> 美瑛',
+                        time: '08:00',
                         category: 'Drive',
-                        desc: '經道央自動車道前往旭川。車程約 2 小時。請注意冬季路面狀況。',
+                        desc: '經道央自動車道前往美瑛。車程約 2.5 小時。請注意冬季路面狀況。',
                         icon: 'fa-solid fa-car',
-                        image: 'https://images.unsplash.com/photo-1598439210625-5067c578f3f6?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Asahiyama Zoo")}',
-                        details: { distance: '130km', transport: '自駕 2h', stay: '3小時' }
+                        image: 'https://images.unsplash.com/photo-1548749449-33db24f33664?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Biei")}',
+                        details: { distance: '130km', transport: '自駕 2.5h', stay: '車程' }
                     },
                     {
                         date: 27,
-                        title: '美瑛拼布之路',
-                        location: '美瑛町',
-                        time: '14:00',
+                        title: '白金不動瀑布 & 白鬚瀑布',
+                        location: '美瑛白金溫泉',
+                        time: '10:30',
                         category: 'Sightseeing',
-                        desc: '開車遊覽美瑛雪景：「肯與瑪麗之樹」、「七星之樹」。自駕最方便停靠拍照。',
-                        icon: 'fa-solid fa-tree',
-                        image: 'https://images.unsplash.com/photo-1548749449-33db24f33664?q=80&w=800',
-                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Ken and Mary Tree")}',
-                        details: { distance: '20km', transport: '自駕 30分', stay: '2小時' }
+                        desc: '欣賞冬日結冰的壯觀瀑布，以及藍色的美瑛川。兩處瀑布距離很近。',
+                        icon: 'fa-solid fa-water',
+                        images: [
+                            'https://www.dreamstime.com/shirogane-waterfall-winter-bie-shirogane-waterfall-winter-biei-hokkaido-japan-image135766816',
+                            'https://www.dreamstime.com/photos-images/shirahige-waterfall-snow-winter-season-hokkaido.html'
+                        ],
+                        currentImageIndex: 0,
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shirahige Waterfall")}',
+                        suggestion: '免費停車場',
+                        details: { distance: '山區', transport: '自駕', stay: '2小時' }
+                    },
+                    {
+                        date: 27,
+                        title: '午餐：旭川拉麵',
+                        location: '旭川拉麵村',
+                        time: '13:00',
+                        category: 'Lunch',
+                        desc: '開車前往旭川 (約45分)，享用熱騰騰的醬油拉麵。這裡集結了多家名店。',
+                        icon: 'fa-solid fa-utensils',
+                        image: 'https://images.unsplash.com/photo-1569924376483-3a6473ba7544?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Asahikawa Ramen Village")}',
+                        suggestion: '免費大型停車場',
+                        details: { distance: '35km', transport: '自駕 45分', stay: '1小時' }
+                    },
+                    {
+                        date: 27,
+                        title: '美瑛小鎮散策',
+                        location: '美瑛市區',
+                        time: '14:30',
+                        category: 'Sightseeing',
+                        desc: '漫步在美麗的美瑛小鎮，參觀美瑛選果 (Biei Senka) 或在 Gosh Café 喝杯咖啡。',
+                        icon: 'fa-solid fa-store',
+                        image: 'https://www.visit-hokkaido.jp/assets/images/spot/10043/1.jpg', // Placeholder for Biei town
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Biei Station")}',
+                        suggestion: '道の駅 びえい「丘のくら」',
+                        details: { distance: '15km', transport: '自駕 20分', stay: '2小時' }
+                    },
+                    {
+                        date: 27,
+                        title: '返回新札幌 & 晚餐',
+                        location: '新札幌 / 厚別',
+                        time: '17:00',
+                        category: 'Drive',
+                        desc: '結束充實的一天，開車返回民宿。晚餐在厚別周邊享用。',
+                        icon: 'fa-solid fa-car-side',
+                        image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=800',
+                        mapLink: 'https://maps.google.com/maps?q=${encodeURIComponent("Shin-Sapporo")}',
+                        details: { distance: '140km', transport: '自駕 2.5h', stay: '晚餐' }
                     },
 
                     // Day 28 (Sapporo Classics - Self Drive)
