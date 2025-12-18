@@ -111,6 +111,10 @@
                                         <div class="flex-1 text-center border-r border-gray-100 px-2"><div class="text-[10px] text-christmas-blue font-bold mb-1 tracking-wider">交通</div><div class="text-xs text-gray-600 font-bold leading-tight">{{ item.details.transport }}</div></div>
                                         <div class="flex-1 text-center px-2"><div class="text-[10px] text-christmas-blue font-bold mb-1 tracking-wider">停留</div><div class="text-xs text-gray-600 font-bold leading-tight">{{ item.details.stay }}</div></div>
                                     </div>
+                                    <div v-if="item.parking" class="bg-gray-50 border-b border-gray-100 px-4 py-2 flex items-start gap-2">
+                                        <i class="fa-solid fa-square-parking text-christmas-blue mt-0.5 text-xs"></i>
+                                        <div class="text-xs text-gray-600 font-medium">{{ item.parking }}</div>
+                                    </div>
                                     <div v-if="item.suggestion" class="mx-4 mt-4 bg-yellow-50 rounded-lg p-3 flex items-center text-yellow-700 border border-yellow-100/50"><i class="fa-regular fa-bell mr-3 text-yellow-600"></i><span class="text-xs font-bold">{{ item.suggestion }}</span></div>
                                     <div class="p-4 text-sm text-gray-500 leading-relaxed text-justify">{{ item.desc }}</div>
                                 </div>
@@ -293,9 +297,9 @@
                 ]);
                 const updateMap = (location) => {
                     savedLocations.value.forEach(l => l.active = false); location.active = true;
-                    // UPDATED TO REAL GOOGLE MAPS LINK
-                    currentMapUrl.value = `https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d10000!2d141.3545!3d43.0618!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sjp!4v1700000000000!5m2!1sen!2sjp`; // Placeholder embed as Google Maps Embed API requires key for search mode. 
-                    // Note: For the "Click to navigate" button in itinerary, we use real search links.
+                    // 使用 Embed API 的 Search 模式 (需 API Key) 或是簡單的 query
+                    // 這裡為了確保離線版不報錯，僅更新為文字搜尋連結
+                    currentMapUrl.value = `https://maps.google.com/maps?q=${encodeURIComponent(location.query)}&t=&z=13&ie=UTF8&iwloc=&output=embed`; 
                 };
 
                 const itineraryData = ref([
@@ -308,7 +312,7 @@
                         desc: '航班 : ANA NH924。預訂參考編號 : XK6OCG。機型舒適，飛行時間 3小時55分。',
                         icon: 'fa-solid fa-plane-departure',
                         image: 'https://dayooimg.dayoo.com/www/202402/06/54628485_bfb1e75b-3a34-491c-befd-52c4a4a38c11.jpg',
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Guangzhou+Baiyun+International+Airport+Terminal+1',
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Guangzhou+Baiyun+International+Airport',
                         suggestion: '建議到達時間 : 12:35',
                         details: { distance: '飛行距離\n2,900 km', transport: '3小時55分', stay: '航程' }
                     },
@@ -376,6 +380,7 @@
                         icon: 'fa-solid fa-utensils',
                         image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b485c?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Rojiura+Curry+SAMURAI+Chitose',
+                        parking: '店鋪專用停車場 (免費)',
                         details: { distance: '市區內', transport: '自駕', stay: '1.5小時' }
                     },
                     {
@@ -388,6 +393,7 @@
                         icon: 'fa-solid fa-volcano',
                         image: 'https://images.unsplash.com/photo-1627883393922-a7f474966627?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Noboribetsu+Jigokudani',
+                        parking: '地獄谷停車場 (500日圓/次)',
                         details: { distance: '60km', transport: '自駕 1h', stay: '1.5小時' }
                     },
                     {
@@ -405,6 +411,7 @@
                         ],
                         currentImageIndex: 0,
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Hotel+Cocoa+Toyako',
+                        parking: '飯店專用停車場 (免費)',
                         details: { distance: '50km', transport: '自駕 1h', stay: '過夜' }
                     },
                     {
@@ -416,7 +423,8 @@
                         desc: '早晨在湖邊漫步，欣賞羊蹄山的倒影。推薦前往 Lake Hill Farm 品嚐新鮮的義式冰淇淋。',
                         icon: 'fa-solid fa-camera',
                         image: 'https://images.unsplash.com/photo-1614343152528-94e09581827e?q=80&w=800',
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Lake+Toya',
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Lake+Hill+Farm',
+                        parking: 'Lake Hill Farm 停車場 (免費)',
                         details: { distance: '周邊', transport: '自駕', stay: '2小時' }
                     },
                     {
@@ -440,8 +448,9 @@
                         desc: '前往著名的狸小路商店街。這裡有藥妝店、唐吉訶德、伴手禮店，是購物的天堂。',
                         icon: 'fa-solid fa-bag-shopping',
                         image: 'https://images.unsplash.com/photo-1570591752532-3a33990cb89c?q=80&w=800',
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Tanukikoji+Shopping+Arcade',
-                        suggestion: '推薦買北海道限定零食',
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Tanukikoji+Shopping+Street',
+                        suggestion: '推薦 K-Park 或附近收費停車場 (約300-400円/30分)',
+                        parking: '周邊收費停車場',
                         details: { distance: '市區', transport: '自駕/步行', stay: '3小時' }
                     },
                     {
@@ -470,6 +479,7 @@
                         icon: 'fa-solid fa-snowflake',
                         image: 'https://images.unsplash.com/photo-1518659685799-923cb7a2a07d?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Takino+Suzuran+Hillside+Park',
+                        parking: '園區停車場 (420日圓/次)',
                         details: { distance: '20km', transport: '自駕 45分', stay: '3小時' }
                     },
                     {
@@ -486,6 +496,7 @@
                         ],
                         currentImageIndex: 0,
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Hill+of+the+Buddha',
+                        parking: '靈園免費停車場',
                         details: { distance: '10分', transport: '車程', stay: '2小時' }
                     },
                     {
@@ -498,6 +509,7 @@
                         icon: 'fa-solid fa-tree',
                         image: 'https://images.unsplash.com/photo-1543589077-47d81606c1bf?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Sapporo+Munich+Christmas+Market',
+                        parking: '大通地下停車場 (收費)',
                         details: { distance: '市區', transport: '自駕回市區', stay: '自由' }
                     },
                     {
@@ -510,6 +522,7 @@
                         icon: 'fa-solid fa-utensils',
                         image: 'https://images.unsplash.com/photo-1542353956-62024220c326?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Zen+Sukiyaki+Sapporo',
+                        parking: '附近收費停車場',
                         details: { distance: '步行', transport: '5-8分鐘', stay: '晚餐' }
                     },
                     {
@@ -522,6 +535,7 @@
                         icon: 'fa-solid fa-water',
                         image: 'https://images.unsplash.com/photo-1612255737525-4c0920b72a94?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Lake+Shikotsu',
+                        parking: '支笏湖畔停車場 (500日圓/次)',
                         details: { distance: '45km', transport: '自駕 1h', stay: '2小時' }
                     },
                     {
@@ -534,6 +548,7 @@
                         icon: 'fa-solid fa-hot-tub-person',
                         image: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/336239563.jpg?k=2397c88e999c0087790885567789785089088788',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Shikotsuko+Daiichi+Hotel+Suizantei',
+                        parking: '飯店專用停車場 (免費)',
                         details: { distance: '湖畔', transport: '步行', stay: '一泊二食' }
                     },
                     {
@@ -557,7 +572,8 @@
                         desc: '前往位於新札幌的寬敞 Airbnb。這裡交通便利，適合家庭聚會。',
                         icon: 'fa-solid fa-house-chimney',
                         image: 'https://a0.muscache.com/im/pictures/miso/Hosting-32963798/original/fd9b9c75-a508-4672-87ec-2cf9bd5f3720.jpeg?im_w=720',
-                        mapLink: 'https://www.airbnb.com.hk/rooms/32963798',
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Shin+Sapporo+Guest+House+Airbnb+32963798',
+                        parking: '民宿停車場 (免費/有頂棚)',
                         details: { distance: '40km', transport: '自駕 1h', stay: '過夜' }
                     },
                     {
@@ -570,6 +586,7 @@
                         icon: 'fa-solid fa-cart-shopping',
                         image: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Aeon+Shin-Sapporo',
+                        parking: '商場停車場 (購物可折抵)',
                         suggestion: '推薦買北海道產牛排與海鮮！',
                         details: { distance: '5分', transport: '車/步行', stay: '1.5小時' }
                     },
@@ -607,7 +624,8 @@
                         icon: 'fa-solid fa-camera-retro',
                         image: 'https://images.unsplash.com/photo-1549694770-362963032777?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Otaru+Canal',
-                        suggestion: '停車：小樽市觀光停車場 (付費)',
+                        suggestion: '推薦停車：小樽市觀光停車場',
+                        parking: '付費停車場 (1日約600-800円)',
                         details: { distance: '步行', transport: '散步', stay: '3小時' }
                     },
                     {
@@ -621,6 +639,7 @@
                         image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Masa+Zushi+Otaru',
                         suggestion: '政壽司有專用停車場',
+                        parking: '政壽司: 免費 / 魚真: 附近收費',
                         details: { distance: '市區', transport: '自駕', stay: '1.5小時' }
                     },
                     {
@@ -632,7 +651,7 @@
                         desc: '在前往天狗山之前，先在市區購買伴手禮 (LeTAO, 六花亭等)。',
                         icon: 'fa-solid fa-bag-shopping',
                         image: 'https://images.unsplash.com/photo-1563729768-6af58466dfd9?q=80&w=800',
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=LeTAO+Main+Store',
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=LeTAO+Main+Store+Otaru',
                         details: { distance: '堺町通', transport: '步行', stay: '1.5小時' }
                     },
                     {
@@ -646,6 +665,7 @@
                         image: 'https://images.unsplash.com/photo-1516466723877-e4ec1d736c8a?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Otaru+Tenguyama+Ropeway',
                         suggestion: '免費停車場 (150台)',
+                        parking: '天狗山停車場 (免費)',
                         details: { distance: '15分', transport: '自駕', stay: '2小時' }
                     },
                     {
@@ -669,7 +689,7 @@
                         desc: '出發前往美瑛，直奔深山的白金溫泉區。',
                         icon: 'fa-solid fa-car',
                         image: 'https://images.unsplash.com/photo-1548749449-33db24f33664?q=80&w=800',
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Biei',
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Biei+Station',
                         details: { distance: '130km', transport: '自駕 2.5h', stay: '車程' }
                     },
                     {
@@ -687,6 +707,7 @@
                         currentImageIndex: 0,
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Shirahige+Waterfall',
                         suggestion: '免費停車場',
+                        parking: '公共停車場 (免費)',
                         details: { distance: '山區', transport: '自駕', stay: '2小時' }
                     },
                     {
@@ -697,9 +718,10 @@
                         category: 'Lunch',
                         desc: '前往美瑛市區，品嚐當地靈魂美食「美瑛咖哩烏龍麵」。這家是當地人氣名店！',
                         icon: 'fa-solid fa-utensils',
-                        image: 'https://images.unsplash.com/photo-1548507200-dd1e6957367e?q=80&w=800',
+                        image: 'https://images.unsplash.com/photo-1548507200-dd1e6957367e?q=80&w=800', // Udon generic
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Daimaru+Biei',
                         suggestion: '市區有公共停車場',
+                        parking: '附近公共停車場 (免費)',
                         details: { distance: '20km', transport: '自駕 25分', stay: '1.5小時' }
                     },
                     {
@@ -711,7 +733,7 @@
                         desc: '開車遊覽拼布之路（Ken & Mary 之樹），並在美麗的美瑛小鎮閒逛、喝咖啡。',
                         icon: 'fa-solid fa-tree',
                         image: 'https://www.visit-hokkaido.jp/assets/images/spot/10043/1.jpg',
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Biei+Station',
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Ken+and+Mary+Tree',
                         details: { distance: '周邊', transport: '自駕', stay: '3小時' }
                     },
                     {
@@ -749,6 +771,7 @@
                         image: 'https://images.unsplash.com/photo-1534234828563-02622e18926b?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Hitsujigaoka+Observation+Hill',
                         suggestion: '免費停車場',
+                        parking: '展望台停車場 (免費)',
                         details: { distance: '15km', transport: '自駕 30分', stay: '1.5小時' }
                     },
                     {
@@ -761,6 +784,7 @@
                         icon: 'fa-solid fa-utensils',
                         image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b485c?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Suage+Sapporo',
+                        parking: '建議停附近收費停車場',
                         details: { distance: '市區', transport: '自駕', stay: '1.5小時' }
                     },
                     {
@@ -774,6 +798,7 @@
                         image: 'https://images.unsplash.com/photo-1570459027562-4a916cc6113f?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Hokkaido+Shrine',
                         suggestion: '停車費：參拜者免費1小時',
+                        parking: '神宮停車場 (參拜者免費1小時)',
                         details: { distance: '10km', transport: '自駕 20分', stay: '1.5小時' }
                     },
                     {
@@ -787,6 +812,7 @@
                         image: 'https://images.unsplash.com/photo-1611029289297-c2447952a20b?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Shiroi+Koibito+Park',
                         suggestion: '付費停車場 (1000円/h)',
+                        parking: '公園停車場 (付費，購物可折抵)',
                         details: { distance: '15分', transport: '自駕', stay: '1.5小時' }
                     },
                     {
@@ -800,6 +826,7 @@
                         image: 'https://tblg.k-img.com/restaurant/images/Rvw/136030/640x640_rect_136030097.jpg',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Toriton+Toyohira',
                         suggestion: '無法預約，建議提早去抽號碼牌',
+                        parking: '專用免費停車場',
                         details: { distance: '市區', transport: '自駕 20分', stay: '1.5小時' }
                     },
                     {
@@ -812,6 +839,7 @@
                         icon: 'fa-solid fa-bags-shopping',
                         image: 'https://mitsui-shopping-park.com/mop/sapporo/images/main_visual_sp.jpg',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Mitsui+Outlet+Park+Sapporo+Kitahiroshima',
+                        parking: 'Outlet 免費停車場',
                         details: { distance: '15km', transport: '自駕 20分', stay: '3小時' }
                     },
                     {
@@ -824,6 +852,7 @@
                         icon: 'fa-solid fa-cart-shopping',
                         image: 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Aeon+Chitose',
+                        parking: '商場免費停車場',
                         details: { distance: '25km', transport: '自駕 30分', stay: '1.5小時' }
                     },
                     {
@@ -836,6 +865,7 @@
                         icon: 'fa-solid fa-house-chimney',
                         image: 'https://a0.muscache.com/im/pictures/e4d94358-0053-4322-9653-730623326773.jpg?im_w=1200',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=5-18-24+Shinonomecho+Chitose',
+                        parking: '民宿停車位',
                         details: { distance: '市區', transport: '自駕', stay: '過夜' }
                     },
                     {
@@ -844,11 +874,11 @@
                         location: '千歲市區',
                         time: '05:45',
                         category: 'Departure',
-                        desc: '05:45 起床梳洗。檢查護照、行李。06:30 出發前往租車公司還車。',
+                        desc: '05:45 起床梳洗。06:30 出發前往租車公司還車 (務必準時，08:30 飛機)。',
                         icon: 'fa-solid fa-bell',
                         image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800',
                         mapLink: '',
-                        suggestion: '務必準時出發',
+                        suggestion: '務必 06:45 前抵達租車公司',
                         details: { distance: '民宿', transport: '準備', stay: '45分' }
                     },
                     {
@@ -873,7 +903,7 @@
                         icon: 'fa-solid fa-plane-departure',
                         image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=New+Chitose+Airport',
-                        suggestion: '07:30 前完成安檢',
+                        suggestion: '建議 07:00 抵達機場辦理還車/登機',
                         details: { distance: '東京', transport: '飛行', stay: '航程' }
                     },
                     {
@@ -913,9 +943,9 @@
                         suggestion: 'NH923 09:20 起飛',
                         details: { distance: '回國', transport: '飛行', stay: '再見' }
                     }
-                ]);
+                ])
 
-                const filteredItinerary = computed(() => itineraryData.value.filter(item => item.date === selectedDate.value));
+                const filteredItinerary = computed(() => itineraryData.value.filter(item => item.date === selectedDate.value))
 
                 // STORAGE & LOGIC
                 const savedExpenses = localStorage.getItem('trip_expenses');
@@ -931,17 +961,17 @@
                 const newItemImage = ref(null);
                 const isCompressing = ref(false);
 
-                watch(expenses, (newVal) => localStorage.setItem('trip_expenses', JSON.stringify(newVal)), { deep: true });
-                watch(budgetAmount, (newVal) => localStorage.setItem('trip_budget', JSON.stringify(newVal)));
+                watch(expenses, (newVal) => localStorage.setItem('trip_expenses', JSON.stringify(newVal)), { deep: true })
+                watch(budgetAmount, (newVal) => localStorage.setItem('trip_budget', JSON.stringify(newVal)))
                 watch(shoppingList, (newVal) => {
                     try {
-                        localStorage.setItem('trip_shopping', JSON.stringify(newVal));
+                        localStorage.setItem('trip_shopping', JSON.stringify(newVal))
                     } catch (e) {
                         alert('儲存空間不足，請刪除部分項目或圖片！');
                     }
-                }, { deep: true });
+                }, { deep: true })
 
-                const newExpense = ref({ title: '', amount: '' });
+                const newExpense = ref({ title: '', amount: '' })
                 const addExpense = () => { if(newExpense.value.title && newExpense.value.amount) { 
                     const now = new Date();
                     const dateStr = `${now.getMonth() + 1}/${now.getDate()}`;
