@@ -297,8 +297,7 @@
                 ]);
                 const updateMap = (location) => {
                     savedLocations.value.forEach(l => l.active = false); location.active = true;
-                    // 使用 Embed API 的 Search 模式 (需 API Key) 或是簡單的 query
-                    // 這裡為了確保離線版不報錯，僅更新為文字搜尋連結
+                    // UPDATED TO REAL GOOGLE MAPS LINK
                     currentMapUrl.value = `https://maps.google.com/maps?q=${encodeURIComponent(location.query)}&t=&z=13&ie=UTF8&iwloc=&output=embed`; 
                 };
 
@@ -312,7 +311,7 @@
                         desc: '航班 : ANA NH924。預訂參考編號 : XK6OCG。機型舒適，飛行時間 3小時55分。',
                         icon: 'fa-solid fa-plane-departure',
                         image: 'https://dayooimg.dayoo.com/www/202402/06/54628485_bfb1e75b-3a34-491c-befd-52c4a4a38c11.jpg',
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Guangzhou+Baiyun+International+Airport',
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Guangzhou+Baiyun+International+Airport+Terminal+1',
                         suggestion: '建議到達時間 : 12:35',
                         details: { distance: '飛行距離\n2,900 km', transport: '3小時55分', stay: '航程' }
                     },
@@ -689,17 +688,17 @@
                         desc: '出發前往美瑛，直奔深山的白金溫泉區。',
                         icon: 'fa-solid fa-car',
                         image: 'https://images.unsplash.com/photo-1548749449-33db24f33664?q=80&w=800',
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Biei+Station',
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Biei',
                         details: { distance: '130km', transport: '自駕 2.5h', stay: '車程' }
                     },
                     {
                         date: 27,
-                        title: '白金不動瀑布 & 白鬚瀑布',
+                        title: '白金溫泉區：冬日雪徑徒步',
                         location: '美瑛白金溫泉',
                         time: '10:30',
-                        category: 'Sightseeing',
-                        desc: '欣賞冬日結冰的壯觀瀑布，以及藍色的美瑛川。兩處瀑布距離很近。',
-                        icon: 'fa-solid fa-water',
+                        category: 'Hiking',
+                        desc: '抵達白金溫泉，開啟雪地徒步。先前往「白鬚瀑布」欣賞藍色河流，再步行至森林中的「白金不動瀑布」。請穿著防滑鞋。',
+                        icon: 'fa-solid fa-person-hiking',
                         images: [
                             'https://www.dreamstime.com/shirogane-waterfall-winter-bie-shirogane-waterfall-winter-biei-hokkaido-japan-image135766816',
                             'https://www.dreamstime.com/photos-images/shirahige-waterfall-snow-winter-season-hokkaido.html'
@@ -707,7 +706,7 @@
                         currentImageIndex: 0,
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Shirahige+Waterfall',
                         suggestion: '免費停車場',
-                        parking: '公共停車場 (免費)',
+                        parking: '白金觀光中心停車場 (免費)',
                         details: { distance: '山區', transport: '自駕', stay: '2小時' }
                     },
                     {
@@ -1010,7 +1009,7 @@
                                 canvas.width = width;
                                 canvas.height = height;
                                 ctx.drawImage(img, 0, 0, width, height);
-                                resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality
+                                resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality JPEG
                             };
                             img.src = e.target.result;
                         };
