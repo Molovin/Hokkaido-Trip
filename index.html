@@ -284,67 +284,17 @@
                 watch(selectedDate, () => { fetchWeather(); }, { immediate: true });
 
                 // MAP & ITINERARY
-                // MAP & ITINERARY
                 const defaultMapUrl = 'https://maps.google.com/maps?q=Hokkaido&z=6&output=embed';
                 const currentMapUrl = ref(defaultMapUrl);
-
-                // 👇 修改後的完整地點清單 (按行程順序) 👇
                 const savedLocations = ref([
-                    // Day 20: 東京抵達
-                    { name: 'KEIKYU EX INN', query: 'KEIKYU EX INN Haneda Innovation City', icon: 'fa-solid fa-hotel', desc: 'D20/30 住宿：天空橋站旁', active: false },
-                    
-                    // Day 21: 千歲 -> 登別 -> 洞爺湖
-                    { name: 'Budget 租車', query: 'Budget Car Rental New Chitose Airport', icon: 'fa-solid fa-car', desc: 'D21 取車 / D30 還車', active: false },
-                    { name: '湯咖哩 SAMURAI', query: 'Rojiura Curry SAMURAI Chitose', icon: 'fa-solid fa-utensils', desc: 'D21 午餐：千歲美味湯咖哩', active: false },
-                    { name: '登別地獄谷', query: 'Noboribetsu Jigokudani', icon: 'fa-solid fa-volcano', desc: 'D21 景點：火山地熱景觀', active: false },
-                    { name: 'Hotel Cocoa', query: 'Hotel Cocoa Toyako', icon: 'fa-solid fa-hotel', desc: 'D21 住宿：洞爺湖畔', active: false },
-                    
-                    // Day 22: 洞爺湖 -> 札幌
-                    { name: '洞爺湖', query: 'Lake Toya', icon: 'fa-solid fa-water', desc: 'D22 景點：晨間湖畔散策', active: false },
-                    { name: '狸小路商店街', query: 'Tanukikoji Shopping Street', icon: 'fa-solid fa-bag-shopping', desc: 'D22 逛街：藥妝與唐吉訶德', active: false },
-                    { name: '札幌民宿', query: 'Sapporo', icon: 'fa-solid fa-house-user', desc: 'D22-23 住宿：札幌市區', active: false },
-                    
-                    // Day 23: 瀧野公園 -> 聖誕市集
-                    { name: '國營瀧野鈴蘭公園', query: 'Takino Suzuran Hillside Park', icon: 'fa-solid fa-snowflake', desc: 'D23 活動：玩雪、輪胎滑雪', active: false },
-                    { name: '頭大佛殿', query: 'Hill of the Buddha', icon: 'fa-solid fa-monument', desc: 'D23 景點：安藤忠雄設計', active: false },
-                    { name: '慕尼黑聖誕市集', query: 'Sapporo Odori Park', icon: 'fa-solid fa-tree', desc: 'D23 活動：大通公園聖誕燈飾', active: false },
-                    { name: '禪 (ZEN) 壽喜燒', query: 'Zen Sukiyaki Sapporo', icon: 'fa-solid fa-utensils', desc: 'D23 晚餐：和牛壽喜燒吃到飽', active: false },
-                    
-                    // Day 24: 支笏湖
-                    { name: '支笏湖', query: 'Lake Shikotsu', icon: 'fa-solid fa-water', desc: 'D24 景點：日本最北不凍湖', active: false },
-                    { name: '翠山亭', query: 'Shikotsuko Daiichi Hotel Suizantei', icon: 'fa-solid fa-hot-tub-person', desc: 'D24 住宿：高級溫泉旅館', active: false },
-                    
-                    // Day 25: 新札幌
-                    { name: 'AEON 新札幌', query: 'Aeon Shin-Sapporo', icon: 'fa-solid fa-cart-shopping', desc: 'D25 購物：採買聖誕大餐食材', active: false },
-                    { name: '新札幌民宿', query: 'Shin-Sapporo Station', icon: 'fa-solid fa-house-chimney', desc: 'D25-28 住宿：厚別區', active: false },
-                    
-                    // Day 26: 小樽一日遊
-                    { name: '小樽運河', query: 'Otaru Canal', icon: 'fa-solid fa-camera-retro', desc: 'D26 景點：浪漫運河散策', active: false },
-                    { name: '政壽司 (本店)', query: 'Otaru Masazushi Honten', icon: 'fa-solid fa-utensils', desc: 'D26 午餐：小樽壽司通', active: false },
-                    { name: 'LeTAO 本店', query: 'LeTAO Main Store Otaru', icon: 'fa-solid fa-cookie', desc: 'D26 甜點：堺町通逛街', active: false },
-                    { name: '小樽天狗山', query: 'Otaru Tenguyama Ropeway', icon: 'fa-solid fa-mountain', desc: 'D26 景點：北海道三大夜景', active: false },
-                    
-                    // Day 27: 美瑛白金溫泉
-                    { name: '白鬚瀑布', query: 'Shirahige Waterfall', icon: 'fa-solid fa-water', desc: 'D27 景點：藍色河川與瀑布', active: false },
-                    { name: '白金不動瀑布', query: 'Shirogane Fudo Waterfall', icon: 'fa-solid fa-person-hiking', desc: 'D27 景點：森林雪徑徒步', active: false },
-                    { name: 'Daimaru (大丸)', query: 'Family Restaurant Daimaru Biei', icon: 'fa-solid fa-utensils', desc: 'D27 午餐：美瑛咖哩烏龍麵', active: false },
-                    { name: '肯與瑪麗之樹', query: 'Ken and Mary Tree', icon: 'fa-solid fa-tree', desc: 'D27 景點：拼布之路', active: false },
-                    { name: '美瑛車站', query: 'Biei Station', icon: 'fa-solid fa-store', desc: 'D27 散策：小鎮閒逛', active: false },
-
-                    // Day 28: 札幌市區漫遊
-                    { name: '羊之丘展望台', query: 'Hitsujigaoka Observation Hill', icon: 'fa-solid fa-binoculars', desc: 'D28 景點：克拉克博士像', active: false },
-                    { name: 'Suage+ 湯咖哩', query: 'Suage+ Sapporo', icon: 'fa-solid fa-utensils', desc: 'D28 午餐：人氣湯咖哩', active: false },
-                    { name: '北海道神宮', query: 'Hokkaido Shrine', icon: 'fa-solid fa-torii-gate', desc: 'D28 景點：雪中參拜', active: false },
-                    { name: '白色戀人公園', query: 'Shiroi Koibito Park', icon: 'fa-solid fa-cookie-bite', desc: 'D28 景點：工廠參觀與點燈', active: false },
-                    { name: '迴轉壽司 Toriton', query: 'Toriton Toyohira', icon: 'fa-solid fa-fish', desc: 'D28 晚餐：人氣迴轉壽司', active: false },
-                    
-                    // Day 29: 購物 & 千歲
-                    { name: '三井 Outlet', query: 'Mitsui Outlet Park Sapporo Kitahiroshima', icon: 'fa-solid fa-bag-shopping', desc: 'D29 購物：北廣島 Outlet', active: false },
-                    { name: 'AEON 千歲', query: 'Aeon Chitose', icon: 'fa-solid fa-cart-shopping', desc: 'D29 購物：最後採買', active: false },
-                    { name: '千歲民宿', query: 'Chitose Station', icon: 'fa-solid fa-bed', desc: 'D29 住宿：近機場', active: false },
-
-                    // Day 30: 東京快閃
-                    { name: '東京銀座', query: 'Ginza Station', icon: 'fa-solid fa-city', desc: 'D30 購物：步行者天國', active: false }
+                    { name: '札幌電視塔', query: 'Sapporo TV Tower', icon: 'fa-solid fa-tower-broadcast', desc: '大通公園聖誕市集', active: false },
+                    { name: '小樽運河', query: 'Otaru Canal', icon: 'fa-solid fa-water', desc: '浪漫雪景與玻璃工藝', active: false },
+                    { name: '美瑛青池', query: 'Shirogane Blue Pond', icon: 'fa-solid fa-image', desc: '美瑛夢幻點燈', active: false },
+                    { name: '白色戀人公園', query: 'Shiroi Koibito Park', icon: 'fa-solid fa-cookie-bite', desc: '童話工廠', active: false },
+                    { name: '迴轉壽司 Toriton', query: 'Toriton Toyohira', icon: 'fa-solid fa-fish', desc: '美味迴轉壽司', active: false },
+                    { name: '北海道大學', query: 'Hokkaido University', icon: 'fa-solid fa-graduation-cap', desc: '白楊木林蔭道', active: false },
+                    { name: '東京羽田機場 T2', query: 'Haneda Airport Terminal 2', icon: 'fa-solid fa-plane', desc: '轉機與購物', active: false },
+                    { name: 'KEIKYU EX INN', query: 'KEIKYU EX INN Haneda Innovation City', icon: 'fa-solid fa-hotel', desc: '第一晚住宿', active: false },
                 ]);
                 const updateMap = (location) => {
                     savedLocations.value.forEach(l => l.active = false); location.active = true;
@@ -491,25 +441,25 @@
                     },
                     {
                         date: 22,
-                        title: '狸小路商店街 (逛街)',
-                        location: '札幌市中心',
-                        time: '15:30',
-                        category: 'Shopping',
-                        desc: '前往著名的狸小路商店街。這裡有藥妝店、唐吉訶德、伴手禮店，是購物的天堂。',
-                        icon: 'fa-solid fa-bag-shopping',
-                        image: 'https://images.unsplash.com/photo-1570591752532-3a33990cb89c?q=80&w=800',
-                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Tanukikoji+Shopping+Street',
-                        suggestion: '推薦 K-Park 或附近收費停車場 (約300-400円/30分)',
-                        parking: '周邊收費停車場',
-                        details: { distance: '市區', transport: '自駕/步行', stay: '3小時' }
+                        title: '北海道大學',
+                        location: '札幌市區',
+                        time: '14:00',
+                        category: 'Sightseeing',
+                        desc: '漫步於校園內的「白楊木林蔭道」與「銀杏並木」，感受北國學府的寧靜雪景。',
+                        icon: 'fa-solid fa-graduation-cap',
+                        image: 'https://www.global.hokudai.ac.jp/wp-content/uploads/2013/05/26359050942_0e1188338e_k.jpg',
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda5',
+                        suggestion: '校內禁止停車，請停正門旁收費停車場',
+                        parking: '正門附近 Coin Parking (約400円/hr)',
+                        details: { distance: '市區', transport: '自駕', stay: '1.5小時' }
                     },
                     {
                         date: 22,
-                        title: '入住 Airbnb',
+                        title: '入住 Airbnb (放行李)',
                         location: '札幌市區',
-                        time: '19:00',
+                        time: '15:30',
                         category: 'Stay',
-                        desc: '入住位於札幌的 Airbnb 民宿。連住兩晚，方便探索市區美食與聖誕市集。',
+                        desc: '入住位於札幌的 Airbnb 民宿。稍作休息，準備晚上的逛街行程。',
                         icon: 'fa-solid fa-house-user',
                         images: [
                             'https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTUwOTg5OTcyODkyNTI1Mjk4Mg==/original/6a9e98b6-f65e-4c79-a37c-6fe7e2c19f9f.png?im_w=1440',
@@ -518,6 +468,20 @@
                         currentImageIndex: 0,
                         mapLink: 'https://www.airbnb.com/l/B6IGd7Ac',
                         details: { distance: '市區', transport: '自駕', stay: '連住兩晚' }
+                    },
+                    {
+                        date: 22,
+                        title: '狸小路商店街 (逛街)',
+                        location: '札幌市中心',
+                        time: '17:00',
+                        category: 'Shopping',
+                        desc: '前往著名的狸小路商店街。這裡有藥妝店、唐吉訶德、伴手禮店，是購物的天堂。',
+                        icon: 'fa-solid fa-bag-shopping',
+                        image: 'https://images.unsplash.com/photo-1570591752532-3a33990cb89c?q=80&w=800',
+                        mapLink: 'https://www.google.com/maps/search/?api=1&query=Tanukikoji+Shopping+Street',
+                        suggestion: '推薦 K-Park 或附近收費停車場',
+                        parking: '周邊收費停車場 (約300-400円/30分)',
+                        details: { distance: '市區', transport: '自駕/步行', stay: '3小時' }
                     },
                     {
                         date: 23,
@@ -623,7 +587,7 @@
                         icon: 'fa-solid fa-house-chimney',
                         image: 'https://a0.muscache.com/im/pictures/miso/Hosting-32963798/original/fd9b9c75-a508-4672-87ec-2cf9bd5f3720.jpeg?im_w=720',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=Shin+Sapporo+Guest+House+Airbnb+32963798',
-                        parking: '民宿停車場 (免費/有頂棚)',
+                        parking: '民宿停車位 (免費/有頂棚)',
                         details: { distance: '40km', transport: '自駕 1h', stay: '過夜' }
                     },
                     {
@@ -915,7 +879,7 @@
                         icon: 'fa-solid fa-house-chimney',
                         image: 'https://a0.muscache.com/im/pictures/e4d94358-0053-4322-9653-730623326773.jpg?im_w=1200',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=5-18-24+Shinonomecho+Chitose',
-                        parking: '民宿停車位',
+                        parking: '民宿停車位 (免費)',
                         details: { distance: '市區', transport: '自駕', stay: '過夜' }
                     },
                     {
@@ -994,152 +958,3 @@
                         details: { distance: '回國', transport: '飛行', stay: '再見' }
                     }
                 ])
-
-                const filteredItinerary = computed(() => itineraryData.value.filter(item => item.date === selectedDate.value))
-
-                // STORAGE & LOGIC
-                const savedExpenses = localStorage.getItem('trip_expenses');
-                const expenses = ref(savedExpenses ? JSON.parse(savedExpenses) : [{ title: '機場星巴克', amount: 800, date: '12/20' }]);
-                const savedBudget = localStorage.getItem('trip_budget');
-                const budgetAmount = ref(savedBudget ? JSON.parse(savedBudget) : 200000);
-                const isEditingBudget = ref(false);
-                const budgetInputRef = ref(null);
-                
-                const savedShopping = localStorage.getItem('trip_shopping');
-                const shoppingList = ref(savedShopping ? JSON.parse(savedShopping) : [{ name: '白色戀人', checked: false }]);
-                const newItem = ref('');
-                const newItemImage = ref(null);
-                const isCompressing = ref(false);
-
-                watch(expenses, (newVal) => localStorage.setItem('trip_expenses', JSON.stringify(newVal)), { deep: true })
-                watch(budgetAmount, (newVal) => localStorage.setItem('trip_budget', JSON.stringify(newVal)))
-                watch(shoppingList, (newVal) => {
-                    try {
-                        localStorage.setItem('trip_shopping', JSON.stringify(newVal))
-                    } catch (e) {
-                        alert('儲存空間不足，請刪除部分項目或圖片！');
-                    }
-                }, { deep: true })
-
-                const newExpense = ref({ title: '', amount: '' })
-                const addExpense = () => { if(newExpense.value.title && newExpense.value.amount) { 
-                    const now = new Date();
-                    const dateStr = `${now.getMonth() + 1}/${now.getDate()}`;
-                    expenses.value.unshift({ title: newExpense.value.title, amount: newExpense.value.amount, date: dateStr }); 
-                    newExpense.value = { title: '', amount: '' }; 
-                } };
-                const deleteExpense = (index) => { if(confirm('確定要刪除這筆支出嗎？')) expenses.value.splice(index, 1); };
-                const totalExpense = computed(() => expenses.value.reduce((sum, item) => sum + item.amount, 0));
-                const remaining = computed(() => budgetAmount.value - totalExpense.value);
-                const totalExpenseHkd = computed(() => (totalExpense.value * 0.052).toFixed(0));
-                const editBudget = () => { isEditingBudget.value = true; nextTick(() => { if(budgetInputRef.value) budgetInputRef.value.focus(); }); };
-                const saveBudget = () => { isEditingBudget.value = false; if(budgetAmount.value < 0) budgetAmount.value = 0; };
-                const getIcon = (title) => { if(title.includes('食') || title.includes('拉麵')) return '🍜'; return '💸'; };
-                const getExpenseBg = (dateStr) => {
-                    const day = parseInt(dateStr.split('/')[1]) || 0;
-                    const colors = ['bg-red-50', 'bg-orange-50', 'bg-yellow-50', 'bg-lime-50', 'bg-green-50', 'bg-teal-50', 'bg-cyan-50', 'bg-sky-50', 'bg-blue-50', 'bg-indigo-50', 'bg-violet-50', 'bg-purple-50', 'bg-fuchsia-50', 'bg-pink-50', 'bg-rose-50'];
-                    return colors[day % colors.length];
-                };
-
-                // IMAGE COMPRESSION LOGIC (CRITICAL FIX)
-                const resizeImage = (file) => {
-                    return new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            const img = new Image();
-                            img.onload = () => {
-                                const canvas = document.createElement('canvas');
-                                const ctx = canvas.getContext('2d');
-                                const maxWidth = 800; // Limit width to 800px
-                                let width = img.width;
-                                let height = img.height;
-                                if (width > maxWidth) {
-                                    height *= maxWidth / width;
-                                    width = maxWidth;
-                                }
-                                canvas.width = width;
-                                canvas.height = height;
-                                ctx.drawImage(img, 0, 0, width, height);
-                                resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality JPEG
-                            };
-                            img.src = e.target.result;
-                        };
-                        reader.readAsDataURL(file);
-                    });
-                };
-
-                const handleFileChange = async (e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                        isCompressing.value = true;
-                        try {
-                            const resizedImage = await resizeImage(file);
-                            newItemImage.value = resizedImage;
-                        } catch (error) {
-                            console.error("Compression failed", error);
-                            alert("圖片處理失敗");
-                        } finally {
-                            isCompressing.value = false;
-                        }
-                    }
-                };
-                
-                const clearImage = () => { newItemImage.value = null; };
-
-                const addItem = () => {
-                    if(newItem.value) { 
-                        shoppingList.value.push({ 
-                            name: newItem.value, 
-                            checked: false,
-                            image: newItemImage.value 
-                        }); 
-                        newItem.value = '';
-                        newItemImage.value = null;
-                    }
-                };
-                const deleteShoppingItem = (index) => { if(confirm('確定要刪除這個項目嗎？')) shoppingList.value.splice(index, 1); };
-                const imageError = (e) => { e.target.src = 'https://placehold.co/600x400?text=No+Image'; }; // Fixed error source
-
-                // LIGHTBOX & SNOW
-                const lightboxState = reactive({ show: false, image: '' });
-                const openLightbox = (imgUrl) => { lightboxState.image = imgUrl; lightboxState.show = true; };
-                const closeLightbox = () => { lightboxState.show = false; };
-                const handleScroll = (e, item) => {
-                    const scrollLeft = e.target.scrollLeft;
-                    const width = e.target.clientWidth;
-                    const newIndex = Math.round(scrollLeft / width);
-                    if (item.currentImageIndex !== newIndex) item.currentImageIndex = newIndex;
-                };
-
-                onMounted(() => {
-                    const snowContainer = document.getElementById('snow-container');
-                    const createSnowflake = () => {
-                        const snowflake = document.createElement('div');
-                        snowflake.classList.add('snowflake');
-                        snowflake.innerHTML = Math.random() > 0.5 ? '❄' : '•';
-                        snowflake.style.left = Math.random() * 100 + 'vw';
-                        const size = Math.random() * 8 + 6; 
-                        snowflake.style.fontSize = size + 'px';
-                        snowflake.style.opacity = Math.random() * 0.5 + 0.3;
-                        snowflake.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                        snowflake.style.animationDelay = Math.random() * 5 + 's';
-                        snowContainer.appendChild(snowflake);
-                        setTimeout(() => snowflake.remove(), 25000); 
-                    };
-                    for(let i=0; i<8; i++) setTimeout(createSnowflake, i * 500);
-                    setInterval(createSnowflake, 800);
-                });
-
-                return {
-                    activeTab, dates, selectedDate, hourlyWeather, filteredItinerary,
-                    expenses, newExpense, addExpense, deleteExpense, totalExpense, getIcon, getExpenseBg,
-                    budgetAmount, isEditingBudget, editBudget, saveBudget, budgetInputRef, remaining, totalExpenseHkd,
-                    shoppingList, newItem, addItem, deleteShoppingItem, newItemImage, handleFileChange, tabTitles, imageError,
-                    currentLocationName, weatherLoading, lightboxState, openLightbox, closeLightbox, handleScroll,
-                    currentMapUrl, savedLocations, updateMap, isCompressing, clearImage
-                }
-            }
-        }).mount('#app')
-    </script>
-</body>
-</html>
