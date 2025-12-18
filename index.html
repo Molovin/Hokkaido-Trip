@@ -48,6 +48,20 @@
     <div id="snow-container" class="fixed inset-0 pointer-events-none z-50"></div>
 
     <div id="app">
+        <transition name="fade">
+            <div v-if="isAppLoading" class="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#FFF8E7]">
+                <div class="relative w-64 h-64">
+                     <img src="https://i.meee.com.tw/ZRi70mQ.jpg" class="w-full h-full object-cover rounded-[2rem] shadow-2xl" style="border: 6px solid #fff;">
+                     <div class="absolute -bottom-10 left-0 right-0 text-center">
+                        <div class="inline-block w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+                        <div class="inline-block w-2 h-2 bg-gray-300 rounded-full animate-bounce mx-1" style="animation-delay: 0.1s"></div>
+                        <div class="inline-block w-2 h-2 bg-gray-300 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                     </div>
+                </div>
+                <p class="mt-12 text-gray-400 font-bold tracking-[0.2em] text-xs uppercase animate-pulse">Loading Trip...</p>
+            </div>
+        </transition>
+
         <header class="relative shrink-0 z-20 overflow-hidden rounded-b-[2rem] shadow-xl flex flex-col justify-end transition-all duration-300 pt-[max(env(safe-area-inset-top),20px)] pb-4">
             <div class="absolute inset-0 header-bg"></div>
             <div class="absolute inset-0 bg-christmas-dark/40 header-blur"></div>
@@ -227,6 +241,7 @@
 
         createApp({
             setup() {
+                const isAppLoading = ref(true);
                 const activeTab = ref('itinerary');
                 const selectedDate = ref(20);
                 const weatherLoading = ref(false);
@@ -1091,10 +1106,14 @@
                     };
                     for(let i=0; i<8; i++) setTimeout(createSnowflake, i * 500);
                     setInterval(createSnowflake, 800);
+                    
+                    setTimeout(() => {
+                        isAppLoading.value = false;
+                    }, 1500);
                 });
 
                 return {
-                    activeTab, dates, selectedDate, hourlyWeather, filteredItinerary,
+                    isAppLoading,activeTab, dates, selectedDate, hourlyWeather, filteredItinerary,
                     expenses, newExpense, addExpense, deleteExpense, totalExpense, getIcon, getExpenseBg,
                     budgetAmount, isEditingBudget, editBudget, saveBudget, budgetInputRef, remaining, totalExpenseHkd,
                     shoppingList, newItem, addItem, deleteShoppingItem, newItemImage, handleFileChange, tabTitles, imageError,
