@@ -112,8 +112,7 @@
                                         <div class="flex-1 text-center px-2"><div class="text-[10px] text-christmas-blue font-bold mb-1 tracking-wider">停留</div><div class="text-xs text-gray-600 font-bold leading-tight">{{ item.details.stay }}</div></div>
                                     </div>
                                     <div v-if="item.parking" class="bg-gray-50 border-b border-gray-100 px-4 py-2 flex items-start gap-2">
-                                        <i class="fa-solid fa-square-parking text-christmas-blue mt-0.5 text-xs"></i>
-                                        <div class="text-xs text-gray-600 font-medium">{{ item.parking }}</div>
+                                        <i class="fa-solid fa-square-parking text-christmas-blue mt-0.5 text-xs"></i><div class="text-xs text-gray-600 font-medium">{{ item.parking }}</div>
                                     </div>
                                     <div v-if="item.suggestion" class="mx-4 mt-4 bg-yellow-50 rounded-lg p-3 flex items-center text-yellow-700 border border-yellow-100/50"><i class="fa-regular fa-bell mr-3 text-yellow-600"></i><span class="text-xs font-bold">{{ item.suggestion }}</span></div>
                                     <div class="p-4 text-sm text-gray-500 leading-relaxed text-justify">{{ item.desc }}</div>
@@ -449,7 +448,7 @@
                         icon: 'fa-solid fa-graduation-cap',
                         image: 'https://www.global.hokudai.ac.jp/wp-content/uploads/2013/05/26359050942_0e1188338e_k.jpg',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=KEIKYU+EX+INN+Haneda5',
-                        suggestion: '校內禁止停車，請停正門旁收費停車場',
+                        suggestion: '校內禁止遊客停車，請停正門旁收費停車場',
                         parking: '正門附近 Coin Parking (約400円/hr)',
                         details: { distance: '市區', transport: '自駕', stay: '1.5小時' }
                     },
@@ -879,7 +878,7 @@
                         icon: 'fa-solid fa-house-chimney',
                         image: 'https://a0.muscache.com/im/pictures/e4d94358-0053-4322-9653-730623326773.jpg?im_w=1200',
                         mapLink: 'https://www.google.com/maps/search/?api=1&query=5-18-24+Shinonomecho+Chitose',
-                        parking: '民宿停車位 (免費)',
+                        parking: '民宿停車位',
                         details: { distance: '市區', transport: '自駕', stay: '過夜' }
                     },
                     {
@@ -958,3 +957,152 @@
                         details: { distance: '回國', transport: '飛行', stay: '再見' }
                     }
                 ])
+
+                const filteredItinerary = computed(() => itineraryData.value.filter(item => item.date === selectedDate.value))
+
+                // STORAGE & LOGIC
+                const savedExpenses = localStorage.getItem('trip_expenses');
+                const expenses = ref(savedExpenses ? JSON.parse(savedExpenses) : [{ title: '機場星巴克', amount: 800, date: '12/20' }]);
+                const savedBudget = localStorage.getItem('trip_budget');
+                const budgetAmount = ref(savedBudget ? JSON.parse(savedBudget) : 200000);
+                const isEditingBudget = ref(false);
+                const budgetInputRef = ref(null);
+                
+                const savedShopping = localStorage.getItem('trip_shopping');
+                const shoppingList = ref(savedShopping ? JSON.parse(savedShopping) : [{ name: '白色戀人', checked: false }]);
+                const newItem = ref('');
+                const newItemImage = ref(null);
+                const isCompressing = ref(false);
+
+                watch(expenses, (newVal) => localStorage.setItem('trip_expenses', JSON.stringify(newVal)), { deep: true })
+                watch(budgetAmount, (newVal) => localStorage.setItem('trip_budget', JSON.stringify(newVal)))
+                watch(shoppingList, (newVal) => {
+                    try {
+                        localStorage.setItem('trip_shopping', JSON.stringify(newVal))
+                    } catch (e) {
+                        alert('儲存空間不足，請刪除部分項目或圖片！');
+                    }
+                }, { deep: true })
+
+                const newExpense = ref({ title: '', amount: '' })
+                const addExpense = () => { if(newExpense.value.title && newExpense.value.amount) { 
+                    const now = new Date();
+                    const dateStr = `${now.getMonth() + 1}/${now.getDate()}`;
+                    expenses.value.unshift({ title: newExpense.value.title, amount: newExpense.value.amount, date: dateStr }); 
+                    newExpense.value = { title: '', amount: '' }; 
+                } };
+                const deleteExpense = (index) => { if(confirm('確定要刪除這筆支出嗎？')) expenses.value.splice(index, 1); };
+                const totalExpense = computed(() => expenses.value.reduce((sum, item) => sum + item.amount, 0));
+                const remaining = computed(() => budgetAmount.value - totalExpense.value);
+                const totalExpenseHkd = computed(() => (totalExpense.value * 0.052).toFixed(0));
+                const editBudget = () => { isEditingBudget.value = true; nextTick(() => { if(budgetInputRef.value) budgetInputRef.value.focus(); }); };
+                const saveBudget = () => { isEditingBudget.value = false; if(budgetAmount.value < 0) budgetAmount.value = 0; };
+                const getIcon = (title) => { if(title.includes('食') || title.includes('拉麵')) return '🍜'; return '💸'; };
+                const getExpenseBg = (dateStr) => {
+                    const day = parseInt(dateStr.split('/')[1]) || 0;
+                    const colors = ['bg-red-50', 'bg-orange-50', 'bg-yellow-50', 'bg-lime-50', 'bg-green-50', 'bg-teal-50', 'bg-cyan-50', 'bg-sky-50', 'bg-blue-50', 'bg-indigo-50', 'bg-violet-50', 'bg-purple-50', 'bg-fuchsia-50', 'bg-pink-50', 'bg-rose-50'];
+                    return colors[day % colors.length];
+                };
+
+                // IMAGE COMPRESSION LOGIC (CRITICAL FIX)
+                const resizeImage = (file) => {
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const img = new Image();
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+                                const maxWidth = 800; // Limit width to 800px
+                                let width = img.width;
+                                let height = img.height;
+                                if (width > maxWidth) {
+                                    height *= maxWidth / width;
+                                    width = maxWidth;
+                                }
+                                canvas.width = width;
+                                canvas.height = height;
+                                ctx.drawImage(img, 0, 0, width, height);
+                                resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality JPEG
+                            };
+                            img.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                };
+
+                const handleFileChange = async (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        isCompressing.value = true;
+                        try {
+                            const resizedImage = await resizeImage(file);
+                            newItemImage.value = resizedImage;
+                        } catch (error) {
+                            console.error("Compression failed", error);
+                            alert("圖片處理失敗");
+                        } finally {
+                            isCompressing.value = false;
+                        }
+                    }
+                };
+                
+                const clearImage = () => { newItemImage.value = null; };
+
+                const addItem = () => {
+                    if(newItem.value) { 
+                        shoppingList.value.push({ 
+                            name: newItem.value, 
+                            checked: false,
+                            image: newItemImage.value 
+                        }); 
+                        newItem.value = '';
+                        newItemImage.value = null;
+                    }
+                };
+                const deleteShoppingItem = (index) => { if(confirm('確定要刪除這個項目嗎？')) shoppingList.value.splice(index, 1); };
+                const imageError = (e) => { e.target.src = 'https://placehold.co/600x400?text=No+Image'; }; // Fixed error source
+
+                // LIGHTBOX & SNOW
+                const lightboxState = reactive({ show: false, image: '' });
+                const openLightbox = (imgUrl) => { lightboxState.image = imgUrl; lightboxState.show = true; };
+                const closeLightbox = () => { lightboxState.show = false; };
+                const handleScroll = (e, item) => {
+                    const scrollLeft = e.target.scrollLeft;
+                    const width = e.target.clientWidth;
+                    const newIndex = Math.round(scrollLeft / width);
+                    if (item.currentImageIndex !== newIndex) item.currentImageIndex = newIndex;
+                };
+
+                onMounted(() => {
+                    const snowContainer = document.getElementById('snow-container');
+                    const createSnowflake = () => {
+                        const snowflake = document.createElement('div');
+                        snowflake.classList.add('snowflake');
+                        snowflake.innerHTML = Math.random() > 0.5 ? '❄' : '•';
+                        snowflake.style.left = Math.random() * 100 + 'vw';
+                        const size = Math.random() * 8 + 6; 
+                        snowflake.style.fontSize = size + 'px';
+                        snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+                        snowflake.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                        snowflake.style.animationDelay = Math.random() * 5 + 's';
+                        snowContainer.appendChild(snowflake);
+                        setTimeout(() => snowflake.remove(), 25000); 
+                    };
+                    for(let i=0; i<8; i++) setTimeout(createSnowflake, i * 500);
+                    setInterval(createSnowflake, 800);
+                });
+
+                return {
+                    activeTab, dates, selectedDate, hourlyWeather, filteredItinerary,
+                    expenses, newExpense, addExpense, deleteExpense, totalExpense, getIcon, getExpenseBg,
+                    budgetAmount, isEditingBudget, editBudget, saveBudget, budgetInputRef, remaining, totalExpenseHkd,
+                    shoppingList, newItem, addItem, deleteShoppingItem, newItemImage, handleFileChange, tabTitles, imageError,
+                    currentLocationName, weatherLoading, lightboxState, openLightbox, closeLightbox, handleScroll,
+                    currentMapUrl, savedLocations, updateMap, isCompressing, clearImage
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
